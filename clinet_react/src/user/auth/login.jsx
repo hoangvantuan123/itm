@@ -82,7 +82,6 @@ export default function Login() {
           />
         </div>
 
-        {/* Cột chứa form login */}
         <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-5  pt-36  ">
           <div className="flex flex-col items-center top-20  absolute">
             <img
@@ -149,6 +148,11 @@ export default function Login() {
 
             </Form.Item>
           </Form>
+          <div className="bottom-0 flex justify-end ">
+            <Link to='/downloads'> <span className="text-gray-500  text-xs">Available for macOS, and Windows (preview)</span></Link>
+         
+          </div>
+          
         </div>
       </div>
     </>

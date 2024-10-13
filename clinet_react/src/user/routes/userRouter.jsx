@@ -46,6 +46,7 @@ import EmployeeDataiView from '../pages/employeeData'
 import DetailUserHrAllDataTrue from '../pages/detailUserHrAllDataTrue'
 import DetailUserHrAllDataFalse from '../pages/detailUserHrAllDataFalse'
 import ClosePage from '../pages/closePage'
+import DownloadView from '../pages/download'
 const { Content } = Layout
 
 const UserRouter = () => {
@@ -81,6 +82,9 @@ const UserRouter = () => {
     '/public/apply/thong-bao',
     '/public/apply/form/new',
     '/public/close',
+    '/downloads',
+    '/downloads/ITM-1.0.0.dmg',
+    '/downloads/ITM.exe',
   ]
 
   const checkLoginStatus = () => {
@@ -99,7 +103,8 @@ const UserRouter = () => {
   useEffect(() => {
     if (
       !skippedRoutes.includes(location.pathname) &&
-      !location.pathname.startsWith('/public/')
+      !location.pathname.startsWith('/public/') &&
+      !location.pathname.startsWith('/downloads/')
     ) {
       checkLoginStatus()
     }
@@ -140,6 +145,11 @@ const UserRouter = () => {
       <Route
         path="/public/apply/information/phone"
         element={<WorkerDeclarationPassForm />}
+      />
+   
+      <Route
+        path="/downloads"
+        element={<DownloadView/>}
       />
       <Route
         path="/public/close"
