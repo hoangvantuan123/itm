@@ -1,0 +1,133 @@
+{
+  "auth": {
+    "login": "Login",
+    "register": "Register"
+  },
+  "common": {
+    "welcome": "Welcome to our website!",
+    "buttonLabel": "Click me"
+  },
+  "greetings": {
+    "hello": "Hello",
+    "goodMorning": "Good morning",
+    "goodAfternoon": "Good afternoon"
+  },
+  "page_setting": {
+    "helmet_setting": "Settings"
+  },
+  "page_login": {
+    "login": "Login"
+  },
+  "side_bar": {
+    "setting": "System settings",
+    "general_settings": "General Settings",
+    "users": "Users",
+    "groups_users": "User Groups",
+    "technique_access": "Access Rights",
+    "technique_menu": "Menu Items",
+    "home": "Home",
+    "technique": "Technique",
+    "work": "Work",
+    "time_tracking": "Time Tracking",
+    "payroll": "Payroll",
+    "notifications": "Notifications"
+  },
+  "footer_app": {
+    "home": "Home",
+    "profile": "Profile"
+  },
+  "model_setting_user": {
+    "logout": "Logout",
+    "download_ios": "Download for iOS",
+    "download_android": "Download for Android"
+  },
+  "model_setting": {
+    "personal": "Personal",
+    "account": "Account",
+    "setting": "Settings",
+    "personalized_customization": "Personalized Customization",
+    "account_security": "Account Security",
+    "job_information": "Job Information"
+  },
+  "personal_settings_key_menu_01": {
+    "your_personal_account": "Your Personal Account",
+    "personal_settings": "Personal Settings",
+    "information": "Information",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "email": "Email",
+    "save": "Save",
+    "logout": "Logout",
+    "personal_information": "Personal Information",
+    "contact_information": "Contact Information",
+    "mobile": "Mobile Number",
+    "work_email": "Work Email",
+    "work_location": "Work Location",
+    "address_1": "Personal Address",
+    "bank_account": "Bank Account",
+    "additional_information": "Additional Information",
+    "gender": "Gender",
+    "birth_date": "Birth Date",
+    "birth_place": "Birth Place",
+    "marital_status": "Marital Status",
+    "single": "Single",
+    "married": "Married",
+    "divorced": "Divorced",
+    "education": "Education",
+    "education_level": "Education Level",
+    "certification": "Certification",
+    "research_field": "Research Field",
+    "school": "School",
+    "dependents": "Notes",
+    "emergency_contact": "Emergency Contact",
+    "emergency_contact_name": "Emergency Contact Name",
+    "emergency_contact_phone": "Emergency Contact Phone",
+    "work_permit": "Work Permit",
+    "visa_number": "Visa Number",
+    "work_permit_number": "Work Permit Number",
+    "visa_expiry_date": "Visa Expiry Date",
+    "citizenship_country": "Citizenship Country",
+    "id_number": "ID Number"
+  },
+  "personal_settings_key_menu_02": {
+    "personalized_customization": "Personalized Customization",
+    "notification_method": "Notification",
+    "email": "Email",
+    "system": "System",
+    "language": "Language",
+    "timezone": "Timezone",
+    "vietnamese": "Vietnamese",
+    "english": "English",
+    "save": "Save"
+  },
+  "personal_settings_key_menu_03": {
+    "password_management": "Password Management",
+    "change_password": "Change Password",
+    "device_list": "Device List",
+    "other_devices": "Other Devices",
+    "sign_out_of_all_devices": "Sign out of all devices",
+    "save": "Save",
+    "cancel": "Cancel",
+    "label_new_pass": "New Password",
+    "rules_new_message": "Please enter a new password",
+    "label_succ_pass": "Confirm New Password"
+  },
+  "page_notifications": {
+    "notifications": "Thông báo"
+  },
+  "monthYear": "{{month}} {{year}}",
+  "months": {
+    "1": "January",
+    "2": "February",
+    "3": "March",
+    "4": "April",
+    "5": "May",
+    "6": "June",
+    "7": "July",
+    "8": "August",
+    "9": "September",
+    "10": "October",
+    "11": "November",
+    "12": "December"
+  }
+}

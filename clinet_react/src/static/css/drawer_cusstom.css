@@ -1,0 +1,72 @@
+:where(.css-dev-only-do-not-override-qnu6hi).ant-drawer-right
+  > .ant-drawer-content-wrapper {
+  padding: 13px;
+  box-shadow: none;
+}
+:where(.css-dev-only-do-not-override-qnu6hi).ant-drawer .ant-drawer-content {
+  border-radius: 13px;
+}
+
+:where(.css-dev-only-do-not-override-qnu6hi).ant-card .ant-card-body {
+  padding: 14px;
+}
+:where(.css-dev-only-do-not-override-qnu6hi).ant-drawer .ant-drawer-body {
+  padding: 14px;
+}
+:where(.css-qnu6hi).ant-drawer-right>.ant-drawer-content-wrapper {
+  padding: 12px;
+}
+
+:where(.css-qnu6hi).ant-drawer .ant-drawer-content{
+  border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+  :where(.css-dev-only-do-not-override-qnu6hi).ant-drawer .ant-drawer-content-wrapper {
+    padding: 12px;
+    box-shadow: none;
+  }
+
+  :where(.css-dev-only-do-not-override-qnu6hi).ant-drawer .ant-drawer-content {
+    border-radius: 12px;
+  }
+  :where(.css-dev-only-do-not-override-qnu6hi).ant-drawer .ant-drawer-content {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+}
+@media (max-width: 768px) {
+  :where(.css-dev-only-do-not-override-qnu6hi).ant-drawer .ant-drawer-content-wrapper {
+      padding: 12px;
+      box-shadow: none;
+  }
+
+  :where(.css-dev-only-do-not-override-qnu6hi).ant-drawer .ant-drawer-content {
+      border-radius: 12px;
+  }
+
+  :where(.css-dev-only-do-not-override-qnu6hi).ant-drawer .ant-drawer-content {
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+  }
+  :where(.css-qnu6hi).ant-drawer-right>.ant-drawer-content-wrapper{
+      padding: 12px;
+      box-shadow: none;
+  }
+  :where(.css-qnu6hi).ant-drawer .ant-drawer-content{
+      border-radius: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  :where(.css-qnu6hi).ant-drawer .ant-drawer-content-wrapper {
+      padding: 12px;
+      box-shadow: none;
+  }
+
+  :where(.css-qnu6hi).ant-drawer .ant-drawer-content {
+      border-radius: 12px;
+  }
+
+
+}

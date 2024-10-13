@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  server1:
+    build: ./server_user_p_v15
+    container_name: server1_container
+    ports:
+      - "${SERVER1_PORT}:3000"
+    env_file:
+      - ./.env
+    volumes:
+      - ./logs/server1:/app/logs
+
+  server2:
+    build: ./server_hr_recruitment
+    container_name: server2_container
+    ports:
+      - "${SERVER2_PORT}:3000"
+    env_file:
+      - ./.env
+    volumes:
+      - ./logs/server2:/app/logs
+
+  server3:
+    build: ./server_import_export
+    container_name: server3_container
+    ports:
+      - "${SERVER3_PORT}:3000"
+    env_file:
+      - ./.env
+    volumes:
+      - ./logs/server3:/app/logs

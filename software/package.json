@@ -1,0 +1,52 @@
+{
+  "name": "itm",
+  "version": "1.0.0",
+  "description": "An Electron app built for Windows and macOS",
+  "author": "tuanvhoang31@gmail.com",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --mac --win --x64"
+  },
+  "build": {
+    "appId": "com.example.myelectronapp",
+    "productName": "ITM App",
+    "files": [
+      "main.js",
+      "package.json",
+      "build/**/*"
+    ],
+    "directories": {
+      "buildResources": "build"
+    },
+    "mac": {
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "build/icon.icns"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": true, 
+      "perMachine": true, 
+      "allowToChangeInstallationDirectory": true, 
+      "createDesktopShortcut": true, 
+      "createStartMenuShortcut": true, 
+      "shortcutName": "ITM App" 
+    }
+  },
+  "devDependencies": {
+    "electron": "^29.0.1",
+    "electron-builder": "^24.12.0"
+  }
+}
