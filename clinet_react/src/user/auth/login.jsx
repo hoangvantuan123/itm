@@ -14,9 +14,10 @@ import {
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { loginAuth } from '../../features/auth/API/authAPI'
 import decodeJWT from '../../utils/decode-JWT'
-import BG from '../../assets/bgr.jpg'
+import BG from '../../assets/image3.jpg'
 import Logo from '../../assets/ItmLogo.png'
 import Cookies from 'js-cookie'
+import BgCarousel from '../components/carousel/bgCarousel'
 
 const { Title, Text } = Typography
 
@@ -75,15 +76,17 @@ export default function Login() {
       <div className="min-h-screen  flex flex-col lg:flex-row items-center justify-center overflow-hidden ">
         {/* Cột chứa ảnh */}
         <div className="hidden lg:flex lg:w-1/2 p-2   h-screen items-center justify-center">
-          <img
+         {/*  <img
             src={BG}
             alt="Description of image"
             className="w-full h-full object-cover   rounded-2xl"
-          />
+          /> */}
+          <BgCarousel/>
         </div>
 
         <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-5  pt-36  ">
           <div className="flex flex-col items-center top-20  absolute">
+         
             <img
               src={Logo}
               alt="Company Logo"
