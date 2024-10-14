@@ -32,7 +32,8 @@
     "payroll": "Lương",
     "notifications": "Thông báo",
     "recruitment": "Tuyển dụng",
-    "data_recruitment": "Danh sách nhân sự"
+    "data_recruitment": "Danh sách nhân sự",
+    "salary": "Dữ liệu chấm công"
   },
   "footer_app": {
     "home": "Trang chủ",
@@ -301,10 +302,59 @@
     "children_name": "Họ tên",
     "children_birth_date": "Năm sinh",
     "children_gender": "Giới tính"
-  } ,
-  "education_columns" :{
-    "highest_education_level" : "Trình độ học vấn",
-    "school" : "Trường",
-    "major" :""
+  },
+  "education_columns": {
+    "highest_education_level": "Trình độ học vấn",
+    "school": "Trường",
+    "major": "Chuyên ngành",
+    "school_year": "Năm học",
+    "year_ended": "Năm bắt đầu",
+    "year_of_graduation": "Năm tốt nghiệp",
+    "classification": "Xếp loại"
+  },
+  "language_columns": {
+    "language": "Ngôn ngữ",
+    "certificate_type": "Loại chứng chỉ",
+    "score": "Điểm số",
+    "level": "Trình độ"
+  },
+  "experience_columns": {
+    "company_name": "Công ty",
+    "position": "Chức vụ",
+    "start_date": "Năm bắt đầu",
+    "end_date": "Năm kết thúc",
+    "tasks": "Công việc",
+    "salary": "Mức lương"
+  },
+
+  "hr_salary": {
+    "cid": "CID",
+    "name": "Họ Tên",
+    "department": "Department",
+    "monthly_salary": "Tháng/Năm",
+    "total": "Tổng",
+    "normal_150": "Normal 150",
+    "normal_200": "Normal 200",
+    "normal_210": "Normal 210",
+    "night_30": "Night 30",
+    "sunday_200": "Sunday 200",
+    "sunday_270": "Sunday 270",
+    "holiday_300": "Holiday 300",
+    "holiday_390": "Holiday 390",
+    "total_late_in": "Total late in",
+    "total_early_out": "Total early out",
+    "total_late_in_early_out": "Total late in early out",
+    "tong_ngay_nghi": "Tổng ngày nghỉ",
+    "paid_leave": "Paid leave",
+    "nghi_co_phep_khong_luong": "Nghỉ phép có lương",
+    "phep_thang_nay": "Phép tháng này",
+    "ton_phep_thang_nay": "Tồn phép tháng này",
+    "so_ngay_di_lam_trong_thang": "Số ngày đi làm trong tháng",
+    "so_ngay_di_lam_thuc_te": "Số ngày đi làm thực tế",
+    "muon_phep": "Muộn phép",
+    "synchronize": "Sync",
+    "data": "Dữ liệu bảng công",
+    "add": "Thêm"
+
   }
 }

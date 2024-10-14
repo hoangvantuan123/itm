@@ -11,6 +11,7 @@ import { PutUsersInterviewStatus } from '../../../features/hrRecruitment/putUser
 import ChangePassSelect from '../profile/changePassSelect'
 import { DeleteHrInterviewCandidates } from '../../../features/hrInterviewCandidate/deleteHrInterviewCandidate'
 import { DeleteHrInterIds } from '../../../features/hrInter/deleteHrInfoIds'
+import { DeleteHrSalaryIds } from '../../../features/hrSalary/deleteHrInfoIds'
 import ExportDataView from '../export'
 import ExportDataViewIds from '../export/exportIds'
 
@@ -74,192 +75,186 @@ export default function ShowAction({
   }
   const handleDeleteGroups = async () => {
     try {
-      const response = await DeleteResGroups(selectedRowKeys)
+      message.loading({ content: 'Đang xóa các nhóm...', key: 'delete', duration: 0 });
+
+      const response = await DeleteResGroups(selectedRowKeys);
 
       if (response.success) {
-        message.success('Xóa thành công các nhóm')
-        setSelectedRowKeys([])
-        setActionUsers('')
-        fetchData()
+        setSelectedRowKeys([]);
+        setActionUsers('');
+        fetchData();
+        message.success({ content: 'Xóa thành công các nhóm', key: 'delete', duration: 2 });
       } else {
-        message.error(
-          `Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại`,
-        )
+        message.error({ content: 'Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại', key: 'delete', duration: 2 });
       }
     } catch (error) {
-      console.error('Lỗi khi xóa nhóm:', error)
-      message.error('Có lỗi xảy ra, vui lòng thử lại')
+      console.error('Lỗi khi xóa nhóm:', error);
+      message.error({ content: 'Có lỗi xảy ra, vui lòng thử lại', key: 'delete', duration: 2 });
     }
-  }
+  };
+
   const handleDeleteUsers = async () => {
     try {
-      const response = await DeleteResUsers(selectedRowKeys)
+      message.loading({ content: 'Đang xóa tài khoản...', key: 'delete', duration: 0 });
+
+      const response = await DeleteResUsers(selectedRowKeys);
 
       if (response.success) {
-        message.success('Xóa thành công tài khoản')
-        setSelectedRowKeys([])
-        fetchDataUser()
-        setActionUsers('')
+        setSelectedRowKeys([]);
+        setActionUsers('');
+        fetchDataUser();
+        message.success({ content: 'Xóa thành công tài khoản', key: 'delete', duration: 2 });
       } else {
-        message.error(
-          `Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại`,
-        )
+        message.error({ content: 'Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại', key: 'delete', duration: 2 });
       }
     } catch (error) {
-      message.error('Có lỗi xảy ra, vui lòng thử lại')
+      message.error({ content: 'Có lỗi xảy ra, vui lòng thử lại', key: 'delete', duration: 2 });
     }
-  }
+  };
 
   const handleDeleteMenus = async () => {
     try {
-      const response = await DeleteMenus(selectedRowKeys)
+      message.loading({ content: `${t('Đang xóa các nhóm...')}`, key: 'delete', duration: 0 });
+
+      const response = await DeleteMenus(selectedRowKeys);
 
       if (response.success) {
-        message.success(`${t('Xóa thành công các nhóm')}`)
-        setSelectedRowKeys([])
-        setActionUsers('')
-        fetchData()
+        setSelectedRowKeys([]);
+        setActionUsers('');
+        fetchData();
+        message.success({ content: `${t('Xóa thành công các nhóm')}`, key: 'delete', duration: 2 });
       } else {
-        message.error(
-          `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
-        )
+        message.error({ content: `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`, key: 'delete', duration: 2 });
       }
     } catch (error) {
-      console.error(`${t('Lỗi khi xóa nhóm:')}`, error)
-      message.error(`${t('Có lỗi xảy ra, vui lòng thử lại')}`)
+      console.error(`${t('Lỗi khi xóa nhóm:')}`, error);
+      message.error({ content: `${t('Có lỗi xảy ra, vui lòng thử lại')}`, key: 'delete', duration: 2 });
     }
-  }
+  };
+
   const handleDeleteHrEmployees = async () => {
     try {
-      const response = await DeleteHrEmployeeIds(selectedRowKeys)
+      message.loading({ content: `${t('Đang xóa các nhóm...')}`, key: 'delete', duration: 0 });
+
+      const response = await DeleteHrEmployeeIds(selectedRowKeys);
 
       if (response.success) {
-        message.success(`${t('Xóa thành công các nhóm')}`)
-        setSelectedRowKeys([])
-        setActionUsers('')
-        fetchDataUser()
+        setSelectedRowKeys([]);
+        setActionUsers('');
+        fetchDataUser();
+        message.success({ content: `${t('Xóa thành công các nhóm')}`, key: 'delete', duration: 2 });
       } else {
-        message.error(
-          `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
-        )
+        message.error({ content: `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`, key: 'delete', duration: 2 });
       }
     } catch (error) {
-      console.error(`${t('Lỗi khi xóa nhóm:')}`, error)
-      message.error(`${t('Có lỗi xảy ra, vui lòng thử lại')}`)
+      console.error(`${t('Lỗi khi xóa nhóm:')}`, error);
+      message.error({ content: `${t('Có lỗi xảy ra, vui lòng thử lại')}`, key: 'delete', duration: 2 });
     }
-  }
+  };
 
   const handleDeleteHrInfoIds = async () => {
     try {
-      const response = await DeleteHrInfoIds(selectedRowKeys)
+      message.loading({ content: `${t('Đang xóa các nhóm...')}`, key: 'delete', duration: 0 });
+
+      const response = await DeleteHrInfoIds(selectedRowKeys);
 
       if (response.success) {
-        message.success(`${t('Xóa thành công các nhóm')}`)
-        setSelectedRowKeys([])
-        setActionUsers('')
-        fetchDataUser()
+        setSelectedRowKeys([]);
+        setActionUsers('');
+        fetchDataUser();
+        message.success({ content: `${t('Xóa thành công các nhóm')}`, key: 'delete', duration: 2 });
       } else {
-        message.error(
-          `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
-        )
+        message.error({ content: `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`, key: 'delete', duration: 2 });
       }
     } catch (error) {
-      message.error(`${t('Có lỗi xảy ra, vui lòng thử lại')}`)
+      message.error({ content: `${t('Có lỗi xảy ra, vui lòng thử lại')}`, key: 'delete', duration: 2 });
     }
-  }
-  const handleUpdateUserInterviewTrue = async () => {
-    try {
-      const response = await PutUsersInterviewStatus(selectedRowKeys, true)
+  };
 
-      const messagePromise = response.success
-        ? Promise.resolve(message.success(`${t('Cập nhật thành công')}`))
-        : Promise.reject(
-          new Error(
-            `${t('Cập nhật thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
-          ),
-        )
 
-      await messagePromise
-
-      if (response.success) {
-        await fetchDataUser()
-        setSelectedRowKeys([])
-        setActionUsers('')
-      }
-    } catch (error) {
-      message.error(`${t('Có lỗi xảy ra, vui lòng thử lại')}`)
-    }
-  }
   const handleDeleteHrInterviewCandidates = async () => {
     try {
-      const response = await DeleteHrInterviewCandidates(selectedRowKeys)
+      message.loading({ content: `${t('Đang xóa các nhóm...')}`, key: 'delete', duration: 0 });
 
-      const messagePromise = response.success
-        ? Promise.resolve(message.success(`${t('Xóa thành công các nhóm')}`))
-        : Promise.reject(
-          new Error(
-            `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
-          ),
-        )
-
-      await messagePromise
+      const response = await DeleteHrInterviewCandidates(selectedRowKeys);
 
       if (response.success) {
-        await fetchDataUser()
-        setSelectedRowKeys([])
-        setActionUsers('')
+        fetchDataUser();
+        setSelectedRowKeys([]);
+        setActionUsers('');
+        message.success({ content: `${t('Xóa thành công các nhóm')}`, key: 'delete', duration: 2 });
+      } else {
+        message.error({ content: `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`, key: 'delete', duration: 2 });
       }
     } catch (error) {
-      message.error(`${t('Có lỗi xảy ra, vui lòng thử lại')}`)
+      message.error({ content: `${t('Có lỗi xảy ra, vui lòng thử lại')}`, key: 'delete', duration: 2 });
     }
-  }
+  };
+
   const handleDeleteHrInter = async () => {
     try {
-      const response = await DeleteHrInterIds(selectedRowKeys)
+      message.loading({ content: `${t('Đang xóa các nhóm...')}`, key: 'delete', duration: 0 });
 
-      const messagePromise = response.success
-        ? Promise.resolve(message.success(`${t('Xóa thành công các nhóm')}`))
-        : Promise.reject(
-          new Error(
-            `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
-          ),
-        )
-
-      await messagePromise
+      const response = await DeleteHrInterIds(selectedRowKeys);
 
       if (response.success) {
-        await fetchDataUser()
-        setSelectedRowKeys([])
-        setActionUsers('')
+        fetchDataUser();
+        setSelectedRowKeys([]);
+        setActionUsers('');
+
+        message.success({
+          content: `${t('Xóa thành công các nhóm')}`,
+          key: 'delete',
+          duration: 2
+        });
+      } else {
+        message.error({
+          content: `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
+          key: 'delete',
+          duration: 2
+        });
       }
     } catch (error) {
-      message.error(`${t('Có lỗi xảy ra, vui lòng thử lại')}`)
+      message.error({
+        content: `${t('Có lỗi xảy ra, vui lòng thử lại')}`,
+        key: 'delete',
+        duration: 2
+      });
     }
-  }
+  };
 
-  const handleUpdateUserInterviewFalse = async () => {
+  const handleDeleteHrSalary = async () => {
     try {
-      const response = await PutUsersInterviewStatus(selectedRowKeys, false)
+      message.loading({ content: `${t('Đang xóa các nhóm...')}`, key: 'delete' });
 
-      const messages = response.success
-        ? Promise.resolve(message.success(`${t('Cập nhật thành công')}`))
-        : Promise.reject(
-          new Error(
-            `${t('Cập nhật thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
-          ),
-        )
-
-      await messages
+      const response = await DeleteHrSalaryIds(selectedRowKeys);
 
       if (response.success) {
-        setSelectedRowKeys([])
-        setActionUsers('')
-        await fetchDataUser()
+        fetchDataUser();
+        setSelectedRowKeys([]);
+        setActionUsers('');
+
+        message.success({
+          content: `${t('Xóa thành công các nhóm')}`,
+          key: 'delete',
+          duration: 2
+        });
+      } else {
+        message.error({
+          content: `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
+          key: 'delete',
+          duration: 2
+        });
       }
     } catch (error) {
-      message.error(`${t('Có lỗi xảy ra, vui lòng thử lại')}`)
+      message.error({
+        content: `${t('Có lỗi xảy ra, vui lòng thử lại')}`,
+        key: 'delete',
+        duration: 2
+      });
     }
-  }
+  };
+
 
   const handleMenuClick = (e) => {
     setSelectedMenuKey(e.key)
@@ -316,6 +311,9 @@ export default function ShowAction({
         case 'actionHrInters':
           Modal.confirm({ ...modalConfig, onOk: handleDeleteHrInter })
           break
+        case 'actionHrSalary':
+          Modal.confirm({ ...modalConfig, onOk: handleDeleteHrSalary })
+          break
         case 'actionHrInterCandidateIds':
           Modal.confirm({
             ...modalConfig,
@@ -326,30 +324,7 @@ export default function ShowAction({
           break
       }
     }
-    if (e.key === 'action_show_6_1') {
-      switch (actionUsers) {
-        case 'actionHrInfoIds':
-          Modal.confirm({
-            ...modalSuccess,
-            onOk: handleUpdateUserInterviewTrue,
-          })
-          break
-        default:
-          break
-      }
-    }
-    if (e.key === 'action_show_6_2') {
-      switch (actionUsers) {
-        case 'actionHrInfoIds':
-          Modal.confirm({
-            ...modalSuccess,
-            onOk: handleUpdateUserInterviewFalse,
-          })
-          break
-        default:
-          break
-      }
-    }
+
   }
 
   const menu = (

@@ -293,6 +293,23 @@ const HrRecruitmentIcon = () => {
     </svg>
   )
 }
+
+
+const SalaryIcon = () => {
+  return (
+    <svg   className="w-5 h-5 opacity-65 " viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6 9C5.59 9 5.25 8.66 5.25 8.25V6.25C5.25 5.84 5.59 5.5 6 5.5C6.41 5.5 6.75 5.84 6.75 6.25V8.25C6.75 8.66 6.41 9 6 9Z" fill="#292D32" />
+      <path d="M12 22.75H9C3.57 22.75 1.25 20.43 1.25 15V9C1.25 3.57 3.57 1.25 9 1.25H15C20.43 1.25 22.75 3.57 22.75 9V12C22.75 12.41 22.41 12.75 22 12.75C21.59 12.75 21.25 12.41 21.25 12V9C21.25 4.39 19.61 2.75 15 2.75H9C4.39 2.75 2.75 4.39 2.75 9V15C2.75 19.61 4.39 21.25 9 21.25H12C12.41 21.25 12.75 21.59 12.75 22C12.75 22.41 12.41 22.75 12 22.75Z" fill="#292D32" />
+      <path d="M10 9C9.59 9 9.25 8.66 9.25 8.25V6.25C9.25 5.84 9.59 5.5 10 5.5C10.41 5.5 10.75 5.84 10.75 6.25V8.25C10.75 8.66 10.41 9 10 9Z" fill="#292D32" />
+      <path d="M6 18.75C5.59 18.75 5.25 18.41 5.25 18V16C5.25 15.59 5.59 15.25 6 15.25C6.41 15.25 6.75 15.59 6.75 16V18C6.75 18.41 6.41 18.75 6 18.75Z" fill="#292D32" />
+      <path d="M10 18.75C9.59 18.75 9.25 18.41 9.25 18V16C9.25 15.59 9.59 15.25 10 15.25C10.41 15.25 10.75 15.59 10.75 16V18C10.75 18.41 10.41 18.75 10 18.75Z" fill="#292D32" />
+      <path d="M18 8H14C13.59 8 13.25 7.66 13.25 7.25C13.25 6.84 13.59 6.5 14 6.5H18C18.41 6.5 18.75 6.84 18.75 7.25C18.75 7.66 18.41 8 18 8Z" fill="#292D32" />
+      <path d="M22 12.75H2C1.59 12.75 1.25 12.41 1.25 12C1.25 11.59 1.59 11.25 2 11.25H22C22.41 11.25 22.75 11.59 22.75 12C22.75 12.41 22.41 12.75 22 12.75Z" fill="#292D32" />
+      <path d="M21.5594 20.33C20.9994 21.3 19.9494 21.95 18.7494 21.95C16.9594 21.95 15.8594 20.15 15.8594 20.15M15.9294 17.09C16.4894 16.11 17.5394 15.46 18.7494 15.46C20.9194 15.46 21.9994 17.26 21.9994 17.26M21.9994 15.25V17.25H19.9994M17.8594 20.14H15.8594V22" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+
+  )
+}
 const Sidebar = ({ permissions }) => {
   const location = useLocation()
   const userFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'))
@@ -445,33 +462,49 @@ const Sidebar = ({ permissions }) => {
                   'hr-recruitment-1-1',
                   'view',
                 ) && (
-                  <Menu.Item key="hr-recruitment-1-1">
-                    <Link
-                      to="/u/action=17/employee-interview-data"
-                      className="flex items-center justify-start"
-                    >
-                      {t('side_bar.recruitment')}
-                    </Link>
-                  </Menu.Item>
-                )}
+                    <Menu.Item key="hr-recruitment-1-1">
+                      <Link
+                        to="/u/action=17/employee-interview-data"
+                        className="flex items-center justify-start"
+                      >
+                        {t('side_bar.recruitment')}
+                      </Link>
+                    </Menu.Item>
+                  )}
 
                 {checkMenuPermission(
                   permissions,
                   'hr-recruitment-1-3',
                   'view',
                 ) && (
-                  <Menu.Item key="hr-recruitment-1-3">
-                    <Link
-                      to="/u/action=20/data-employee"
-                      className="flex items-center justify-start"
-                    >
+                    <Menu.Item key="hr-recruitment-1-3">
+                      <Link
+                        to="/u/action=20/data-employee"
+                        className="flex items-center justify-start"
+                      >
                         {t('side_bar.data_recruitment')}
-                    </Link>
-                  </Menu.Item>
-                )}
+                      </Link>
+                    </Menu.Item>
+                  )}
               </SubMenu>
             )}
-
+            {checkMenuPermission(permissions, 'salary', 'view') && (
+              <Menu.Item key="salary">
+                <Link
+                  to="/u/action=20/data-salary"
+                  className="flex items-center justify-start"
+                >
+                  <span
+                    className={`icon-wrapper ${collapsed ? ' justify-center mt-2' : ''}`}
+                  >
+                    <SalaryIcon />
+                  </span>
+                  {!collapsed && (
+                    <span className="ml-3">{t('side_bar.salary')}</span>
+                  )}
+                </Link>
+              </Menu.Item>
+            )}
             {checkMenuPermission(permissions, 'setting', 'view') && (
               <SubMenu
                 key="setting"
@@ -534,30 +567,30 @@ const Sidebar = ({ permissions }) => {
                       'setting-2-1-1',
                       'view',
                     ) && (
-                      <Menu.Item key="setting-2-1-1">
-                        <Link
-                          to="/u/action=4/technique_access"
-                          className="flex items-center justify-start"
-                        >
-                          {t('side_bar.technique_access')}
-                        </Link>
-                      </Menu.Item>
-                    )}
+                        <Menu.Item key="setting-2-1-1">
+                          <Link
+                            to="/u/action=4/technique_access"
+                            className="flex items-center justify-start"
+                          >
+                            {t('side_bar.technique_access')}
+                          </Link>
+                        </Menu.Item>
+                      )}
 
                     {checkMenuPermission(
                       permissions,
                       'setting-2-1-2',
                       'view',
                     ) && (
-                      <Menu.Item key="setting-2-1-2">
-                        <Link
-                          to="/u/action=5/technique_menu"
-                          className="flex items-center justify-start"
-                        >
-                          {t('side_bar.technique_menu')}
-                        </Link>
-                      </Menu.Item>
-                    )}
+                        <Menu.Item key="setting-2-1-2">
+                          <Link
+                            to="/u/action=5/technique_menu"
+                            className="flex items-center justify-start"
+                          >
+                            {t('side_bar.technique_menu')}
+                          </Link>
+                        </Menu.Item>
+                      )}
                   </SubMenu>
                 )}
 
@@ -576,30 +609,30 @@ const Sidebar = ({ permissions }) => {
                       'setting-3-1-1',
                       'view',
                     ) && (
-                      <Menu.Item key="setting-3-1-1">
-                        <Link
-                          to="/a/action=8/personnel"
-                          className="flex items-center justify-start"
-                        >
-                          {t('Nhân viên')}
-                        </Link>
-                      </Menu.Item>
-                    )}
+                        <Menu.Item key="setting-3-1-1">
+                          <Link
+                            to="/a/action=8/personnel"
+                            className="flex items-center justify-start"
+                          >
+                            {t('Nhân viên')}
+                          </Link>
+                        </Menu.Item>
+                      )}
 
                     {checkMenuPermission(
                       permissions,
                       'setting-3-1-2',
                       'view',
                     ) && (
-                      <Menu.Item key="setting-3-1-2">
-                        <Link
-                          to="/a/action=9/working_time"
-                          className="flex items-center justify-start"
-                        >
-                          {t('Thời gian làm việc')}
-                        </Link>
-                      </Menu.Item>
-                    )}
+                        <Menu.Item key="setting-3-1-2">
+                          <Link
+                            to="/a/action=9/working_time"
+                            className="flex items-center justify-start"
+                          >
+                            {t('Thời gian làm việc')}
+                          </Link>
+                        </Menu.Item>
+                      )}
                   </SubMenu>
                 )}
               </SubMenu>
@@ -618,9 +651,8 @@ const Sidebar = ({ permissions }) => {
               >
                 {activeTab === 'home' ? <ActiveHomeIcon /> : <HomeIcon />}
                 <span
-                  className={`mt-2 text-xs ${
-                    activeTab === 'home' ? 'text-blue-500' : 'text-gray-500'
-                  }`}
+                  className={`mt-2 text-xs ${activeTab === 'home' ? 'text-blue-500' : 'text-gray-500'
+                    }`}
                 >
                   {t('footer_app.home')}
                 </span>
@@ -635,9 +667,8 @@ const Sidebar = ({ permissions }) => {
               >
                 {activeTab === 'work' ? <ActiveWorkIcon /> : <WorkIcon />}
                 <span
-                  className={`mt-2 text-xs ${
-                    activeTab === 'work' ? 'text-blue-500' : 'text-gray-500'
-                  }`}
+                  className={`mt-2 text-xs ${activeTab === 'work' ? 'text-blue-500' : 'text-gray-500'
+                    }`}
                 >
                   {t('side_bar.work')}
                 </span>
@@ -656,11 +687,10 @@ const Sidebar = ({ permissions }) => {
                   <NotificationIcon />
                 )}
                 <span
-                  className={`mt-2 text-xs ${
-                    activeTab === 'notifications'
-                      ? 'text-blue-500'
-                      : 'text-gray-500'
-                  }`}
+                  className={`mt-2 text-xs ${activeTab === 'notifications'
+                    ? 'text-blue-500'
+                    : 'text-gray-500'
+                    }`}
                 >
                   {t('side_bar.notifications')}
                 </span>
@@ -675,9 +705,8 @@ const Sidebar = ({ permissions }) => {
               >
                 {activeTab === 'profile' ? <ActiveUserIcon /> : <UserIcon />}
                 <span
-                  className={`mt-2 text-xs ${
-                    activeTab === 'profile' ? 'text-blue-500' : 'text-gray-500'
-                  }`}
+                  className={`mt-2 text-xs ${activeTab === 'profile' ? 'text-blue-500' : 'text-gray-500'
+                    }`}
                 >
                   {t('footer_app.profile')}
                 </span>

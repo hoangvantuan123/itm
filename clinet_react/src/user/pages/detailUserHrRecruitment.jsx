@@ -418,7 +418,7 @@ export default function DetailUserHrRecruitment({ permissions }) {
     </Menu>
   );
   return (
-    <div className="w-full h-screen bg-gray-50 p-3">
+    <div className="w-full h-screen bg-white p-3">
       <Helmet>
         <title>ITM - #{id}</title>
       </Helmet>
@@ -741,9 +741,9 @@ export default function DetailUserHrRecruitment({ permissions }) {
                     <Row gutter={16}>
                       <Col span={12}>
                         <div className="mt-3">
-                          <strong>{t('hr_recruitment_1_1.official_date_firstF')}:</strong>
+                          <strong>{t('hr_recruitment_1_1.official_date_first')}:</strong>
                           <Text className="ml-2">
-                            {formData.official_date_firstF}
+                            {formData.official_date_first}
                           </Text>
                         </div>
                       </Col>

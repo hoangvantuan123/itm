@@ -47,6 +47,8 @@ import DetailUserHrAllDataTrue from '../pages/detailUserHrAllDataTrue'
 import DetailUserHrAllDataFalse from '../pages/detailUserHrAllDataFalse'
 import ClosePage from '../pages/closePage'
 import DownloadView from '../pages/download'
+import HrSalary from '../pages/salary'
+import DetailSalaryUser from '../pages/detailSalaryUser'
 const { Content } = Layout
 
 const UserRouter = () => {
@@ -58,7 +60,7 @@ const UserRouter = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [showSpinner, setShowSpinner] = useState(false)
-  
+
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
@@ -146,10 +148,10 @@ const UserRouter = () => {
         path="/public/apply/information/phone"
         element={<WorkerDeclarationPassForm />}
       />
-   
+
       <Route
         path="/downloads"
-        element={<DownloadView/>}
+        element={<DownloadView />}
       />
       <Route
         path="/public/close"
@@ -186,7 +188,7 @@ const UserRouter = () => {
                           'home',
                           'view',
                         ) ? (
-                          <Home/>
+                          <Home />
                         ) : (
                           <Unauthorized />
                         )
@@ -335,7 +337,7 @@ const UserRouter = () => {
                           'hr-recruitment-1-1',
                           'view',
                         ) ? (
-                          <EmployeeRecruitment permissions={userPermissions}  isMobile={isMobile}/>
+                          <EmployeeRecruitment permissions={userPermissions} isMobile={isMobile} />
                         ) : (
                           <Unauthorized />
                         )
@@ -357,7 +359,7 @@ const UserRouter = () => {
                         )
                       }
                     />
-                   
+
                     <Route
                       path="/u/action=20/data-employee/detail/type=true/:id"
                       element={
@@ -366,7 +368,7 @@ const UserRouter = () => {
                           'hr-recruitment-1-3',
                           'view',
                         ) ? (
-                          <DetailUserHrAllDataTrue   permissions={userPermissions} />
+                          <DetailUserHrAllDataTrue permissions={userPermissions} />
                         ) : (
                           <Unauthorized />
                         )
@@ -382,6 +384,36 @@ const UserRouter = () => {
                           'view',
                         ) ? (
                           <EmployeeDataiView permissions={userPermissions} />
+                        ) : (
+                          <Unauthorized />
+                        )
+                      }
+                    />
+
+
+                    <Route
+                      path="/u/action=20/data-salary"
+                      element={
+                        checkActionPermission(
+                          userPermissions,
+                          'salary',
+                          'view',
+                        ) ? (
+                          <HrSalary isMobile={isMobile} permissions={userPermissions} />
+                        ) : (
+                          <Unauthorized />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/u/action=20/data-salary/detail/:id"
+                      element={
+                        checkActionPermission(
+                          userPermissions,
+                          'salary',
+                          'view',
+                        ) ? (
+                          <DetailSalaryUser permissions={userPermissions} />
                         ) : (
                           <Unauthorized />
                         )

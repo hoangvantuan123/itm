@@ -74,20 +74,20 @@ const ViewDetailUserHrRecruitment = ({
 
   const educationColumns = [
     {
-      title: 'Trình độ',
+      title: t('education_columns.highest_education_level'),
       dataIndex: 'highest_education_level',
       key: 'highest_education_level',
     },
-    { title: 'Trường', dataIndex: 'school', key: 'school' },
-    { title: 'Chuyên ngành', dataIndex: 'major', key: 'major' },
-    { title: 'Năm học', dataIndex: 'school_year', key: 'school_year' },
-    { title: 'Năm bắt đầu', dataIndex: 'year_ended', key: 'year_ended' },
+    { title: t('education_columns.highest_education_level'), dataIndex: 'school', key: 'school' },
+    { title: t('education_columns.major'), school: 'major', key: 'major' },
+    { title: t('education_columns.school_year'), dataIndex: 'school_year', key: 'school_year' },
+    { title: t('education_columns.year_ended'), dataIndex: 'year_ended', key: 'year_ended' },
     {
-      title: 'Năm tốt nghiệp',
+      title:t('education_columns.year_of_graduation'),
       dataIndex: 'year_of_graduation',
       key: 'year_of_graduation',
     },
-    { title: 'Xếp loại', dataIndex: 'classification', key: 'classification' },
+    { title: t('education_columns.classification'), dataIndex: 'classification', key: 'classification' },
   ]
 
   const languageColumns = [
