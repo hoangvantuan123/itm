@@ -1,90 +1,58 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
-import {
-    Row,
-    Col,
-    Typography,
-    Button,
-    Form,
-    Input,
-    Radio,
-    message,
-    Pagination,
-    Select,
-    DatePicker,
-    Space,
-    Dropdown,
-    Menu,
-    Tabs,
-    Table,
-    Spin,
-    Layout
-} from 'antd';
-const { Title, Text } = Typography;
+import { Typography, Table, Layout, Row, Col, Card } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { GetHrSalaryId } from '../../features/hrSalary/getHrSalaryId';
-const { TabPane } = Tabs;
-const { Content } = Layout
 import 'moment/locale/vi';
 import '../../static/css/scroll_container.css';
+import { debounce } from 'lodash'; 
 
-export default function DetailSalaryUser({ permissions }) {
+const { Title } = Typography;
+const { Content } = Layout;
+
+const DetailSalaryUser = React.memo(({ permissions }) => {
     const { t } = useTranslation();
     const { id } = useParams();
     const navigate = useNavigate();
-    const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({});
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [dataMore, setDataMore] = useState([]);
-    const [form] = Form.useForm();
-    const [formMore] = Form.useForm();
-    const [formFilled, setFormFilled] = useState(false);
-    const [status, setStatus] = useState(null);
-    const [type, setType] = useState(null);
 
-    const fetchDataUserId = async () => {
+    const fetchDataUserId = async (userId) => {
+        if (!userId) return; // Avoid unnecessary fetch if userId is falsy
         setLoading(true);
         try {
-            const response = await GetHrSalaryId(id);
-            if (response.success) {
-                if (response.data.status) {
-                    setFormData(response.data.data);
-                    setError(null);
-                } else {
-                    setError('Không có dữ liệu cho ID này.');
-                    setFormData({});
-                }
+            const response = await GetHrSalaryId(userId);
+            if (response.success && response.data.status) {
+                setFormData(response.data.data);
             } else {
-                setError('Dữ liệu không khả dụng.');
                 setFormData({});
             }
         } catch (error) {
-            setError(error.message || 'Đã xảy ra lỗi');
+            console.error('Error fetching data:', error);
             setFormData({});
         } finally {
             setLoading(false);
         }
     };
 
-    const handleNavigateToBack = () => {
-        navigate(`/u/action=20/data-salary`);
-    };
+    const debouncedFetchData = useMemo(() => debounce(fetchDataUserId, 300), []);
 
     useEffect(() => {
-        if (id) {
-            fetchDataUserId();
-        }
+        debouncedFetchData(id);
+        return () => {
+            debouncedFetchData.cancel(); 
+        };
     }, [id]);
 
-    const prepareTableData = () => {
+    const prepareTableData = useMemo(() => {
         const tableData = [];
-        const fields = Object.keys(formData);
+        const keysToInclude = [
+            'start', 'stop', 'day_off', 'overtime_normal_150', 'overtime_normal_200',
+            'overtime_normal_210', 'at_night_30', 'overtime_sunday_200', 'overtime_sunday_270',
+            'overtime_holiday_300', 'overtime_holiday_390', 'working_day', 'late_in', 'early_out'
+        ];
 
-        const keysToInclude = ['start', 'stop', 'day_off', 'overtime_normal_150', 'overtime_normal_200', 'overtime_normal_210', 'at_night_30', 'overtime_sunday_200', 'overtime_sunday_270', 'overtime_holiday_300', 'overtime_holiday_390', 'working_day', 'late_in', 'early_out'];
-
-        // Đối tượng ánh xạ tên trường với tên hiển thị
         const displayNames = {
             start: 'Thời gian bắt đầu',
             stop: 'Thời gian kết thúc',
@@ -102,7 +70,8 @@ export default function DetailSalaryUser({ permissions }) {
             early_out: 'Về sớm',
         };
 
-        fields.forEach(field => {
+        const formDataKeys = Object.keys(formData);
+        formDataKeys.forEach(field => {
             if (keysToInclude.includes(field)) {
                 const row = { key: displayNames[field] };
                 for (let day = 1; day <= 31; day++) {
@@ -112,35 +81,39 @@ export default function DetailSalaryUser({ permissions }) {
             }
         });
 
-
         return tableData;
-    };
+    }, [formData]);
 
-    // Cập nhật columns
-    const columns = [
+    const columns = useMemo(() => [
         {
             title: 'Hạng mục',
             dataIndex: 'key',
             key: 'key',
             fixed: 'left',
+            width: 200,
+            className: 'table-column-header',
         },
         ...Array.from({ length: 31 }, (_, i) => ({
             title: `${i + 1}`,
             dataIndex: `${i + 1}`,
             key: `${i + 1}`,
+            width: 50,
         })),
-    ];
+    ], []);
+
+    const handleNavigateToBack = () => {
+        navigate(`/u/action=20/data-salary`);
+    };
 
     return (
-        <div className="w-full h-screen bg-white p-3">
+        <div className="w-full h-screen overflow-auto bg-white p-3">
             <Helmet>
                 <title>ITM - {t(formData?.cid)}</title>
             </Helmet>
-
-            <nav aria-label="Breadcrumb" className="flex justify-between items-center mb-6">
+            <nav aria-label="Breadcrumb" className="flex justify-between items-center mb-2">
                 <ol className="flex items-center gap-1 text-sm text-gray-700">
                     <li onClick={handleNavigateToBack} className="cursor-pointer">
-                        <span className=" text-black hover:text-indigo-950 opacity-80">
+                        <span className="text-black hover:text-indigo-950 opacity-80">
                             {t('hr_recruitment_1_1.cancel')}
                         </span>
                     </li>
@@ -154,33 +127,118 @@ export default function DetailSalaryUser({ permissions }) {
                         </svg>
                     </li>
                     <li className="cursor-pointer">
-                        <span className=" text-black opacity-80">#{formData?.cid}</span>
+                        <span className="text-black opacity-80">#{formData?.cid}</span>
                     </li>
                 </ol>
             </nav>
 
             <Layout>
-                <Content className="flex-1 overflow-auto bg-white p-2">
-                    <Row gutter={[16, 16]}>
-                        <Col span={12} >2 </Col>
-                        <Col span={12}  > 2</Col>
+                <Content className="overflow-auto bg-white p-2">
+                    <Row gutter={[16, 16]} className="h-full">
+                        <Col span={24}>
+                            <Row className="mb-10">
+                                <Col span={24}>
+                                    <Title level={3}>BẢNG LƯƠNG: {formData?.monthly_salary}</Title>
+                                    <div className="text-gray-600">
+                                        <p><strong>Họ tên: </strong>{formData?.name || 'N/A'}</p>
+                                        <p><strong>Mã nhân viên: </strong>{formData?.cid || 'N/A'}</p>
+                                        <p><strong>Phòng ban: </strong>{formData?.department || 'N/A'}</p>
+                                    </div>
+                                </Col>
+
+                                <Col span={24} className="mt-5">
+                                    <div className="flex gap-2">
+                                        <button
+                                            className="px-4 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                                            onClick={() => console.log('Xuất file')}
+                                        >
+                                            Xuất File
+                                        </button>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </Col>
+
+                        <Col span={24}>
+                            <Title level={5}>WORKING STATUS / TÌNH TRẠNG LÀM VIỆC</Title>
+                            <Table
+                                size="small"
+                                pagination={false}
+                                bordered
+                                columns={[
+                                    { title: 'Hạng mục', dataIndex: 'key', key: 'key', width: '70%' },
+                                    { title: 'Giá trị', dataIndex: 'value', key: 'value', align: 'center' },
+                                ]}
+                                dataSource={[
+                                    { key: 'Official / Chính thức', value: '21,0' },
+                                    { key: 'Probation / Thử việc', value: '0,0' },
+                                    { key: 'Actual working day / Ngày làm việc thực tế', value: '21,0' },
+                                    { key: 'Annual Leave / Nghỉ phép', value: '0,0' },
+                                    { key: 'Leave with pay / Nghỉ hưởng lương', value: '0,0' },
+                                    { key: 'Sub Total / Tổng ngày công', value: formData?.total || '0' },
+                                ]}
+                            />
+                        </Col>
+
+                        <Col xs={24} sm={24} md={12}>
+                            <Title level={5}>OVER TIME / LÀM THÊM GIỜ</Title>
+                            <Table
+                                size="small"
+                                pagination={false}
+                                bordered
+                                columns={[
+                                    { title: 'Hạng mục', dataIndex: 'key', key: 'key', width: '70%' },
+                                    { title: 'Giá trị', dataIndex: 'value', key: 'value', align: 'center' },
+                                ]}
+                                dataSource={[
+                                    { key: 'Normal (150%)', value: '13,75' },
+                                    { key: 'Normal night (200%)', value: '0,00' },
+                                    { key: 'Overtime night (210%)', value: '0,00' },
+                                    { key: 'Night allowance (30%)', value: '0,00' },
+                                    { key: 'Sunday (200%)', value: '0,00' },
+                                    { key: 'Sunday night (270%)', value: '0,00' },
+                                    { key: 'Holiday (300%)', value: '0,00' },
+                                    { key: 'Holiday night (390%)', value: '0,00' },
+                                ]}
+                            />
+                        </Col>
+
+                        <Col xs={24} sm={24} md={12}>
+                            <Title level={5}>LATE IN, EARLY OUT / ĐI MUỘN, VỀ SỚM</Title>
+                            <Table
+                                size="small"
+                                pagination={false}
+                                bordered
+                                columns={[
+                                    { title: 'Hạng mục', dataIndex: 'key', key: 'key', width: '70%' },
+                                    { title: 'Giá trị', dataIndex: 'value', key: 'value', align: 'center' },
+                                ]}
+                                dataSource={[
+                                    { key: 'Total (hours) / Tổng số giờ', value: '0,0' },
+                                    { key: 'Frequency (time) / Tần suất', value: '1,0' },
+                                    { key: 'Total check-in / Tổng số lần không chấm giờ', value: '0,0' },
+                                    { key: 'No data for check-in', value: '0,0' },
+                                ]}
+                            />
+                        </Col>
                     </Row>
-                    <Row gutter={16}>
-                        <Col span={24} ><Table
+
+                    <div className="overflow-x-auto mt-4">
+                        <Title level={5}>BẢNG CÔNG CHI TIẾT TỪNG NGÀY</Title>
+                        <Table
                             size="small"
                             columns={columns}
-                            dataSource={prepareTableData()}
+                            dataSource={prepareTableData}
                             pagination={false}
                             bordered
-                            className="cursor-pointer"
                             loading={loading}
-                        /></Col>
-                    </Row>
-
+                            scroll={{ x: 'max-content' }}
+                        />
+                    </div>
                 </Content>
             </Layout>
-
-
         </div>
     );
-}
+});
+
+export default DetailSalaryUser;
