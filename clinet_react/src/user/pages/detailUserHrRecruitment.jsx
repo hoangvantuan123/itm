@@ -14,7 +14,8 @@ import {
   DatePicker,
   Space,
   Dropdown,
-  Menu
+  Menu,
+  Table
 } from 'antd'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -39,9 +40,11 @@ import { DownloadOutlined, FilePdfOutlined, FileExcelOutlined, FileWordOutlined,
 import { checkActionPermission } from '../../permissions'
 
 const { Text } = Typography
+const { TextArea } = Input;
 import moment from 'moment'
 import CustomTagSyn from '../components/tags/customTagSyn'
 import CustomTagForm from '../components/tags/customTagForm'
+import ShowResult from '../components/inter/showResult'
 export default function DetailUserHrRecruitment({ permissions }) {
   const { t } = useTranslation()
   const { id } = useParams()
@@ -56,7 +59,8 @@ export default function DetailUserHrRecruitment({ permissions }) {
   const [formMore] = Form.useForm()
   const [formFilled, setFormFilled] = useState(false)
   const [status, setStatus] = useState(null)
-  const [type, setType] = useState(null)
+  const [showModel, setShowModel] = useState(false)
+  const [note, setNote] = useState(formData?.note)
 
   const canEdit = checkActionPermission(
     permissions,
@@ -76,7 +80,6 @@ export default function DetailUserHrRecruitment({ permissions }) {
         if (response.data.status) {
           setFormData(response.data.data)
           setStatus(response.data.data?.applicant_status)
-          setType(response.data.data?.applicant_type)
           setError(null)
           if (
             response.data.data.interviews &&
@@ -109,7 +112,6 @@ export default function DetailUserHrRecruitment({ permissions }) {
       'official_date_first',
       'official_date_second',
     ])
-
     if (
       currentFields.official_date_first !==
       (formData.official_date_first
@@ -130,6 +132,12 @@ export default function DetailUserHrRecruitment({ permissions }) {
       })
     }
   }, [id])
+
+  useEffect(() => {
+    if (status === "interviewed" && (!formData?.note || formData.note.trim() === "")) {
+      setShowModel(true);
+    }
+  }, [status, formData.note])
 
   const handleNavigateToBack = () => {
     navigate(`/u/action=17/employee-interview-data`)
@@ -268,6 +276,8 @@ export default function DetailUserHrRecruitment({ permissions }) {
       const response = await PutUserInter(id, submissionData)
       if (response.success) {
         message.success('Cập nhật thành công!')
+        setIsEditing(false)
+        fetchDataUserId()
       } else {
         message.error(`Cập nhật thất bại: ${response.message}`)
       }
@@ -333,6 +343,7 @@ export default function DetailUserHrRecruitment({ permissions }) {
       const response = await PutUserInter(id, submissionData)
       if (response.success) {
         setStatus(value)
+
         fetchDataUserId()
         message.success('Form nhập đã được đóng!')
       } else {
@@ -365,25 +376,37 @@ export default function DetailUserHrRecruitment({ permissions }) {
     }
   }
   const handleSync = async () => {
-    const result = await PostSyncData([id])
-    if (result.success) {
-      message.success(
-        `${result.message} id ${id}`,
-      )
+    if (
+      (formData.employee_code?.trim() || "").trim() === "" ||
+      (formData.full_name?.trim() || "").trim() === "" ||
+      (formData.phone_number?.trim() || "").trim() === "" ||
+      (formData.id_number?.trim() || "").trim() === ""
+    ) {
+      message.warning(`${t('hr_recruitment_1_1.employee_code_required')}`);
+      return;
     } else {
-      message.error(t('sync_failed') + ': ' + result.message)
+      const result = await PostSyncData([id]);
+
+      if (result.success) {
+        message.success(`${result.message} id ${id}`);
+      } else {
+        message.error(t('sync_failed') + ': ' + result.message);
+      }
     }
-  }
+
+  };
+
+
   const handleMenuClick = (e) => {
     switch (e.key) {
       case 'export-pdf':
-        message.success('Chức năng đang được phát triển!')
+        message.warning('Chức năng đang được phát triển!')
         break;
       case 'export-excel':
-        message.success('Chức năng đang được phát triển!')
+        message.warning('Chức năng đang được phát triển!')
         break;
       case 'export-word':
-        message.success('Chức năng đang được phát triển!')
+        message.warning('Chức năng đang được phát triển!')
         break;
       case 'open-form':
         handleChangeSatusFormTrue();
@@ -404,7 +427,7 @@ export default function DetailUserHrRecruitment({ permissions }) {
 
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.SubMenu key="export" title= {t('hr_recruitment_1_1.export')} icon={<DownloadOutlined />}>
+      <Menu.SubMenu key="export" title={t('hr_recruitment_1_1.export')} icon={<DownloadOutlined />}>
         <Menu.Item key="export-pdf" icon={<FilePdfOutlined />}>{t('hr_recruitment_1_1.export_pdf')} </Menu.Item>
         <Menu.Item key="export-excel" icon={<FileExcelOutlined />}>{t('hr_recruitment_1_1.export_excel')}</Menu.Item>
         <Menu.Item key="export-word" icon={<FileWordOutlined />}>{t('hr_recruitment_1_1.export_word')}</Menu.Item>
@@ -412,11 +435,20 @@ export default function DetailUserHrRecruitment({ permissions }) {
       {canEdit && <>       <Menu.Item key="open-form" icon={<FormOutlined />}>{t('hr_recruitment_1_1.open_form')}</Menu.Item>
         <Menu.Item key="close-form" icon={<FormOutlined />}>{t('hr_recruitment_1_1.close_form')}</Menu.Item></>}
       {canDelete && <Menu.Item key="delete" style={{ color: 'red' }} icon={<DeleteOutlined />}>
-      {t('hr_recruitment_1_1.delete')}
+        {t('hr_recruitment_1_1.delete')}
       </Menu.Item>}
 
     </Menu>
   );
+
+
+  const handleOpenShowResult = () => {
+    setShowModel(true)
+  }
+  const handleCloseShowResult = () => {
+    setShowModel(false)
+  }
+
   return (
     <div className="w-full h-screen bg-white p-3">
       <Helmet>
@@ -430,7 +462,7 @@ export default function DetailUserHrRecruitment({ permissions }) {
         <ol className="flex items-center gap-1 text-sm text-gray-700">
           <li onClick={handleNavigateToBack} className="cursor-pointer">
             <span className=" text-black hover:text-indigo-950 opacity-80">
-            {t('hr_recruitment_1_1.cancel')}
+              {t('hr_recruitment_1_1.cancel')}
             </span>
           </li>
           <li className="rtl:rotate-180">
@@ -461,7 +493,7 @@ export default function DetailUserHrRecruitment({ permissions }) {
         <ol className=" flex items-center gap-2">
           <Dropdown overlay={menu} placement="bottomRight">
             <Button className="bg-white">
-            {t('hr_recruitment_1_1.action')}
+              {t('hr_recruitment_1_1.action')}
             </Button>
           </Dropdown>
 
@@ -472,7 +504,7 @@ export default function DetailUserHrRecruitment({ permissions }) {
           </Button>}
 
           {canEdit && <Button className="bg-white" onClick={handleSave}>
-          {t('hr_recruitment_1_1.save')}
+            {t('hr_recruitment_1_1.save')}
           </Button>}
 
         </ol>
@@ -575,10 +607,11 @@ export default function DetailUserHrRecruitment({ permissions }) {
                           : null,
                       }}
                     >
+                      <h3 className="   text-xl font-bold items-center flex  justify-center mb-2 mt-">{t('hr_recruitment_1_1.position_applied_for')}</h3>
                       <Row gutter={16}>
                         <Col span={12}>
                           <Form.Item label={t('hr_recruitment_1_1.employee_code')} name="employee_code">
-                            <Input size="large" placeholder="Nhà máy" />
+                            <Input size="large" placeholder="CID" />
                           </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -625,7 +658,6 @@ export default function DetailUserHrRecruitment({ permissions }) {
                           </Form.Item>
                         </Col>
                       </Row>
-
                       <Row gutter={16}>
                         <Col span={12}>
                           <Form.Item
@@ -674,11 +706,52 @@ export default function DetailUserHrRecruitment({ permissions }) {
                           </Form.Item>
                         </Col>
                       </Row>
+
+
+
+
+                      <h3 className="  text-xl font-bold items-center flex  justify-center mb-2 mt-5">{t('Kết quả phỏng vấn')}</h3>
+
+                      <Row gutter={16} className="mb-10">
+                        <Col span={12}>
+                          <div className="mt-3">
+                            <Form.Item
+                              label={t('Người phỏng vấn')}
+                              name="interviewer_user"
+                            >
+                              <Input size="large" placeholder="Nhập thông tin" />
+                            </Form.Item>
+                          </div>
+                        </Col>
+                        <Col span={12}>
+                          <div className="mt-3">
+                            <Form.Item
+                              label={t('Kết quả phỏng vấn')}
+                              name="interview_results"
+                            >
+                              <Radio.Group>
+                                <Radio value="Đạt">ĐẠT</Radio>
+                                <Radio value="Không Đạt">KHÔNG ĐẠT</Radio>
+                              </Radio.Group>
+                            </Form.Item>
+                          </div>
+                        </Col>
+                      
+                        <Col span={24}>
+                          <Form.Item
+                            label={t('Ghi chú')}
+                            name="note"
+                          >
+                              <TextArea  rows={6} allowClear />
+                          </Form.Item>
+                        </Col>
+                      </Row>
                     </Form>
                   </>
                 ) : (
                   <>
-                    <h3 className=" italic mb-1 mt-2">{t('hr_recruitment_1_1.position_applied_for')}</h3>
+
+                    <h3 className="   text-xl font-bold items-center flex  justify-center mb-2 mt-">{t('hr_recruitment_1_1.position_applied_for')}</h3>
                     <Row gutter={16}>
                       <Col span={12}>
                         <div className="mt-3">
@@ -775,6 +848,32 @@ export default function DetailUserHrRecruitment({ permissions }) {
                         </div>
                       </Col>
                     </Row>
+
+                    {/*  */}
+                    <h3 className="  text-xl font-bold items-center flex  justify-center mb-2 mt-5">{t('Kết quả phỏng vấn')}</h3>
+
+                    <Row gutter={16}>
+                      <Col span={12}>
+                        <div className="mt-3">
+                          <strong>{t('Người phỏng vấn')}:</strong>
+                          <Text className="ml-2">{formData?.interviewer_user}</Text>
+                        </div>
+                      </Col>
+                      <Col span={12}>
+                        <div className="mt-3">
+                          <strong>{t('Kết quả phỏng vấn')}:</strong>
+                          <Text className="ml-2">{formData?.interview_results}</Text>
+                        </div>
+                      </Col>
+                 
+                      <Col span={24}>
+                        <div className="mt-3">
+                          <strong>{t('Ghi chú')}:</strong>
+                          <Text className="ml-2">{formData?.note}</Text>
+                        </div>
+                      </Col>
+                    </Row>
+
                   </>
                 )}
               </div>
@@ -782,6 +881,7 @@ export default function DetailUserHrRecruitment({ permissions }) {
           </div>
         </Col>
       </Row>
+      <ShowResult id={id} isOpen={showModel} onClose={handleCloseShowResult} note={note} setNote={setNote} fetchDataUserId={fetchDataUserId} />
     </div>
   )
 }

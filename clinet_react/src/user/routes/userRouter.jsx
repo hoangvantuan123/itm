@@ -49,6 +49,7 @@ import ClosePage from '../pages/closePage'
 import DownloadView from '../pages/download'
 import HrSalary from '../pages/salary'
 import DetailSalaryUser from '../pages/detailSalaryUser'
+import Payroll from '../pages/payroll'
 const { Content } = Layout
 
 const UserRouter = () => {
@@ -281,7 +282,7 @@ const UserRouter = () => {
                           'work-1-2',
                           'view',
                         ) ? (
-                          <Default />
+                          <Payroll  permissions={userPermissions} isMobile={isMobile}/>
                         ) : (
                           <Unauthorized />
                         )

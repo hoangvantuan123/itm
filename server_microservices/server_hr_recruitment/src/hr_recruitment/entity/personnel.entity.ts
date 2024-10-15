@@ -1,21 +1,12 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, Unique } from 'typeorm';
-import { Family } from './family.entity';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
-
-import { Education } from './education.entity';
-import { Language } from './language.entity';
-import { Experience } from './experience.entity';
-import { InterviewResult } from './interview_results.entity';
-import { HrInterviewCandidate } from './hr_interview_candidates.entity';
-import { Projects } from './project.entity';
-import { OfficeSkills } from './office_skills.entity';
 @Entity('hr_personnel')
 
 export class Personnel {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ name: 'full_name', type: 'text', nullable: true })
+  @Column({ name: 'full_name', type: 'text' })
   full_name: string;
 
   @Column({ type: 'text', nullable: true })
@@ -30,7 +21,7 @@ export class Personnel {
   @Column({ type: 'timestamp', nullable: true })
   birth_date: Date;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text' })
   id_number: string;
 
   @Column({ type: 'timestamp', nullable: true })
@@ -48,7 +39,7 @@ export class Personnel {
   @Column({ type: 'text', nullable: true })
   tax_number: string;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text' })
   phone_number: string;
 
   @Column({ type: 'text', nullable: true })
@@ -109,6 +100,9 @@ export class Personnel {
 
   @Column({ nullable: true, type: 'int' })
   id_hr_interview_candidates?: number;
+  
+  @Column({ type: 'text', nullable: true })
+  note: string;
 
   /* Đồng bộ */
   @Column({ type: 'boolean', default: false })
@@ -139,7 +133,7 @@ export class Personnel {
   @Column({ type: 'text', nullable: true })
   type_classify: string;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text' })
   employee_code: string;
 
   @Column({ type: 'text', nullable: true })
@@ -151,7 +145,8 @@ export class Personnel {
   @Column({ type: 'text', nullable: true })
   part: string;
 
-
+  @Column({ type: 'text', default: false })
+  interview_results: string;
 
   @Column({ nullable: true })
   erp_department_registration: string;  // Đăng ký bp trên ERP
@@ -264,9 +259,10 @@ export class Personnel {
   classification: string;  // Classification
 
   @Column({ nullable: true })
-  social_insurance: string;  
+  social_insurance: string;
 
-
+  @Column({ type: 'text', nullable: true })
+  interviewer_user: string;
 
   @Column({ nullable: true })
   work_department_1: string;  // Bộ phận làm việc 1
@@ -344,7 +340,8 @@ export class Personnel {
 
 
 
-
+  @Column({ nullable: true })
+  applicant_type: string;
 
   @Column({ nullable: true })
   office_skill_excel: string
@@ -372,40 +369,8 @@ export class Personnel {
 
   @Column({ nullable: true })
   desired_total_salary: string
-  
-  @OneToMany(() => HrInterviewCandidate, (candidate) => candidate.personnel)
-  @JoinColumn({ name: 'candidate_id' })
-  candidates: HrInterviewCandidate[];
-
-  @OneToMany(() => Family, family => family.personnel)
-  @JoinColumn({ name: 'family_id' })
-  families: Family[];
-
-  @OneToMany(() => Education, education => education.personnel)
-  @JoinColumn({ name: 'education_id' })
-  educations: Education[];
-
-  @OneToMany(() => Language, language => language.personnel)
-  @JoinColumn({ name: 'language_id' })
-  languages: Language[];
-
-  @OneToMany(() => Experience, experience => experience.personnel)
-  @JoinColumn({ name: 'experience_id' })
-  experiences: Experience[];
 
 
-  @OneToMany(() => InterviewResult, interview => interview.personnel)
-  @JoinColumn({ name: 'interview_id' })
-  interviews: InterviewResult[];
-
-  @OneToMany(() => Projects, project => project.personnel)
-  @JoinColumn({ name: 'project_id' })
-  projects: Projects[];
-
-
-  @OneToMany(() => OfficeSkills, office_skill => office_skill.personnel)
-  @JoinColumn({ name: 'office_skill_id' })
-  office_skills: OfficeSkills[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   create_date: Date;

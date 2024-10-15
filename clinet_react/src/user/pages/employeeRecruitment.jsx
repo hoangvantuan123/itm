@@ -1,5 +1,5 @@
 /* EmployeeRecruitment */
-import { useState, useEffect , useRef, memo, useMemo , useCallback} from 'react'
+import { useState, useEffect, useRef, memo, useMemo, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Layout,
@@ -14,7 +14,8 @@ import {
   DatePicker,
   Card,
   Pagination,
-  Spin
+  Spin,
+  Tag
 } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
@@ -32,6 +33,8 @@ import CustomTagInter from '../components/tags/customTagInter'
 import CustomTagSyn from '../components/tags/customTagSyn'
 import SynActionHrInter from '../components/action/synActionHrInter'
 import { MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+
 const { RangePicker } = DatePicker
 const { Content } = Layout
 const { Option } = Select
@@ -52,7 +55,9 @@ const columnConfig = [
   { key: 'job_field', label: 'job_field' },
   { key: 'position', label: 'position' },
   { key: 'applicant_status', label: 'applicant_status' },
+  { key: 'note', label: 'status' },
   { key: 'synchronize', label: 'synchronize' },
+
 ]
 
 const CloumnIcon = () => {
@@ -262,7 +267,7 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
     if (!isDrawerVisibleFilter) {
       fetchData()
     }
-   
+
   }, [page, limit, dateRange])
 
 
@@ -331,6 +336,20 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
         if (key === 'applicant_status' && visibleColumns[key]) {
           return <CustomTagInter status={record.applicant_status} />;
         }
+        if (key === "note" && visibleColumns[key]) {
+          const isRated = record.note && record.note.trim() !== "";
+          const tagProps = isRated
+            ? { color: "green", icon: <CheckOutlined />, text: "Đã đánh giá" }
+            : { color: "volcano", icon: <CloseOutlined />, text: "Chưa đánh giá" };
+        
+          return (
+            <Tag color={tagProps.color} icon={tagProps.icon}>
+              {tagProps.text}
+            </Tag>
+          );
+        }
+        
+
 
         if (key === 'interview_date' && visibleColumns[key]) {
           return moment(record.interview_date).format('L');
@@ -460,32 +479,34 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
     setIsModalVisible(false)
     setSelectedUser(null)
   }
+
+ 
   const renderKanban = () => {
     return (
       <div className="pb-20">
         <Row gutter={16}>
           {data.map((item) => (
-            <Col  span={24} key={item?.id} style={{ marginBottom: 16 }}>
-              <Card  size="small" title={item?.full_name} onClick={() => handleNavigateToDetail(item)} extra={<CustomTagSyn status={item?.synchronize} />}>
-              <p>
-                <MailOutlined style={{ marginRight: 8 }} />
-                {item?.email}
-              </p>
-              <p>
-                <PhoneOutlined style={{ marginRight: 8 }} />
-                {item?.phone_number}
-              </p>
-              <p>
-                <UserOutlined style={{ marginRight: 8 }} />
-                {item?.position}
-              </p>
-            </Card>
+            <Col span={24} key={item?.id} style={{ marginBottom: 16 }}>
+              <Card size="small" title={item?.full_name} onClick={() => handleNavigateToDetail(item)} extra={<CustomTagSyn status={item?.synchronize} />}>
+                <p>
+                  <MailOutlined style={{ marginRight: 8 }} />
+                  {item?.email}
+                </p>
+                <p>
+                  <PhoneOutlined style={{ marginRight: 8 }} />
+                  {item?.phone_number}
+                </p>
+                <p>
+                  <UserOutlined style={{ marginRight: 8 }} />
+                  {item?.position}
+                </p>
+              </Card>
             </Col>
           ))}
         </Row>
-  
-       
-  
+
+
+
         {loading && (
           <div className="loading-container">
             <Spin size="large" />
@@ -503,44 +524,44 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
 
       <div className="p-2 flex items-center justify-between">
         <h1 className="text-xl font-bold text-gray-900">
-        {t('hr_recruitment_1_1.data')}
+          {t('hr_recruitment_1_1.data')}
         </h1>
-       
+
       </div>
       {isMobile ? (<><div className="p-2  flex items-center justify-between">  <div className="flex items-center gap-2">{canCreate && (
-              <ImportAction
-                fetchData={fetchData}
-                handleOnClickActionImport={handleOnClickActionImport}
-                setActionImport={setActionImport}
-                actionImport={actionImport}
-                isMobile={isMobile}
-              />
-            )}      <FieldActionInter
-            dateRange={dateRange}
-            setDateRange={setDateRange}
-            handleApplyFilter={handleApplyFilter}
-            setIsDrawerVisible={setIsDrawerVisibleFilter}
-            isDrawerVisible={isDrawerVisibleFilter}
-            nameTags={nameTags}
-            setNameTags={setNameTags}
-            setCid={setCid}
-            cid={cid}
-            phoneNumberTags={phoneNumberTags}
-            setPhoneNumberTags={setPhoneNumberTags}
-            citizenshipIdTags={citizenshipIdTags}
-            setCitizenshipIdTags={setCitizenshipIdTags}
-            setSyn={setSyn}
-            syn={syn}
-            setApplicantType={setApplicantType}
-            applicantType={applicantType}
-            setInterviewDate={setInterviewDate}
-            interviewDate={interviewDate}
-            setApplicantStatus={setApplicantStatus}
-            applicantStatus={applicantStatus}
-          /> </div>  
+        <ImportAction
+          fetchData={fetchData}
+          handleOnClickActionImport={handleOnClickActionImport}
+          setActionImport={setActionImport}
+          actionImport={actionImport}
+          isMobile={isMobile}
+        />
+      )}      <FieldActionInter
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          handleApplyFilter={handleApplyFilter}
+          setIsDrawerVisible={setIsDrawerVisibleFilter}
+          isDrawerVisible={isDrawerVisibleFilter}
+          nameTags={nameTags}
+          setNameTags={setNameTags}
+          setCid={setCid}
+          cid={cid}
+          phoneNumberTags={phoneNumberTags}
+          setPhoneNumberTags={setPhoneNumberTags}
+          citizenshipIdTags={citizenshipIdTags}
+          setCitizenshipIdTags={setCitizenshipIdTags}
+          setSyn={setSyn}
+          syn={syn}
+          setApplicantType={setApplicantType}
+          applicantType={applicantType}
+          setInterviewDate={setInterviewDate}
+          interviewDate={interviewDate}
+          setApplicantStatus={setApplicantStatus}
+          applicantStatus={applicantStatus}
+        /> </div>
 
 
-{canCreate && (
+        {canCreate && (
           <Button
             type="primary"
             onClick={openModalAddUser}
@@ -551,7 +572,7 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
             {t('hr_recruitment_1_1.add')}
           </Button>
         )}
-        </div>   <Pagination
+      </div>   <Pagination
           simple={{
             readOnly: true,
           }}
@@ -565,101 +586,101 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
           }
           className="mb-2 mt-2  right-0 flex items-end justify-end"
         /> </>) : (<> <div className="p-2  flex items-center justify-between">
-        <span className="inline-flex overflow-hidden">
-          <div className="flex items-center gap-2">
-            <Select defaultValue="Table" className="w-28" size="large">
-              <Option value="1">{t('Table')}</Option>
-              <Option value="2">{t('Grid')}</Option>
-              <Option value="3">{t('List')}</Option>
-            </Select>
-            {canCreate && (
-              <ImportAction
-                fetchData={fetchData}
-                handleOnClickActionImport={handleOnClickActionImport}
-                setActionImport={setActionImport}
-                actionImport={actionImport}
-                isMobile={isMobile}
+          <span className="inline-flex overflow-hidden">
+            <div className="flex items-center gap-2">
+              <Select defaultValue="Table" className="w-28" size="large">
+                <Option value="1">{t('Table')}</Option>
+                <Option value="2">{t('Grid')}</Option>
+                <Option value="3">{t('List')}</Option>
+              </Select>
+              {canCreate && (
+                <ImportAction
+                  fetchData={fetchData}
+                  handleOnClickActionImport={handleOnClickActionImport}
+                  setActionImport={setActionImport}
+                  actionImport={actionImport}
+                  isMobile={isMobile}
+                />
+              )}
+              <RangePicker
+                value={dateRange}
+                onChange={handleDateChange}
+                format="YYYY-MM-DD"
+                className="cursor-pointer"
+                size="large"
               />
-            )}
-            <RangePicker
-              value={dateRange}
-              onChange={handleDateChange}
-              format="YYYY-MM-DD"
-              className="cursor-pointer"
-              size="large"
-            />
-            <FieldActionInter
-              dateRange={dateRange}
-              setDateRange={setDateRange}
-              handleApplyFilter={handleApplyFilter}
-              setIsDrawerVisible={setIsDrawerVisibleFilter}
-              isDrawerVisible={isDrawerVisibleFilter}
-              nameTags={nameTags}
-              setNameTags={setNameTags}
-              setCid={setCid}
-              cid={cid}
-              phoneNumberTags={phoneNumberTags}
-              setPhoneNumberTags={setPhoneNumberTags}
-              citizenshipIdTags={citizenshipIdTags}
-              setCitizenshipIdTags={setCitizenshipIdTags}
-              setSyn={setSyn}
-              syn={syn}
-              setApplicantType={setApplicantType}
-              applicantType={applicantType}
-              setInterviewDate={setInterviewDate}
-              interviewDate={interviewDate}
-              setApplicantStatus={setApplicantStatus}
-              applicantStatus={applicantStatus}
-            />
+              <FieldActionInter
+                dateRange={dateRange}
+                setDateRange={setDateRange}
+                handleApplyFilter={handleApplyFilter}
+                setIsDrawerVisible={setIsDrawerVisibleFilter}
+                isDrawerVisible={isDrawerVisibleFilter}
+                nameTags={nameTags}
+                setNameTags={setNameTags}
+                setCid={setCid}
+                cid={cid}
+                phoneNumberTags={phoneNumberTags}
+                setPhoneNumberTags={setPhoneNumberTags}
+                citizenshipIdTags={citizenshipIdTags}
+                setCitizenshipIdTags={setCitizenshipIdTags}
+                setSyn={setSyn}
+                syn={syn}
+                setApplicantType={setApplicantType}
+                applicantType={applicantType}
+                setInterviewDate={setInterviewDate}
+                interviewDate={interviewDate}
+                setApplicantStatus={setApplicantStatus}
+                applicantStatus={applicantStatus}
+              />
+              <Button
+                size="large"
+                className="bg-white"
+                onClick={() => setIsDrawerVisible(true)}
+              >
+                <CloumnIcon />
+              </Button>
+              {selectedRowKeys != null && selectedRowKeys.length > 0 && canEdit && (
+                <SynActionHrInter
+                  fetchData={fetchData}
+                  selectedRowKeys={selectedRowKeys}
+                />
+              )}
+              {selectedRowKeys != null && selectedRowKeys.length > 0 && (
+                <ShowAction
+                  handleOnClickAction={handleOnClickAction}
+                  actionUsers={actionUsers}
+                  setActionUsers={setActionUsers}
+                  setSelectedRowKeys={setSelectedRowKeys}
+                  selectedRowKeys={selectedRowKeys}
+                  fetchDataUser={fetchData}
+                  canDelete={canDelete}
+                  table={table}
+                />
+              )}
+            </div>
+          </span>
+          {canCreate && (
             <Button
+              type="primary"
+              onClick={openModalAddUser}
+              icon={<PlusOutlined />}
+              className=" rounded-lg h-full border-gray-200 bg-indigo-600 hover:bg-none text-white shadow-sm text-sm"
               size="large"
-              className="bg-white"
-              onClick={() => setIsDrawerVisible(true)}
             >
-              <CloumnIcon />
+              {t('hr_recruitment_1_1.add')}
             </Button>
-            {selectedRowKeys != null && selectedRowKeys.length > 0 && canEdit && (
-              <SynActionHrInter
-                fetchData={fetchData}
-                selectedRowKeys={selectedRowKeys}
-              />
-            )}
-            {selectedRowKeys != null && selectedRowKeys.length > 0 && (
-              <ShowAction
-                handleOnClickAction={handleOnClickAction}
-                actionUsers={actionUsers}
-                setActionUsers={setActionUsers}
-                setSelectedRowKeys={setSelectedRowKeys}
-                selectedRowKeys={selectedRowKeys}
-                fetchDataUser={fetchData}
-                canDelete={canDelete}
-                table={table}
-              />
-            )}
-          </div>
-        </span>
-        {canCreate && (
-          <Button
-            type="primary"
-            onClick={openModalAddUser}
-            icon={<PlusOutlined />}
-            className=" rounded-lg h-full border-gray-200 bg-indigo-600 hover:bg-none text-white shadow-sm text-sm"
-            size="large"
-          >
-            {t('hr_recruitment_1_1.add')}
-          </Button>
-        )}
-      </div></>)}
-     
+          )}
+        </div></>)}
+
 
       <AddHrInter
         isOpen={isModalOpenAddHr}
         onClose={closeModalAddHr}
         fetchData={fetchData}
       />
-     <Layout>
-      <Content className="flex-1 overflow-auto bg-white p-2">
-      {isMobile ? (
+      <Layout>
+        <Content className="flex-1 overflow-auto bg-white p-2">
+          {isMobile ? (
             renderKanban()
           ) : (
             <div>
@@ -668,9 +689,9 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
               {renderColumnVisibilityDrawer()}
             </div>
           )}
-      </Content>
-    </Layout>
-      
+        </Content>
+      </Layout>
+
     </div>
   )
 }

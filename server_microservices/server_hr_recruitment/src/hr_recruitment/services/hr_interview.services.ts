@@ -2,14 +2,6 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, EntityManager, In } from 'typeorm';
 import { Personnel } from '../entity/personnel.entity';
-import { Family } from '../entity/family.entity';
-import { Education } from '../entity/education.entity';
-import { Language } from '../entity/language.entity';
-import { Experience } from '../entity/experience.entity';
-import { InterviewResult } from '../entity/interview_results.entity';
-import { UpdateInterviewResultDto } from '../dto/update_interview_result.dto';
-
-import { CreatePersonnelWithDetailsDto } from '../dto/create-personnel-with-details.dto';
 
 @Injectable()
 export class HrInterviewServices {
@@ -18,16 +10,7 @@ export class HrInterviewServices {
   constructor(
     @InjectRepository(Personnel)
     private readonly personnelRepository: Repository<Personnel>,
-    @InjectRepository(Family)
-    private readonly familyRepository: Repository<Family>,
-    @InjectRepository(Education)
-    private readonly educationRepository: Repository<Education>,
-    @InjectRepository(Language)
-    private readonly languageRepository: Repository<Language>,
-    @InjectRepository(Experience)
-    private readonly experienceRepository: Repository<Experience>,
-    @InjectRepository(InterviewResult)
-    private readonly interviewRepository: Repository<InterviewResult>,
+ 
   ) { }
 
 

@@ -1,14 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn,ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn } from 'typeorm';
-import { Personnel } from './personnel.entity';
 
 @Entity('hr_interview_results')
 export class InterviewResult {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Personnel, personnel => personnel.interviews, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'personnel_id' })
-  personnel: Personnel;
 
   @Column({ type: 'boolean', default: false }) 
   interview_result: boolean;

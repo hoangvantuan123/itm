@@ -86,6 +86,15 @@ export class HrSalary {
     @Column({ type: 'float', nullable: true })
     muon_phep: number;
 
+
+    /* add  */
+
+    @Column({ type: 'float', nullable: true })
+    offcical: number;
+    
+    @Column({ type: 'float', nullable: true })
+    probation: number;
+
     @Column({ type: 'json', nullable: true })
     start: Record<string, string>;
 

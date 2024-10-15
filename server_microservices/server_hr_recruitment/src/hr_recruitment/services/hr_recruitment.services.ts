@@ -2,14 +2,8 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, EntityManager, In } from 'typeorm';
 import { Personnel } from '../entity/personnel.entity';
-import { Family } from '../entity/family.entity';
-import { Education } from '../entity/education.entity';
-import { Language } from '../entity/language.entity';
-import { Experience } from '../entity/experience.entity';
 import { InterviewResult } from '../entity/interview_results.entity';
 import { UpdateInterviewResultDto } from '../dto/update_interview_result.dto';
-import { OfficeSkills } from '../entity/office_skills.entity';
-import { Projects } from '../entity/project.entity';
 import { CreatePersonnelWithDetailsDto } from '../dto/create-personnel-with-details.dto';
 import { CreatePersonnelWithDetails2Dto } from '../dto/create-personnel-with-details.dto';
 @Injectable()
@@ -19,98 +13,11 @@ export class HrRecruitmentServices {
   constructor(
     @InjectRepository(Personnel)
     private readonly personnelRepository: Repository<Personnel>,
-    @InjectRepository(Family)
-    private readonly familyRepository: Repository<Family>,
-    @InjectRepository(Education)
-    private readonly educationRepository: Repository<Education>,
-    @InjectRepository(Language)
-    private readonly languageRepository: Repository<Language>,
-    @InjectRepository(Experience)
-    private readonly experienceRepository: Repository<Experience>,
     @InjectRepository(InterviewResult)
     private readonly interviewRepository: Repository<InterviewResult>,
   ) { }
 
-  async create(
-    createPersonnelWithDetailsDto: CreatePersonnelWithDetailsDto,
-  ): Promise<{ success: boolean; message: string; data?: Personnel }> {
-    try {
-      return await this.personnelRepository.manager.transaction(
-        async (entityManager: EntityManager) => {
-          const {
-            families = [],
-            educations = [],
-            languages = [],
-            experiences = [],
-            ...personnelData
-          } = createPersonnelWithDetailsDto;
 
-          const personnel = this.personnelRepository.create(personnelData);
-          const savedPersonnel = await entityManager.save(Personnel, personnel);
-
-          const interviewEntities = [{
-            interview_result: false,
-            recruitment_department: 'Default Department',
-            position: 'Default Position',
-            interviewer_name: 'Default Interviewer',
-            appearance_criteria: 'Default Appearance',
-            height: 'N/A',
-            criminal_record: 'No',
-            education_level: 'High School',
-            reading_writing: 'Yes',
-            calculation_ability: 'Yes',
-            personnel: savedPersonnel,
-          }];
-
-          const familyEntities = families.map((family) => ({
-            ...family,
-            personnel: savedPersonnel,
-          }));
-          const educationEntities = educations.map((education) => ({
-            ...education,
-            personnel: savedPersonnel,
-          }));
-          const languageEntities = languages.map((language) => ({
-            ...language,
-            personnel: savedPersonnel,
-          }));
-          const experienceEntities = experiences.map((experience) => ({
-            ...experience,
-            personnel: savedPersonnel,
-          }));
-
-          // Lưu các đối tượng liên quan
-          await Promise.all([
-            familyEntities.length > 0
-              ? entityManager.save(Family, familyEntities)
-              : Promise.resolve(),
-            educationEntities.length > 0
-              ? entityManager.save(Education, educationEntities)
-              : Promise.resolve(),
-            languageEntities.length > 0
-              ? entityManager.save(Language, languageEntities)
-              : Promise.resolve(),
-            experienceEntities.length > 0
-              ? entityManager.save(Experience, experienceEntities)
-              : Promise.resolve(),
-            entityManager.save(InterviewResult, interviewEntities),
-          ]);
-
-          return {
-            success: true,
-            message: 'Personnel and related details created successfully',
-            data: savedPersonnel,
-          };
-        },
-      );
-    } catch (error) {
-      this.logger.error('Error creating personnel with details', error.stack);
-      return {
-        success: false,
-        message: 'Failed to create personnel with details',
-      };
-    }
-  }
   async createNew(
     createPersonnelWithDetailsDto: CreatePersonnelWithDetails2Dto,
   ): Promise<{ success: boolean; message: string; data?: Personnel }> {
@@ -324,64 +231,7 @@ export class HrRecruitmentServices {
         throw new NotFoundException(`Personnel with ids ${ids.join(', ')} not found`);
       }
 
-      await this.personnelRepository.manager.transaction(async (entityManager: EntityManager) => {
-        try {
-          await entityManager.delete(Family, { personnel: In(ids) });
-        } catch (error) {
-          this.logger.error(`Error deleting Family for personnel IDs ${ids.join(', ')}: ${error.message}`, error.stack);
-          throw new Error(`Failed to delete Family: ${error.message}`);
-        }
-
-        try {
-          await entityManager.delete(Education, { personnel: In(ids) });
-        } catch (error) {
-          this.logger.error(`Error deleting Education for personnel IDs ${ids.join(', ')}: ${error.message}`, error.stack);
-          throw new Error(`Failed to delete Education: ${error.message}`);
-        }
-
-        try {
-          await entityManager.delete(Language, { personnel: In(ids) });
-        } catch (error) {
-          this.logger.error(`Error deleting Language for personnel IDs ${ids.join(', ')}: ${error.message}`, error.stack);
-          throw new Error(`Failed to delete Language: ${error.message}`);
-        }
-
-        try {
-          await entityManager.delete(Experience, { personnel: In(ids) });
-        } catch (error) {
-          this.logger.error(`Error deleting Experience for personnel IDs ${ids.join(', ')}: ${error.message}`, error.stack);
-          throw new Error(`Failed to delete Experience: ${error.message}`);
-        }
-
-        try {
-          await entityManager.delete(Projects, { personnel: In(ids) });
-        } catch (error) {
-          this.logger.error(`Error deleting Projects for personnel IDs ${ids.join(', ')}: ${error.message}`, error.stack);
-          throw new Error(`Failed to delete Projects: ${error.message}`);
-        }
-
-        try {
-          await entityManager.delete(OfficeSkills, { personnel: In(ids) });
-        } catch (error) {
-          this.logger.error(`Error deleting OfficeSkills for personnel IDs ${ids.join(', ')}: ${error.message}`, error.stack);
-          throw new Error(`Failed to delete OfficeSkills: ${error.message}`);
-        }
-
-        try {
-          await entityManager.delete(InterviewResult, { personnel: In(ids) });
-        } catch (error) {
-          this.logger.error(`Error deleting InterviewResult for personnel IDs ${ids.join(', ')}: ${error.message}`, error.stack);
-          throw new Error(`Failed to delete InterviewResult: ${error.message}`);
-        }
-
-        try {
-          await entityManager.delete(Personnel, { id: In(ids) });
-        } catch (error) {
-          this.logger.error(`Error deleting Personnel for IDs ${ids.join(', ')}: ${error.message}`, error.stack);
-          throw new Error(`Failed to delete Personnel: ${error.message}`);
-        }
-      });
-
+    
       return {
         success: true,
         message: 'Personnels and related details deleted successfully',
@@ -471,7 +321,9 @@ export class HrRecruitmentServices {
         month_count: personnel.month_count,
         number_of_children: personnel.number_of_children,
         status_form: personnel.status_form,
-
+        interviewer_user: personnel.interviewer_user,
+        interview_results: personnel.interview_results,
+        note: personnel.note,
         // Thông tin con cái
         children: [
           {

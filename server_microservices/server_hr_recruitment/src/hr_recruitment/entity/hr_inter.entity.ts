@@ -1,5 +1,4 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from 'typeorm';
-import { Family } from './family.entity';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 @Entity('hr_inter')
 export class HrInter {
@@ -81,6 +80,8 @@ export class HrInter {
     @Column({ name: 'type_personnel', type: 'boolean', default: false })
     type_personnel: boolean;
 
+    @Column({ type: 'text', nullable: true })
+    note: string;
 
     @Column({ type: 'text', nullable: true })
     introducer_department: string;
@@ -111,9 +112,15 @@ export class HrInter {
     @Column({ type: 'boolean', default: false })
     status_form: boolean;
 
+    @Column({ type: 'text', default: false })
+    interview_results: string;
+
     /* Vị trí */
     @Column({ type: 'text', nullable: true })
     fac: string;
+
+    @Column({ type: 'text', nullable: true })
+    interviewer_user: string;
 
     @Column({ type: 'text', nullable: true })
     department: string;
@@ -343,32 +350,32 @@ export class HrInter {
 
 
     @Column({ nullable: true })
-    office_skill_excel	: string
+    office_skill_excel: string
 
     @Column({ nullable: true })
-    office_skill_word	: string
+    office_skill_word: string
 
     @Column({ nullable: true })
-    office_skill_powerpoint	: string
+    office_skill_powerpoint: string
 
     @Column({ nullable: true })
-    software_skill_autocad	: string
+    software_skill_autocad: string
 
     @Column({ nullable: true })
-    software_skill_solidworks	: string
+    software_skill_solidworks: string
 
     @Column({ nullable: true })
-    software_skill_erp	: string
+    software_skill_erp: string
 
     @Column({ nullable: true })
     software_skill_mes: string
 
     @Column({ nullable: true })
     desired_base_salary: string
-    
+
     @Column({ nullable: true })
     desired_total_salary: string
-    
+
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     create_date: Date;
 

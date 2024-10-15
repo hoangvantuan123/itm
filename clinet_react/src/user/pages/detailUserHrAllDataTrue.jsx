@@ -30,6 +30,7 @@ import { checkActionPermission } from '../../permissions'
 
 
 const { Text } = Typography
+const { TextArea } = Input;
 import moment from 'moment'
 import CustomTagSyn from '../components/tags/customTagSyn'
 import CustomTagForm from '../components/tags/customTagForm'
@@ -332,13 +333,13 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
   const handleMenuClick = (e) => {
     switch (e.key) {
       case 'export-pdf':
-        message.success('Chức năng đang được phát triển!')
+        message.warning('Chức năng đang được phát triển!')
         break;
       case 'export-excel':
-        message.success('Chức năng đang được phát triển!')
+        message.warning('Chức năng đang được phát triển!')
         break;
       case 'export-word':
-        message.success('Chức năng đang được phát triển!')
+        message.warning('Chức năng đang được phát triển!')
         break;
       case 'open-form':
         handleChangeSatusFormTrue();
@@ -356,7 +357,35 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
         break;
     }
   };
+  const handleChangeSynchronize = async (value) => {
 
+    if (
+      (formData.employee_code?.trim() || "").trim() === "" ||
+      (formData.full_name?.trim() || "").trim() === "" ||
+      (formData.phone_number?.trim() || "").trim() === "" ||
+      (formData.id_number?.trim() || "").trim() === ""
+    ) {
+      message.warning(`${t('hr_recruitment_1_1.employee_code_required')}`);
+      return;
+    } else {
+      const submissionData = {
+        synchronize: true,
+      }
+      try {
+        const response = await PutHrInfoId(id, submissionData)
+        if (response.success) {
+          fetchDataUserId()
+          message.success('Form nhập đã được đóng!')
+        } else {
+          message.error(`Cập nhật thất bại: ${response.message}`)
+        }
+      } catch (error) {
+        message.error('Đã xảy ra lỗi trong quá trình cập nhật.')
+      }
+    }
+
+
+  }
   const menu = (
     <Menu onClick={handleMenuClick}>
       <Menu.SubMenu key="export" title="Xuất" icon={<DownloadOutlined />}>
@@ -425,7 +454,7 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
           </Dropdown>
           {canEdit && <>
 
-            <Button className="bg-white">Xác nhận đồng bộ</Button>
+            <Button className="bg-white" onClick={handleChangeSynchronize}>Xác nhận đồng bộ</Button>
 
             <Button className="bg-white" onClick={toggleEdit}>
               {isEditing ? <> Thoát</> : <> Chỉnh sửa</>}
@@ -497,10 +526,11 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
                           : null,
                       }}
                     >
+                       <h3 className="   text-xl font-bold items-center flex  justify-center mb-2 mt-">{t('hr_recruitment_1_1.position_applied_for')}</h3>
                       <Row gutter={16}>
                         <Col span={12}>
                           <Form.Item label="Mã nhân viên" name="employee_code">
-                            <Input size="large" placeholder="Nhà máy" />
+                            <Input size="large" placeholder="CID" />
                           </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -576,11 +606,47 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
                           </Form.Item>
                         </Col>
                       </Row>
+                      <h3 className="  text-xl font-bold items-center flex  justify-center mb-2 mt-5">{t('Kết quả phỏng vấn')}</h3>
+
+                      <Row gutter={16} className="mb-10">
+                        <Col span={12}>
+                          <div className="mt-3">
+                            <Form.Item
+                              label={t('Người phỏng vấn')}
+                              name="interviewer_user"
+                            >
+                              <Input size="large" placeholder="Nhập thông tin" />
+                            </Form.Item>
+                          </div>
+                        </Col>
+                        <Col span={12}>
+                          <div className="mt-3">
+                            <Form.Item
+                              label={t('Kết quả phỏng vấn')}
+                              name="interview_results"
+                            >
+                              <Radio.Group>
+                                <Radio value="Đạt">ĐẠT</Radio>
+                                <Radio value="Không Đạt">KHÔNG ĐẠT</Radio>
+                              </Radio.Group>
+                            </Form.Item>
+                          </div>
+                        </Col>
+
+                        <Col span={24}>
+                          <Form.Item
+                            label={t('Ghi chú')}
+                            name="note"
+                          >
+                            <TextArea rows={6} allowClear />
+                          </Form.Item>
+                        </Col>
+                      </Row>
                     </Form>
                   </>
                 ) : (
                   <>
-                    <h3 className=" italic mb-1 mt-2">Vị trí ứng tuyển</h3>
+                    <h3 className=" text-xl font-bold items-center flex  justify-center mb-2 mt-5">Vị trí ứng tuyển</h3>
                     <Row gutter={16}>
                       <Col span={12}>
                         <div className="mt-3">
@@ -657,6 +723,31 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
                         </div>
                       </Col>
                     </Row>
+
+                    <h3 className="  text-xl font-bold items-center flex  justify-center mb-2 mt-5">{t('Kết quả phỏng vấn')}</h3>
+
+                    <Row gutter={16}>
+                      <Col span={12}>
+                        <div className="mt-3">
+                          <strong>{t('Người phỏng vấn')}:</strong>
+                          <Text className="ml-2">{formData?.interviewer_user}</Text>
+                        </div>
+                      </Col>
+                      <Col span={12}>
+                        <div className="mt-3">
+                          <strong>{t('Kết quả phỏng vấn')}:</strong>
+                          <Text className="ml-2">{formData?.interview_results}</Text>
+                        </div>
+                      </Col>
+
+                      <Col span={24}>
+                        <div className="mt-3">
+                          <strong>{t('Ghi chú')}:</strong>
+                          <Text className="ml-2">{formData?.note}</Text>
+                        </div>
+                      </Col>
+                    </Row>
+
                   </>
                 )}
               </div>

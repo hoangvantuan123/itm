@@ -346,30 +346,7 @@ export default function PhoneWork() {
       window.removeEventListener('resize', handleResize)
     }
   }, [])
-  const notifications = [
-    { id: 1, message: 'Bạn có một tin nhắn mới.', date: '2024-09-21' },
-    { id: 2, message: 'Đã cập nhật trạng thái dự án.', date: '2024-09-20' },
-    { id: 3, message: 'Bạn được mời tham gia cuộc họp.', date: '2024-09-19' },
-    {
-      id: 4,
-      message: 'Thành công trong việc hoàn thành nhiệm vụ.',
-      date: '2024-09-18',
-    },
-  ]
-  const menuNotifications = (
-    <Menu>
-      {notifications.map((notification) => (
-        <Menu.Item key={notification.id}>
-          <div>
-            <div>{notification.message}</div>
-            <div style={{ fontSize: '12px', color: 'gray' }}>
-              {notification.date}
-            </div>
-          </div>
-        </Menu.Item>
-      ))}
-    </Menu>
-  )
+
 
   const menu = (
     <Menu>
@@ -388,11 +365,11 @@ export default function PhoneWork() {
     </Menu>
   )
   return (
-    <div className="w-full h-screen bg-slate-50">
+    <div className="w-full h-screen bg-white">
       <Helmet>
         <title>ITM - {t('Công việc')}</title>
       </Helmet>
-      <div className="w-full p-2 flex items-center justify-end bg-slate-50">
+      <div className="w-full p-2 flex items-center justify-end bg-white">
         {isMobile && (
           <>
             <Button
@@ -404,11 +381,7 @@ export default function PhoneWork() {
           </>
         )}
 
-        <Dropdown overlay={menuNotifications} trigger={['click']}>
-          <Button className=" border-none  p-2 bg-none shadow-none">
-            <NotificationIcon />
-          </Button>
-        </Dropdown>
+       
         <Dropdown overlay={menu} trigger={['click']}>
           <Button className=" border-none p-2 bg-none shadow-none">
             <CalendarIcon />

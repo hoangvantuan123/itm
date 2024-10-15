@@ -1,7 +1,6 @@
 // src/hr-interview-candidates/hr-interview-candidate.entity.ts
 
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Personnel } from './personnel.entity';
 @Entity('hr_interview_candidates')
 export class HrInterviewCandidate {
     @PrimaryGeneratedColumn()
@@ -47,9 +46,6 @@ export class HrInterviewCandidate {
     interview_date?: Date;
 
 
-    @ManyToOne(() => Personnel, (personnel) => personnel.candidates, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'personnel_id' })
-    personnel: Personnel;
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     create_date: Date;

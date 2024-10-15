@@ -291,7 +291,9 @@
     "desired_base_salary": "Mức lương CB mong muốn",
     "desired_total_salary": "Mức lương tổng mong muốn",
     "position_applied_for": " Vị trí ứng tuyển",
-    "salary": "Mức lương"
+    "salary": "Mức lương",
+    "status" : "Đánh giá",
+    "employee_code_required" : "Lỗi khi đồng bộ. Vui lòng kiểm tra lại thông tin!"
   },
   "family_columns": {
     "relationship": "Quan hệ",
@@ -355,6 +357,35 @@
     "synchronize": "Sync",
     "data": "Dữ liệu bảng công",
     "add": "Thêm"
-
+  },
+  "hr_payroll": {
+    "payroll": "Danh sách bảng lương",
+    "cid": "CID",
+    "name": "Họ Tên",
+    "department": "Department",
+    "monthly_salary": "Tháng/Năm",
+    "total": "Tổng",
+    "normal_150": "Normal 150",
+    "normal_200": "Normal 200",
+    "normal_210": "Normal 210",
+    "night_30": "Night 30",
+    "sunday_200": "Sunday 200",
+    "sunday_270": "Sunday 270",
+    "holiday_300": "Holiday 300",
+    "holiday_390": "Holiday 390",
+    "total_late_in": "Total late in",
+    "total_early_out": "Total early out",
+    "total_late_in_early_out": "Total late in early out",
+    "tong_ngay_nghi": "Tổng ngày nghỉ",
+    "paid_leave": "Paid leave",
+    "nghi_co_phep_khong_luong": "Nghỉ phép có lương",
+    "phep_thang_nay": "Phép tháng này",
+    "ton_phep_thang_nay": "Tồn phép tháng này",
+    "so_ngay_di_lam_trong_thang": "Số ngày đi làm trong tháng",
+    "so_ngay_di_lam_thuc_te": "Số ngày đi làm thực tế",
+    "muon_phep": "Muộn phép",
+    "synchronize": "Sync",
+    "data": "Dữ liệu bảng công",
+    "add": "Thêm"
   }
 }

@@ -52,7 +52,6 @@ const ViewDetailUserHrRecruitment = ({
     form.setFieldsValue(formattedData)
   }, [formData, form])
 
-  // Columns for the tables
   const familyColumns = [
     { title: t('family_columns.relationship'), dataIndex: 'relationship', key: 'relationship' },
     { title:  t('family_columns.full_name'), dataIndex: 'full_name', key: 'full_name' },

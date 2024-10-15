@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Form, Radio,Table, Input, Drawer, Button, Row, Col, Card, Select } from 'antd';
+import { Form, Radio, Table, Input, Drawer, Button, Row, Col, Card, Select } from 'antd';
 
 const { Option } = Select;
 
@@ -13,16 +13,16 @@ const SkillTable = ({ form, dataSource }) => {
     if (dataSource && dataSource.length > 0) {
       setLocalDataSource(dataSource);
     } else {
-        setLocalDataSource([
-            { id: 1, skill: 'Excel', level: null },
-            { id: 2, skill: 'Word', level: null },
-            { id: 3, skill: 'PowerPoint', level: null },
-            { id: 4, skill: 'Autocad', level: null },
-            { id: 5, skill: 'SolidWorks', level: null },
-            { id: 6, skill: 'ERP', level: null },
-            { id: 7, skill: 'MES', level: null },
-        ]);
-        
+      setLocalDataSource([
+        { id: 1, skill: 'Excel', level: null },
+        { id: 2, skill: 'Word', level: null },
+        { id: 3, skill: 'PowerPoint', level: null },
+        { id: 4, skill: 'Autocad', level: null },
+        { id: 5, skill: 'SolidWorks', level: null },
+        { id: 6, skill: 'ERP', level: null },
+        { id: 7, skill: 'MES', level: null },
+      ]);
+
     }
   }, [dataSource]);
 
@@ -55,13 +55,10 @@ const SkillTable = ({ form, dataSource }) => {
       title: 'Loại kỹ năng',
       dataIndex: 'skill',
       render: (text, record) => (
-        <Input
-          value={text}
-          disabled
-          onChange={(e) => handleSkill(record.id, 'skill', e.target.value)}
-          className="border-none w-36 md:w-full"
-          style={{ margin: 0 }}
-        />
+        <>
+          {text}
+        </>
+
       ),
     },
     {
@@ -69,13 +66,13 @@ const SkillTable = ({ form, dataSource }) => {
       dataIndex: 'level',
       render: (text, record) => (
         <Radio.Group
-        value={text} 
-        onChange={(e) => handleSkill(record.id, 'level', e.target.value)}
-      >
-        <Radio value="Tốt">Tốt</Radio>
-        <Radio value="TB">Trung Bình</Radio>
-        <Radio value="Kém">Kém</Radio>
-      </Radio.Group>
+          value={text}
+          onChange={(e) => handleSkill(record.id, 'level', e.target.value)}
+        >
+          <Radio value="Tốt">Tốt</Radio>
+          <Radio value="TB">Trung Bình</Radio>
+          <Radio value="Kém">Kém</Radio>
+        </Radio.Group>
       ),
     }
   ];

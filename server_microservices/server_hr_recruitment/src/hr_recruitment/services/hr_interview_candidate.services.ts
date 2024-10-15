@@ -5,15 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, EntityManager, In } from 'typeorm';
 import { HrInterviewCandidate } from '../entity/hr_interview_candidates.entity';
 import { Personnel } from '../entity/personnel.entity';
-import { Family } from '../entity/family.entity';
-import { Education } from '../entity/education.entity';
-import { Language } from '../entity/language.entity';
-import { Experience } from '../entity/experience.entity';
-import { InterviewResult } from '../entity/interview_results.entity';
-import { OfficeSkills } from '../entity/office_skills.entity';
-import { Projects } from '../entity/project.entity';
-import { CreatePersonnelWithDetailsDto } from '../dto/create_hr_internview_candidate.dto';
-import jwt from 'jsonwebtoken';
 @Injectable()
 export class HrInterviewCandidatesService {
   constructor(
@@ -23,20 +14,6 @@ export class HrInterviewCandidatesService {
     @InjectRepository(Personnel)
     private readonly personnelRepository: Repository<Personnel>,
 
-    @InjectRepository(Family)
-    private readonly familyRepository: Repository<Family>,
-    @InjectRepository(Education)
-    private readonly educationRepository: Repository<Education>,
-    @InjectRepository(Language)
-    private readonly languageRepository: Repository<Language>,
-    @InjectRepository(Experience)
-    private readonly experienceRepository: Repository<Experience>,
-    @InjectRepository(InterviewResult)
-    private readonly interviewRepository: Repository<InterviewResult>,
-    @InjectRepository(OfficeSkills)
-    private readonly officeSkillsRepository: Repository<OfficeSkills>,
-    @InjectRepository(Projects)
-    private readonly projectRepository: Repository<Projects>,
   ) { }
 
   async getAllCandidates(): Promise<HrInterviewCandidate[]> {
@@ -190,20 +167,7 @@ export class HrInterviewCandidatesService {
     return candidate;
   }
 
-  async createCandidate(createData: Partial<HrInterviewCandidate>): Promise<HrInterviewCandidate> {
-    let personnel: Personnel;
 
-    if (createData.personnel) {
-      personnel = await this.personnelRepository.save(createData.personnel);
-    }
-
-    const candidate = this.candidateRepository.create({
-      ...createData,
-      personnel,
-    });
-
-    return await this.candidateRepository.save(candidate);
-  }
 
   async updateCandidate(id: number, updateData: Partial<HrInterviewCandidate>): Promise<HrInterviewCandidate> {
     const candidate = await this.candidateRepository.findOne({ where: { id } });
@@ -232,49 +196,7 @@ export class HrInterviewCandidatesService {
 
 
 
-  async findByPhoneNumber(phone_number: string): Promise<any> {
-    const candidate = await this.candidateRepository.findOne({
-      where: { phone_number },
-      relations: ['personnel'], // Thêm quan hệ personnel
-    });
-
-    if (!candidate) {
-      return {
-        success: false,
-        message: 'Candidate not found with this phone number',
-        redirectUrl: '/your-desired-url',
-      };
-    }
-
-    const personnelId = candidate.personnel ? candidate.personnel.id : null;
-
-    if (personnelId) {
-      return {
-        success: false,
-        message: 'Candidate found but no personnel associated with this candidate.',
-        redirectUrl: '/your-desired-url',
-      };
-    }
-
-    const combinedInfo = `${candidate.id}:${candidate.phone_number}:${candidate.full_name}:${candidate.email}`;
-    const encodedRouter = Buffer.from(combinedInfo).toString('base64');
-
-    return {
-      success: true,
-      data: {
-        idCadidate: candidate.id,
-        phoneNumber: candidate.phone_number,
-        name: candidate.full_name,
-        email: candidate.email,
-        router: encodedRouter,
-        gender: candidate.gender,
-        id_card_number: candidate.id_card_number,
-        interview_date: candidate.interview_date,
-        job_position: candidate.job_position,
-        personnelId,
-      },
-    };
-  }
+  
 
 
 
@@ -283,118 +205,6 @@ export class HrInterviewCandidatesService {
 
 
 
-
-
-  async create(
-    createPersonnelWithDetailsDto: CreatePersonnelWithDetailsDto,
-  ): Promise<{ success: boolean; message: string; data?: Personnel }> {
-    try {
-      return await this.personnelRepository.manager.transaction(
-        async (entityManager: EntityManager) => {
-          const {
-            families = [],
-            educations = [],
-            languages = [],
-            experiences = [],
-            office_skills = [],
-            projects = [],
-            ...personnelData
-          } = createPersonnelWithDetailsDto;
-
-          const personnel = this.personnelRepository.create(personnelData);
-          const savedPersonnel = await entityManager.save(Personnel, personnel);
-
-          const interviewEntities = [{
-            interview_result: false,
-            recruitment_department: 'Default Department',
-            position: 'Default Position',
-            interviewer_name: 'Default Interviewer',
-            appearance_criteria: 'Default Appearance',
-            height: 'N/A',
-            criminal_record: 'No',
-            education_level: 'High School',
-            reading_writing: 'Yes',
-            calculation_ability: 'Yes',
-            personnel: savedPersonnel,
-          }];
-
-          const familyEntities = families.map((family) => ({
-            ...family,
-            personnel: savedPersonnel,
-          }));
-          const educationEntities = educations.map((education) => ({
-            ...education,
-            personnel: savedPersonnel,
-          }));
-          const languageEntities = languages.map((language) => ({
-            ...language,
-            personnel: savedPersonnel,
-          }));
-          const experienceEntities = experiences.map((experience) => ({
-            ...experience,
-            personnel: savedPersonnel,
-          }));
-          const projectEntities = projects.map((project) => ({
-            ...project,
-            personnel: savedPersonnel,
-          }));
-
-          const officeSkillsEntities = office_skills.map((office_skill) => ({
-            ...office_skill,
-            personnel: savedPersonnel,
-          }));
-
-          // 3. Lưu tất cả các đối tượng liên quan
-          await Promise.all([
-            familyEntities.length > 0
-              ? entityManager.save(Family, familyEntities)
-              : Promise.resolve(),
-            educationEntities.length > 0
-              ? entityManager.save(Education, educationEntities)
-              : Promise.resolve(),
-            languageEntities.length > 0
-              ? entityManager.save(Language, languageEntities)
-              : Promise.resolve(),
-            experienceEntities.length > 0
-              ? entityManager.save(Experience, experienceEntities)
-              : Promise.resolve(),
-            projectEntities.length > 0
-              ? entityManager.save(Projects, projectEntities)
-              : Promise.resolve(),
-
-            officeSkillsEntities.length > 0
-              ? entityManager.save(OfficeSkills, officeSkillsEntities)
-              : Promise.resolve(),
-            entityManager.save(InterviewResult, interviewEntities),
-          ]);
-
-          if (personnelData?.id_hr_interview_candidates) {
-            await entityManager
-              .createQueryBuilder()
-              .update(HrInterviewCandidate)
-              .set({
-                personnel: savedPersonnel,
-                interview_status: 'default',
-                form_status: 'Submitted',
-              })
-              .where('id = :id', { id: personnelData?.id_hr_interview_candidates })
-              .execute();
-          }
-
-          return {
-            success: true,
-            message: 'Personnel and related details created successfully and hr_interview_candidates updated',
-            data: savedPersonnel,
-          };
-        },
-      );
-    } catch (error) {
-      return {
-        success: false,
-        message: 'Failed to create personnel with details and update hr_interview_candidates',
-      };
-    }
-  }
 
 
 }

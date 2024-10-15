@@ -119,7 +119,7 @@ export default function ListView({ setViewModeList, viewModeList }) {
   const monthDates = getMonthDates(selectedDate)
 
   return (
-    <div className="h-screen overflow-hidden bg-gray-50">
+    <div className="h-screen overflow-hidden bg-white">
       <div className="p-2">
         {/* Thêm nút điều hướng tháng */}
         {viewModeList === 'month' && (
@@ -184,7 +184,7 @@ export default function ListView({ setViewModeList, viewModeList }) {
         )}
       </div>
 
-      <div className="p-4 h-screen  pb-5 bg-white rounded-lg overflow-hidden">
+      <div className="p-4 h-screen  pb-5   bg-slate-50 rounded-3xl shadow-md overflow-hidden">
         <h3 className="text-lg mb-2 font-semibold">
           {selectedDate.format('YYYY-MM-DD')}
         </h3>

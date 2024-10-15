@@ -9,7 +9,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
   const [childrenDataSource, setChildrenDataSource] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const [drawerContent, setDrawerContent] = useState(null); 
+  const [drawerContent, setDrawerContent] = useState(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -124,14 +124,9 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
       title: 'Quan hệ',
       dataIndex: 'relationship',
       render: (text, record, index) => (
-        <Input
-          value={text}
-          onChange={(e) =>
-            handleFamilyMemberChange(index, 'relationship', e.target.value)
-          }
-          disabled
-          className="border-none w-full"
-        />
+        <>
+          {text}
+        </>
       ),
     },
     {
@@ -307,7 +302,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
             <Button onClick={handleDrawerClose} style={{ marginRight: 8 }}>
               Hủy
             </Button>
-            <Button   className=" border-gray-200 bg-indigo-600 text-white shadow-sm text-sm" onClick={handleDrawerSave}>
+            <Button className=" border-gray-200 bg-indigo-600 text-white shadow-sm text-sm" onClick={handleDrawerSave}>
               Lưu
             </Button>
           </div>

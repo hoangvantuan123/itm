@@ -5,15 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, EntityManager, In } from 'typeorm';
 import { HrInterviewCandidate } from '../entity/hr_interview_candidates.entity';
 import { Personnel } from '../entity/personnel.entity';
-import { Family } from '../entity/family.entity';
-import { Education } from '../entity/education.entity';
-import { Language } from '../entity/language.entity';
-import { Experience } from '../entity/experience.entity';
-import { InterviewResult } from '../entity/interview_results.entity';
-import { OfficeSkills } from '../entity/office_skills.entity';
-import { Projects } from '../entity/project.entity';
-import { CreatePersonnelWithDetailsDto } from '../dto/create_hr_internview_candidate.dto';
-import { CreatePersonnelWithDetails2Dto } from '../dto/create-personnel-with-details.dto';
 import jwt from 'jsonwebtoken';
 @Injectable()
 export class HrAllDataService {
@@ -25,20 +16,6 @@ export class HrAllDataService {
     @InjectRepository(Personnel)
     private readonly personnelRepository: Repository<Personnel>,
 
-    @InjectRepository(Family)
-    private readonly familyRepository: Repository<Family>,
-    @InjectRepository(Education)
-    private readonly educationRepository: Repository<Education>,
-    @InjectRepository(Language)
-    private readonly languageRepository: Repository<Language>,
-    @InjectRepository(Experience)
-    private readonly experienceRepository: Repository<Experience>,
-    @InjectRepository(InterviewResult)
-    private readonly interviewRepository: Repository<InterviewResult>,
-    @InjectRepository(OfficeSkills)
-    private readonly officeSkillsRepository: Repository<OfficeSkills>,
-    @InjectRepository(Projects)
-    private readonly projectRepository: Repository<Projects>,
   ) { }
 
   async create(

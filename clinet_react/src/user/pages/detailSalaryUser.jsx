@@ -19,7 +19,7 @@ const DetailSalaryUser = React.memo(({ permissions }) => {
     const [loading, setLoading] = useState(true);
 
     const fetchDataUserId = async (userId) => {
-        if (!userId) return; // Avoid unnecessary fetch if userId is falsy
+        if (!userId) return; 
         setLoading(true);
         try {
             const response = await GetHrSalaryId(userId);
@@ -106,7 +106,7 @@ const DetailSalaryUser = React.memo(({ permissions }) => {
     };
 
     return (
-        <div className="w-full h-screen overflow-auto bg-white p-3">
+        <div className="w-full h-screen overflow-auto bg-white p-3  pb-24">
             <Helmet>
                 <title>ITM - {t(formData?.cid)}</title>
             </Helmet>
@@ -133,7 +133,7 @@ const DetailSalaryUser = React.memo(({ permissions }) => {
             </nav>
 
             <Layout>
-                <Content className="overflow-auto bg-white p-2">
+                <Content className="overflow-auto bg-white p-3 ">
                     <Row gutter={[16, 16]} className="h-full">
                         <Col span={24}>
                             <Row className="mb-10">
@@ -146,16 +146,7 @@ const DetailSalaryUser = React.memo(({ permissions }) => {
                                     </div>
                                 </Col>
 
-                                <Col span={24} className="mt-5">
-                                    <div className="flex gap-2">
-                                        <button
-                                            className="px-4 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-                                            onClick={() => console.log('Xuất file')}
-                                        >
-                                            Xuất File
-                                        </button>
-                                    </div>
-                                </Col>
+                          
                             </Row>
                         </Col>
 

@@ -36,13 +36,10 @@ const EditFamilyInfoTable = ({ form, dataSource, children }) => {
       title: 'Quan hệ',
       dataIndex: 'relationship',
       render: (text, record, index) => (
-        <Input
-          value={text}
-          onChange={(e) =>
-            handleFamilyMemberChange(index, 'relationship', e.target.value)
-          }
-          className="border-none w-full"
-        />
+        <p>
+          {text}
+        </p>
+
       ),
     },
     {

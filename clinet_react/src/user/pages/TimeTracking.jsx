@@ -520,12 +520,12 @@ export default function TimeTracking() {
     </Menu>
   )
   return (
-    <div className="w-full   bg-slate-50 ">
+    <div className="w-full bg-white">
       <Helmet>
         <title>ITM - {t('Default')}</title>
       </Helmet>
       <div className="h-screen">
-        <div className="w-full p-2 flex items-center justify-end bg-slate-50">
+        <div className="w-full p-2 flex items-center justify-end bg-white">
           <Dropdown overlay={menuNotifications} trigger={['click']}>
             <Button className=" border-none  p-2 bg-none shadow-none">
               <NotificationIcon />

@@ -15,8 +15,10 @@ export class HrSalaryController {
   async getByCid(
     @Param('cid') cid: string,
     @Query('monthYear') monthYear: string,
-  ): Promise<HrSalary[]> {
-    return this.hrSalaryService.getHrSalaryByCid(cid, monthYear);
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10000
+  ): Promise<{ data: any[]; total: number; totalPages: number }> {
+    return this.hrSalaryService.getHrSalaryByCid(page, limit, cid, monthYear);
   }
 
   @Get()
@@ -63,6 +65,6 @@ export class HrSalaryController {
 
   @Get('detail/:id')
   async getPersonnel(@Param('id') id: number) {
-      return this.hrSalaryService.getHrSalaryById(id);
+    return this.hrSalaryService.getHrSalaryById(id);
   }
 }

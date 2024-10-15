@@ -58,7 +58,7 @@ export default function Home() {
   }, [location])
 
   return (
-    <div className="w-full h-screen bg-slate-50">
+    <div className="w-full h-screen  bg-white">
       <Helmet>
         <title>Home</title>
       </Helmet>

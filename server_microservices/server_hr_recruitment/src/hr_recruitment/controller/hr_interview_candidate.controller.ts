@@ -19,10 +19,7 @@ export class HrInterviewCandidatesController {
         return this.candidatesService.getCandidateById(id);
     }
 
-    @Post()
-    createCandidate(@Body() createData: Partial<HrInterviewCandidate>): Promise<HrInterviewCandidate> {
-        return this.candidatesService.createCandidate(createData);
-    }
+
 
     @Put(':id')
     updateCandidate(
@@ -51,46 +48,9 @@ export class HrInterviewCandidatesController {
         return await this.candidatesService.findAllPageLimit({}, page, limit, start, end);
     }
 
-    @Get('find-by-phone/:phone_number')
-    async findByPhone(
-        @Param('phone_number') phoneNumber: string,
-    ) {
-        return await this.candidatesService.findByPhoneNumber(phoneNumber);
-    }
 
 
 
-    @Post('personnel')
-    @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))
-    async create(@Body() createPersonnelWithDetailsDto: CreatePersonnelWithDetailsDto) {
-        try {
-            const result = await this.candidatesService.create(createPersonnelWithDetailsDto);
-
-            if (result.success) {
-                return {
-                    statusCode: HttpStatus.CREATED,
-                    message: result.message,
-                    data: result.data,
-                };
-            } else {
-                throw new HttpException(
-                    {
-                        statusCode: HttpStatus.BAD_REQUEST,
-                        message: result.message,
-                    },
-                    HttpStatus.BAD_REQUEST,
-                );
-            }
-        } catch (error) {
-            throw new HttpException(
-                {
-                    statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-                    message: 'Internal Server Error: Could not create personnel with related details',
-                },
-                HttpStatus.INTERNAL_SERVER_ERROR,
-            );
-        }
-    }
 
 
 

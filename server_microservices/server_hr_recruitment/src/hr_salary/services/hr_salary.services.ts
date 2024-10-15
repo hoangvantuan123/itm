@@ -18,25 +18,88 @@ export class HrSalaryService {
             throw new InternalServerErrorException('Error saving the salary record');
         }
     }
-    async getHrSalaryByCid(cid: string, monthYear?: string): Promise<HrSalary[]> {
-        const query = this.hrSalaryRepository.createQueryBuilder('hrSalary')
-            .where('hrSalary.cid = :cid', { cid });
+
+
+    
+    async getHrSalaryByCid(
+        page: number = 1,
+        limit: number = 10000,
+        cid: string,
+        monthYear?: string
+    ): Promise<{ data: HrSalary[]; total: number; totalPages: number }> {
+        page = Math.max(1, page);
+        limit = Math.max(1, limit);
+
+        const query = this.hrSalaryRepository.createQueryBuilder('hr_salary')
+            .where('hr_salary.cid = :cid', { cid });
 
         if (monthYear) {
             const [month, year] = monthYear.split('/');
-            query.andWhere('hrSalary.monthly_salary = :monthly_salary', {
+            query.andWhere('hr_salary.monthly_salary = :monthly_salary', {
                 monthly_salary: `${month}/${year}`,
             });
         }
 
-        const hrSalaries = await query.getMany();
+        query
+            .select([
+                'hr_salary.id',
+                'hr_salary.no',
+                'hr_salary.name',
+                'hr_salary.monthly_salary',
+                'hr_salary.date_in',
+                'hr_salary.cid',
+                'hr_salary.department',
+                'hr_salary.total',
+                'hr_salary.normal_150',
+                'hr_salary.normal_200',
+                'hr_salary.normal_210',
+                'hr_salary.night_30',
+                'hr_salary.sunday_200',
+                'hr_salary.sunday_270',
+                'hr_salary.holiday_300',
+                'hr_salary.holiday_390',
+                'hr_salary.total_late_in',
+                'hr_salary.total_early_out',
+                'hr_salary.total_late_in_early_out',
+                'hr_salary.tong_ngay_nghi',
+                'hr_salary.paid_leave',
+                'hr_salary.nghi_co_phep_khong_luong',
+                'hr_salary.phep_thang_nay',
+                'hr_salary.ton_phep_thang_nay',
+                'hr_salary.so_ngay_di_lam_trong_thang',
+                'hr_salary.so_ngay_di_lam_thuc_te',
+                'hr_salary.ky_nhan',
+                'hr_salary.muon_phep',
+                'hr_salary.start',
+                'hr_salary.stop',
+                'hr_salary.day_off',
+                'hr_salary.overtime_normal_150',
+                'hr_salary.overtime_normal_200',
+                'hr_salary.overtime_normal_210',
+                'hr_salary.at_night_30',
+                'hr_salary.overtime_sunday_200',
+                'hr_salary.overtime_sunday_270',
+                'hr_salary.overtime_holiday_300',
+                'hr_salary.overtime_holiday_390',
+                'hr_salary.working_day',
+                'hr_salary.late_in',
+                'hr_salary.early_out',
+                'hr_salary.synchronize',
+                'hr_salary.synchronize_erp',
+            ])
+            .skip((page - 1) * limit) 
+            .take(limit)  
+            .orderBy('hr_salary.id', 'DESC');  
 
-        if (hrSalaries.length === 0) {
-            throw new NotFoundException('No salary records found for the given CID');
-        }
+        const [data, total] = await query.getManyAndCount();
 
-        return hrSalaries;
+        return {
+            data,
+            total,
+            totalPages: Math.ceil(total / limit),
+        };
     }
+
 
 
 
