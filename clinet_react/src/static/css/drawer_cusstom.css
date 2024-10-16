@@ -24,49 +24,58 @@
 
 @media (max-width: 768px) {
   :where(.css-dev-only-do-not-override-qnu6hi).ant-drawer .ant-drawer-content-wrapper {
-    padding: 12px;
+    padding: 0px !important; 
+    padding-top : 50px !important;
+    border-top-left-radius: 13px !important;
+    border-top-right-radius: 13px !important;
     box-shadow: none;
   }
 
   :where(.css-dev-only-do-not-override-qnu6hi).ant-drawer .ant-drawer-content {
-    border-radius: 12px;
+    border-radius:  0px !important;
   }
   :where(.css-dev-only-do-not-override-qnu6hi).ant-drawer .ant-drawer-content {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+    border-top-left-radius: 13px !important;
+    border-top-right-radius: 13px !important;
   }
 }
 @media (max-width: 768px) {
   :where(.css-dev-only-do-not-override-qnu6hi).ant-drawer .ant-drawer-content-wrapper {
-      padding: 12px;
+      padding: 0px !important; 
+      padding-top : 50px !important;
+      border-top-left-radius: 13px !important;
+      border-top-right-radius: 13px !important;
       box-shadow: none;
   }
 
   :where(.css-dev-only-do-not-override-qnu6hi).ant-drawer .ant-drawer-content {
-      border-radius: 12px;
+      border-radius: 0px !important;
   }
 
-  :where(.css-dev-only-do-not-override-qnu6hi).ant-drawer .ant-drawer-content {
-      border-top-left-radius: 12px;
-      border-top-right-radius: 12px;
-  }
+
   :where(.css-qnu6hi).ant-drawer-right>.ant-drawer-content-wrapper{
-      padding: 12px;
+      padding: 0px !important;
+      padding-top : 50px !important;
+      border-top-left-radius: 13px !important;
+      border-top-right-radius: 13px !important;
       box-shadow: none;
   }
   :where(.css-qnu6hi).ant-drawer .ant-drawer-content{
-      border-radius: 12px;
+      border-radius: 0px !important;
   }
 }
 
 @media (max-width: 768px) {
   :where(.css-qnu6hi).ant-drawer .ant-drawer-content-wrapper {
-      padding: 12px;
+      padding: 0px !important;
+      padding-top : 50px !important;
+      border-top-left-radius: 13px !important;
+      border-top-right-radius: 13px !important;
       box-shadow: none;
   }
 
   :where(.css-qnu6hi).ant-drawer .ant-drawer-content {
-      border-radius: 12px;
+      border-radius: 0px !important;
   }
 
 

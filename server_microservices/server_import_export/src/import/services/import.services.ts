@@ -24,9 +24,6 @@ export class ImportServices {
             case 'hr_personnel':
                 await this.processHRPersonnelData(importData, 'hr_personnel');
                 break;
-            case 'hr_personnel,hr_language,hr_family,hr_experience,hr_education':
-                await this.processHRPersonnelDatas(importData, 'hr_personnel,hr_language,hr_family,hr_experience,hr_education');
-                break;
             case 'hr_interview_candidates':
                 await this.processHRInterviewCandidates(importData, 'hr_interview_candidates');
                 break;

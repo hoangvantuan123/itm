@@ -354,6 +354,7 @@ const UserRouter = () => {
                         ) ? (
                           <DetailUserHrRecruitment
                             permissions={userPermissions}
+                            isMobile={isMobile}
                           />
                         ) : (
                           <Unauthorized />

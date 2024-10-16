@@ -65,6 +65,7 @@ export default function FieldActionInter({
   applicantStatus,
   setInterviewDate,
   interviewDate,
+  isMobile
 }) {
   const { t } = useTranslation()
 
@@ -94,6 +95,7 @@ export default function FieldActionInter({
     <>
       <div className="flex flex-col items-start">
         <div className="flex items-center space-x-2">
+          
           <Button
             size="large"
             className="bg-white"
@@ -214,9 +216,6 @@ export default function FieldActionInter({
           >
             <Option value="waiting_interview">Lên lịch phỏng vấn</Option>
             <Option value="interviewed">Đã phỏng vấn</Option>
-            <Option value="waiting_result">Đang đợi kết quả</Option>
-            <Option value="accepted">Đã nhận</Option>
-            <Option value="rejected">Không đạt</Option>
           </Select>
         </div>
         <div className="mb-3">

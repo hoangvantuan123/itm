@@ -133,7 +133,7 @@ export class Personnel {
   @Column({ type: 'text', nullable: true })
   type_classify: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text' , unique: true})
   employee_code: string;
 
   @Column({ type: 'text', nullable: true })

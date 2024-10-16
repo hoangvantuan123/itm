@@ -558,6 +558,7 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
           interviewDate={interviewDate}
           setApplicantStatus={setApplicantStatus}
           applicantStatus={applicantStatus}
+          isMobile={isMobile}
         /> </div>
 
 

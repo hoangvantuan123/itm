@@ -45,7 +45,24 @@ import moment from 'moment'
 import CustomTagSyn from '../components/tags/customTagSyn'
 import CustomTagForm from '../components/tags/customTagForm'
 import ShowResult from '../components/inter/showResult'
-export default function DetailUserHrRecruitment({ permissions }) {
+
+const ActionIcon =() =>{
+  return (
+    <svg  className="h-6 w-6 opacity-70" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 22.75H9C3.57 22.75 1.25 20.43 1.25 15V9C1.25 3.57 3.57 1.25 9 1.25H15C20.43 1.25 22.75 3.57 22.75 9V15C22.75 20.43 20.43 22.75 15 22.75ZM9 2.75C4.39 2.75 2.75 4.39 2.75 9V15C2.75 19.61 4.39 21.25 9 21.25H15C19.61 21.25 21.25 19.61 21.25 15V9C21.25 4.39 19.61 2.75 15 2.75H9Z" fill="#292D32"/>
+<path d="M15.5801 19.2501C15.1701 19.2501 14.8301 18.9101 14.8301 18.5001V14.6001C14.8301 14.1901 15.1701 13.8501 15.5801 13.8501C15.9901 13.8501 16.3301 14.1901 16.3301 14.6001V18.5001C16.3301 18.9101 15.9901 19.2501 15.5801 19.2501Z" fill="#292D32"/>
+<path d="M15.5801 8.2C15.1701 8.2 14.8301 7.86 14.8301 7.45V5.5C14.8301 5.09 15.1701 4.75 15.5801 4.75C15.9901 4.75 16.3301 5.09 16.3301 5.5V7.45C16.3301 7.86 15.9901 8.2 15.5801 8.2Z" fill="#292D32"/>
+<path d="M15.5805 13.4002C13.7305 13.4002 12.2305 11.9002 12.2305 10.0502C12.2305 8.2002 13.7305 6.7002 15.5805 6.7002C17.4305 6.7002 18.9305 8.2002 18.9305 10.0502C18.9305 11.9002 17.4205 13.4002 15.5805 13.4002ZM15.5805 8.2002C14.5605 8.2002 13.7305 9.0302 13.7305 10.0502C13.7305 11.0702 14.5605 11.9002 15.5805 11.9002C16.6005 11.9002 17.4305 11.0702 17.4305 10.0502C17.4305 9.0302 16.5905 8.2002 15.5805 8.2002Z" fill="#292D32"/>
+<path d="M8.41992 19.2498C8.00992 19.2498 7.66992 18.9098 7.66992 18.4998V16.5498C7.66992 16.1398 8.00992 15.7998 8.41992 15.7998C8.82992 15.7998 9.16992 16.1398 9.16992 16.5498V18.4998C9.16992 18.9098 8.83992 19.2498 8.41992 19.2498Z" fill="#292D32"/>
+<path d="M8.41992 10.15C8.00992 10.15 7.66992 9.81 7.66992 9.4V5.5C7.66992 5.09 8.00992 4.75 8.41992 4.75C8.82992 4.75 9.16992 5.09 9.16992 5.5V9.4C9.16992 9.81 8.83992 10.15 8.41992 10.15Z" fill="#292D32"/>
+<path d="M8.42031 17.3001C6.57031 17.3001 5.07031 15.8001 5.07031 13.9501C5.07031 12.1001 6.57031 10.6001 8.42031 10.6001C10.2703 10.6001 11.7703 12.1001 11.7703 13.9501C11.7703 15.8001 10.2703 17.3001 8.42031 17.3001ZM8.42031 12.1001C7.40031 12.1001 6.57031 12.9301 6.57031 13.9501C6.57031 14.9701 7.40031 15.8001 8.42031 15.8001C9.44031 15.8001 10.2703 14.9701 10.2703 13.9501C10.2703 12.9301 9.45031 12.1001 8.42031 12.1001Z" fill="#292D32"/>
+</svg>
+
+  )
+}
+
+
+export default function DetailUserHrRecruitment({ permissions ,isMobile}) {
   const { t } = useTranslation()
   const { id } = useParams()
   const navigate = useNavigate()
@@ -450,65 +467,117 @@ export default function DetailUserHrRecruitment({ permissions }) {
   }
 
   return (
-    <div className="w-full h-screen bg-white p-3">
+    <div className="w-full h-screen bg-white  p-3 ">
       <Helmet>
         <title>ITM - #{id}</title>
       </Helmet>
 
       <nav
-        aria-label="Breadcrumb"
-        className="flex justify-between items-center mb-6"
-      >
-        <ol className="flex items-center gap-1 text-sm text-gray-700">
-          <li onClick={handleNavigateToBack} className="cursor-pointer">
-            <span className=" text-black hover:text-indigo-950 opacity-80">
-              {t('hr_recruitment_1_1.cancel')}
-            </span>
-          </li>
-          <li className="rtl:rotate-180">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="size-4"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </li>
-          <li className="cursor-pointer">
-            <span className=" text-black opacity-80">#{id}</span>
-          </li>
-          <li className="cursor-pointer ml-5">
+  aria-label="Breadcrumb"
+  className={`flex justify-between items-center mb-6 `}
+>
+  <ol className="flex items-center gap-1 text-sm text-gray-700">
+    <li onClick={handleNavigateToBack} className="cursor-pointer">
+      <span className="text-black hover:text-indigo-950 opacity-80">
+        {t('hr_recruitment_1_1.cancel')}
+      </span>
+    </li>
+    <li className="rtl:rotate-180">
+      <svg xmlns="http://www.w3.org/2000/svg" className="size-4" viewBox="0 0 20 20" fill="currentColor">
+        <path
+          fillRule="evenodd"
+          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+          clipRule="evenodd"
+        />
+      </svg>
+    </li>
+    <li className="cursor-pointer">
+      <span className="text-black opacity-80">#{id}</span>
+    </li>
+    {isMobile ? <></> : <><li className="cursor-pointer ml-5">
             <CustomTagSyn status={formData?.synchronize} />
           </li>
           <li className="cursor-pointer">
             <CustomTagForm status={formData?.status_form} />
-          </li>
-        </ol>
+          </li>< /> 
+    }
+          
+  </ol>
 
-        <ol className=" flex items-center gap-2">
-          <Dropdown overlay={menu} placement="bottomRight">
-            <Button className="bg-white">
-              {t('hr_recruitment_1_1.action')}
-            </Button>
-          </Dropdown>
+  {isMobile ? (
+    // Nếu là điện thoại, đưa các nút vào Dropdown
+    <Dropdown
+      overlay={
+        <Menu>
+          <Menu.SubMenu key="export" title={t('hr_recruitment_1_1.export')} icon={<DownloadOutlined />}>
+        <Menu.Item key="export-pdf" icon={<FilePdfOutlined />}>{t('hr_recruitment_1_1.export_pdf')} </Menu.Item>
+        <Menu.Item key="export-excel" icon={<FileExcelOutlined />}>{t('hr_recruitment_1_1.export_excel')}</Menu.Item>
+        <Menu.Item key="export-word" icon={<FileWordOutlined />}>{t('hr_recruitment_1_1.export_word')}</Menu.Item>
+      </Menu.SubMenu>
+      {canEdit && <>       <Menu.Item key="open-form" icon={<FormOutlined />}>{t('hr_recruitment_1_1.open_form')}</Menu.Item>
+        <Menu.Item key="close-form" icon={<FormOutlined />}>{t('hr_recruitment_1_1.close_form')}</Menu.Item></>}
+    
+          {canEdit && (
+            <Menu.Item onClick={handleSync}>
+              {t('hr_recruitment_1_1.syn')}
+            </Menu.Item>
+          )}
+          {canEdit && (
+            <Menu.Item onClick={toggleEdit}>
+              {isEditing ? t('hr_recruitment_1_1.exit') : t('hr_recruitment_1_1.edit')}
+            </Menu.Item>
+          )}
+          {canEdit && (
+            <Menu.Item onClick={handleSave}>
+              {t('hr_recruitment_1_1.save')}
+            </Menu.Item>
+          )}
+            {canDelete && <Menu.Item key="delete" style={{ color: 'red' }} icon={<DeleteOutlined />}>
+        {t('hr_recruitment_1_1.delete')}
+      </Menu.Item>}
+        </Menu>
+      }
+      placement="bottomRight"
+    >
+      <button className="bg-white">
+      <ActionIcon/>
+      </button>
+    </Dropdown>
+  ) : (
+    <ol className="flex items-center gap-2">
+      <Dropdown overlay={menu} placement="bottomRight">
+        <Button className="bg-white">
+       
+          {t('hr_recruitment_1_1.action')}
+        </Button>
+      </Dropdown>
 
-          {canEdit && <Button className="bg-white" onClick={handleSync}> {t('hr_recruitment_1_1.syn')}</Button>}
+      {canEdit && (
+        <Button className="bg-white" onClick={handleSync}>
+          {t('hr_recruitment_1_1.syn')}
+        </Button>
+      )}
+      {canEdit && (
+        <Button className="bg-white" onClick={toggleEdit}>
+          {isEditing ? t('hr_recruitment_1_1.exit') : t('hr_recruitment_1_1.edit')}
+        </Button>
+      )}
+      {canEdit && (
+        <Button className="bg-white" onClick={handleSave}>
+          {t('hr_recruitment_1_1.save')}
+        </Button>
+      )}
+    </ol>
+  )}
+</nav>
 
-          {canEdit && <Button className="bg-white" onClick={toggleEdit}>
-            {isEditing ? <>  {t('hr_recruitment_1_1.exit')}</> : <> {t('hr_recruitment_1_1.edit')}</>}
-          </Button>}
 
-          {canEdit && <Button className="bg-white" onClick={handleSave}>
-            {t('hr_recruitment_1_1.save')}
-          </Button>}
-
-        </ol>
-      </nav>
+      {isMobile && <>  <ol className="flex items-center gap-1 text-sm text-gray-700 mb-3"><li className="cursor-pointer ">
+        <CustomTagSyn status={formData?.synchronize} />
+      </li>
+      <li className="cursor-pointer">
+        <CustomTagForm status={formData?.status_form} />
+      </li></ol></>}
       {canEdit &&
 
         <Space direction="vertical" className="mb-3">
@@ -528,18 +597,7 @@ export default function DetailUserHrRecruitment({ permissions }) {
                   <HourglassOutlined style={{ marginRight: 8 }} />
                   {t('hr_recruitment_1_1.interviewed')}
                 </Option>
-                <Option value="waiting_result" key="waiting_result">
-                  <CheckCircleOutlined style={{ marginRight: 8 }} />
-                  {t('hr_recruitment_1_1.waiting_result')}
-                </Option>
-                <Option value="accepted" key="accepted">
-                  <CheckOutlined style={{ marginRight: 8, color: 'green' }} />
-                  {t('hr_recruitment_1_1.accepted')}
-                </Option>
-                <Option value="rejected" key="rejected">
-                  <CloseCircleOutlined style={{ marginRight: 8, color: 'red' }} />
-                  {t('hr_recruitment_1_1.rejected')}
-                </Option>
+                
               </Select>
             </Col>
 
@@ -548,7 +606,7 @@ export default function DetailUserHrRecruitment({ permissions }) {
           </Row>
         </Space>
       }
-      <Row gutter={16}>
+      <Row gutter={16} className=" h-screen overflow-auto">
         <Col xs={24} sm={24} md={14}>
           <div className="border background bg-white rounded-lg p-6 h-screen overflow-auto scroll-container cursor-pointer">
             <ViewDetailUserHrRecruitment
@@ -563,7 +621,7 @@ export default function DetailUserHrRecruitment({ permissions }) {
           </div>
         </Col>
 
-        <Col xs={24} sm={24} md={10}>
+        <Col xs={24} sm={24} md={10} className=" pt-5 lg:pt-0">
           <div className="divide-y h-screen overflow-auto border  scroll-container cursor-pointer pb-24 divide-gray-100 rounded-xl   bg-white">
             <details
               className="group p-3 [&_summary::-webkit-details-marker]:hidden"

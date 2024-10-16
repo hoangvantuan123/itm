@@ -81,7 +81,7 @@ export default function AddHR({ isOpen, onClose, fetchData }) {
       }
       open={isOpen}
       closable={false}
-      width={900}
+      width={600}
       extra={[
         <Button key="cancel" onClick={onClose}>
           {t('Hủy')}

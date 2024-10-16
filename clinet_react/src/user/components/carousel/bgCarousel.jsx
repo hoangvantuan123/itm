@@ -36,7 +36,7 @@ export default function BgCarousel() {
   useEffect(() => {
     preloadImages(images).then(() => {
       setIsLoading(false);
-      timeoutRef.current = setTimeout(nextSlide, 6000);
+      timeoutRef.current = setTimeout(nextSlide, 7000);
     });
 
     return () => resetTimeout();
@@ -45,7 +45,7 @@ export default function BgCarousel() {
   useEffect(() => {
     if (!isLoading) {
       resetTimeout();
-      timeoutRef.current = setTimeout(nextSlide, 6000);
+      timeoutRef.current = setTimeout(nextSlide, 7000);
     }
     return () => resetTimeout();
   }, [currentIndex, isLoading]);
@@ -59,7 +59,7 @@ export default function BgCarousel() {
   }
 
   return (
-    <div className="relative w-full h-full overflow-hidden rounded-2xl">
+    <div className="relative w-full h-full overflow-hidden ">
       <div
         className="flex transition-transform duration-1000 ease-in-out"
         style={{
@@ -78,7 +78,7 @@ export default function BgCarousel() {
         ))}
       </div>
 
-      <button
+     {/*  <button
         className="absolute left-5 top-1/2 transform -translate-y-1/2  text-white p-2 rounded-full"
         onClick={() =>
           setCurrentIndex((prevIndex) =>
@@ -93,7 +93,7 @@ export default function BgCarousel() {
         onClick={nextSlide}
       >
         ❯
-      </button>
+      </button> */}
 
       <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {images.map((_, index) => (

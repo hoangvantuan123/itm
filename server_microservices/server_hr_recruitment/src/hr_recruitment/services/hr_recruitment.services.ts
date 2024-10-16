@@ -39,7 +39,6 @@ export class HrRecruitmentServices {
     } catch (error) {
       this.logger.error('Error creating personnel with details', error.stack);
 
-      // Trả về lỗi rõ ràng để biết được lý do thất bại.
       return {
         success: false,
         message: error.message || 'Failed to create personnel with details',

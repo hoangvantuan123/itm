@@ -75,7 +75,7 @@ export default function Login() {
       </Helmet>
       <div className="min-h-screen  flex flex-col lg:flex-row items-center justify-center overflow-hidden ">
         {/* Cột chứa ảnh */}
-        <div className="hidden lg:flex lg:w-1/2 p-2   h-screen items-center justify-center">
+        <div className="hidden lg:flex lg:w-1/2   h-screen items-center justify-center">
          {/*  <img
             src={BG}
             alt="Description of image"
@@ -90,7 +90,7 @@ export default function Login() {
             <img
               src={Logo}
               alt="Company Logo"
-              className=" w-60 h-auto mb-4 rounded-md"
+              className=" w-60 h-auto mb-4 "
             />
 
           </div>
@@ -116,7 +116,7 @@ export default function Login() {
               ]}
             >
               <Input
-                className="w-full p-3 text-sm "
+                 className="w-full p-3 text-sm hover:bg-transparent hover:border-gray-300 focus:!shadow-none"
                 size="large"
                 prefix={<UserOutlined className="site-form-item-icon" />}
                 placeholder="Employee ID"
@@ -129,7 +129,7 @@ export default function Login() {
               ]}
             >
               <Input.Password
-                className="w-full  p-3 text-sm "
+               className="w-full p-3 text-sm hover:bg-transparent hover:border-gray-300 focus:!shadow-none"
                 size="large"
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 placeholder="Password"

@@ -375,7 +375,7 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
         const response = await PutHrInfoId(id, submissionData)
         if (response.success) {
           fetchDataUserId()
-          message.success('Form nhập đã được đóng!')
+          message.success('Cập nhật thành công!')
         } else {
           message.error(`Cập nhật thất bại: ${response.message}`)
         }
