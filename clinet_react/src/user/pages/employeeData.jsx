@@ -11,6 +11,10 @@ import {
   Row,
   Col,
   DatePicker,
+  Card,
+  Pagination,
+  Spin,
+  Tag
 } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
@@ -29,10 +33,11 @@ import CustomTagSyn from '../components/tags/customTagSyn'
 import SynAction from '../components/action/synAction'
 import CustomTypePersonnel from '../components/tags/customTypePersonnel'
 import AddHR from '../components/add/addHr'
+import { MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 const { RangePicker } = DatePicker
 const { Content } = Layout
 const { Option } = Select
-
 const columnConfig = [
   { key: 'employee_code', label: 'CID' },
   { key: 'full_name', label: 'Họ và tên' },
@@ -109,7 +114,7 @@ const CloumnIcon = () => {
   )
 }
 
-export default function EmployeeDataiView({ permissions }) {
+export default function EmployeeDataiView({ permissions, isMobile }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const today = moment().startOf('day')
@@ -441,6 +446,38 @@ export default function EmployeeDataiView({ permissions }) {
     setIsModalOpenAddHr(false)
   }
 
+  const renderKanban = () => {
+    return (
+      <div className="pb-20">
+        <Row gutter={16}>
+          {data.map((item) => (
+            <Col span={24} key={item?.id} style={{ marginBottom: 16 }}>
+              <Card size="small" title={item?.full_name} onClick={() => handleNavigateToDetail(item)} extra={ <> </>}>
+                <p>
+                  <MailOutlined style={{ marginRight: 8 }} />
+                  {item?.email}
+                </p>
+                <p>
+                  <PhoneOutlined style={{ marginRight: 8 }} />
+                  {item?.phone_number}
+                </p>
+                <p>
+                  <UserOutlined style={{ marginRight: 8 }} />
+                  {item?.position}
+                </p>
+                <p className="mt-2">
+                <CustomTagSyn status={item?.synchronize} /> <CustomTagSyn status={item?.synchronize_erp} />
+                </p>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+
+
+      </div>
+    );
+  };
+
   return (
     <div className="w-full h-screen flex flex-col bg-white">
       <Helmet>
@@ -509,7 +546,7 @@ export default function EmployeeDataiView({ permissions }) {
             >
               <CloumnIcon />
             </Button>
-            {selectedRowKeys != null && selectedRowKeys.length > 0 &&   canEdit &&(
+            {selectedRowKeys != null && selectedRowKeys.length > 0 && canEdit && (
               <SynAction
                 fetchData={fetchData}
                 selectedRowKeys={selectedRowKeys}
@@ -536,11 +573,21 @@ export default function EmployeeDataiView({ permissions }) {
         onClose={closeModalAddHr}
         fetchData={fetchData}
       />
-      <Layout className="flex-1 overflow-auto bg-white p-2">
-        {renderTable()}
-        {renderDetailModal()}
-        {renderColumnVisibilityDrawer()}
+
+<Layout>
+        <Content className="flex-1 overflow-auto bg-white p-2">
+          {isMobile ? (
+            renderKanban()
+          ) : (
+            <div>
+              {renderTable()}
+              {renderDetailModal()}
+              {renderColumnVisibilityDrawer()}
+            </div>
+          )}
+        </Content>
       </Layout>
+     
     </div>
   )
 }

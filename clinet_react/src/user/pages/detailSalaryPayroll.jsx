@@ -1,11 +1,10 @@
-
 import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 import { Typography, Table, Layout, Row, Col, Card, Empty, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import { GetHrSalaryId } from '../../features/hrSalary/getHrSalaryId';
+import { GetHrSalaryCidId } from '../../features/hrSalary/getHrSalaryCidID';
 import 'moment/locale/vi';
 import '../../static/css/scroll_container.css';
 import { debounce } from 'lodash';
@@ -13,7 +12,7 @@ import Spinner from './load'
 const { Title } = Typography;
 const { Content } = Layout;
 
-const DetailSalaryUser = React.memo(({ permissions }) => {
+const DetailPayrollUser = React.memo(({ permissions }) => {
     const userFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'))
     const CID = userFromLocalStorage.employeeCode || 0
     const { t } = useTranslation();
@@ -29,7 +28,7 @@ const DetailSalaryUser = React.memo(({ permissions }) => {
         }
         setLoading(true);
         try {
-            const response = await GetHrSalaryId(userId);
+            const response = await GetHrSalaryCidId(userId, CID);
             if (response.success && response.data.status) {
                 setFormData(response.data.data);
             } else {
@@ -111,8 +110,9 @@ const DetailSalaryUser = React.memo(({ permissions }) => {
     ], []);
 
     const handleNavigateToBack = () => {
-        navigate(`/u/action=20/data-salary`);
+        navigate(`/u/action=7/payroll`);
     };
+
     return (
         <div className="w-full h-screen overflow-auto bg-white p-3  pb-24">
             <Helmet>
@@ -264,5 +264,4 @@ const DetailSalaryUser = React.memo(({ permissions }) => {
     );
 });
 
-export default DetailSalaryUser;
-
+export default DetailPayrollUser;

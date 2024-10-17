@@ -487,7 +487,7 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
         <Row gutter={16}>
           {data.map((item) => (
             <Col span={24} key={item?.id} style={{ marginBottom: 16 }}>
-              <Card size="small" title={item?.full_name} onClick={() => handleNavigateToDetail(item)} extra={<CustomTagSyn status={item?.synchronize} />}>
+              <Card size="small" title={item?.full_name} onClick={() => handleNavigateToDetail(item)} extra={ <> </>}>
                 <p>
                   <MailOutlined style={{ marginRight: 8 }} />
                   {item?.email}
@@ -500,6 +500,11 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
                   <UserOutlined style={{ marginRight: 8 }} />
                   {item?.position}
                 </p>
+                <p className="mt-2">
+                <CustomTagSyn status={item?.synchronize} />
+                <CustomTagInter status={item?.applicant_status} />
+                </p>
+                
               </Card>
             </Col>
           ))}
@@ -507,11 +512,7 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
 
 
 
-        {loading && (
-          <div className="loading-container">
-            <Spin size="large" />
-          </div>
-        )}
+ 
       </div>
     );
   };

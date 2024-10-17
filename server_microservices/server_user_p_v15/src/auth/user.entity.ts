@@ -68,7 +68,7 @@ export class Users {
   @Column({ nullable: true })
   nextRankId: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true,  unique: true})
   employeeCode: string;
 
   @Column({ nullable: true })
@@ -76,6 +76,7 @@ export class Users {
 
   @Column({ nullable: true })
   language: string;
+
 
   beforeInsert() {
     this.hashPassword();

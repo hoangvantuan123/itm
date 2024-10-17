@@ -314,7 +314,10 @@ const Sidebar = ({ permissions }) => {
   const location = useLocation()
   const userFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'))
   const userNameLogin = userFromLocalStorage?.login || 'none'
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(() => {
+    const savedState = localStorage.getItem('COLLAPSED_STATE')
+    return savedState ? JSON.parse(savedState) : false
+  })
   const [isMobile, setIsMobile] = useState(false)
   const { t } = useTranslation()
 
@@ -326,7 +329,11 @@ const Sidebar = ({ permissions }) => {
   )
 
   const toggleSidebar = () => {
-    setCollapsed(!collapsed)
+    setCollapsed(prevState => {
+      const newState = !prevState
+      localStorage.setItem('COLLAPSED_STATE', JSON.stringify(newState))
+      return newState
+    })
   }
 
   useEffect(() => {

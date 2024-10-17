@@ -25,6 +25,8 @@ export class HrSalary {
 
     @Column({ type: 'float', nullable: true })
     total: number;
+    @Column({ type: 'float', nullable: true })
+    sub_total: number; /* Tổng ngày công */
 
     @Column({ type: 'float', nullable: true })
     normal_150: number;
@@ -63,7 +65,7 @@ export class HrSalary {
     tong_ngay_nghi: number;
 
     @Column({ type: 'float', nullable: true })
-    paid_leave: number;
+    paid_leave: number; /* nghỉ phép có lương */
 
     @Column({ type: 'float', nullable: true })
     nghi_co_phep_khong_luong: number;
@@ -90,10 +92,43 @@ export class HrSalary {
     /* add  */
 
     @Column({ type: 'float', nullable: true })
-    offcical: number;
+    offcical: number;   /* Chính thức */
+     
+    @Column({ type: 'float', nullable: true })
+    probation: number; /* Thử việc */
+
+    @Column({ type: 'float', nullable: true })
+    annual_leave: number; /* Nghỉ phép*/
+
+    @Column({ type: 'float', nullable: true })
+    working_hour: number; /* Tổng số làm việc hành chính*/
+    @Column({ type: 'float', nullable: true })
+    frequency: number; /* Tần suất -  Số lần*/
+
+
+    @Column({ type: 'float', nullable: true })
+    total_time: number; /* Tổng số giờ*/
+    @Column({ type: 'float', nullable: true })
+    total_check_in_or_check_out: number; /* Tổng số lần không chấm giờ ra, giờ vào*/
+
     
     @Column({ type: 'float', nullable: true })
-    probation: number;
+    no_data_check_for_check_in: number; /* no_data_check_for_check_in*/
+
+    
+
+    @Column({ type: 'float', nullable: true })
+    non_permisson_unpaid: number; /* Nghỉ  không phép*/
+
+    
+    @Column({ type: 'float', nullable: true })
+    normal_unpaid: number; /* Nghỉ  không lương + Nghỉ có BHXH */
+    
+    @Column({ type: 'float', nullable: true })
+    sub_total_normal: number; /* Tổng số ngày nghỉ không hưởng lương */
+
+    @Column({ type: 'float', nullable: true })
+    psg_night: number; /*Thời gian nghỉ ca đêm PSG*/
 
     @Column({ type: 'json', nullable: true })
     start: Record<string, string>;

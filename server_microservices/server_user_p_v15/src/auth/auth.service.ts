@@ -24,7 +24,7 @@ export class AppService {
     return bcrypt.hash(password, saltRounds);
   }
   async registerUser(registrationData: RegistrationDto): Promise<Users> {
-    const { login, password, nameUser, language } = registrationData;
+    const { login, password, nameUser, language , cid} = registrationData;
     const existingUser = await this.userService.findUserByEmail(login);
     if (existingUser) {
       throw new Error('User with this login already exists');
@@ -36,6 +36,7 @@ export class AppService {
     newUser.password = hashedPassword;
     newUser.nameUser = nameUser;
     newUser.language = language;
+    newUser.employeeCode = cid;
 
     const savedUser = await this.userService.createUser(newUser);
     return savedUser;
@@ -79,6 +80,7 @@ export class AppService {
           id: user.id,
           login: user.login,
           partnerId: user.partnerId,
+          employeeCode: user.employeeCode
         },
         jwtConstants.secret,
       );
@@ -88,6 +90,7 @@ export class AppService {
         partnerId: user.partnerId,
         language: user.language,
         active: user.active,
+        employeeCode: user.employeeCode
       };
 
       return {

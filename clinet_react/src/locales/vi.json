@@ -386,6 +386,34 @@
     "muon_phep": "Muộn phép",
     "synchronize": "Sync",
     "data": "Dữ liệu bảng công",
-    "add": "Thêm"
+    "add": "Thêm",
+    "name_user" :"Họ và Tên" ,
+    "de_salary" :"BẢNG LƯƠNG",
+    "cid_name" : "Mã nhân viên",
+    "working_status" : "TÌNH TRẠNG LÀM VIỆC",
+    "over_time" : "LÀM THÊM GIỜ",
+    "category" : "Hạng mục",
+    "value": "Giá trị",
+    "official" : "Chính thức",
+    "trial" : "Thử việc" ,
+    "actual_working_days" : "Ngày làm việc thực tế" , 
+    "annual_leave" : "Nghỉ phép",
+    "leave_with_pay" : "Nghỉ hưởng lương" , 
+    "sub_total" : "Tổng ngày công",
+    "working_hour" :"Tổng số giờ làm việc hành chính",
+    "non_permisson_unpaid" : "Nghỉ không phép" , 
+    "normal_unpaid" : "Nghỉ không lương + Nghỉ hưởng BHXH" , 
+    "sub_total_normal" : "Tổng số ngày nghỉ không hưởng lương" , 
+    "psg_night" : "Thời gian nghỉ ca đêm PSG",
+    "total_time": "Tổng số giờ" ,
+    "frequency" : "Tần suất - Số lần",
+    "total_check_in_or_check_out" : "Tổng số lần không chấm giờ ra, giờ vào",
+    "no_data_check_for_check_in" : "No data for check in",
+    "late_in_early_out" :"ĐI MUỘN, VỀ SỚM",
+    "detailed_work_table" :"BẢNG CÔNG CHI TIẾT"
+
+
+
+
   }
 }

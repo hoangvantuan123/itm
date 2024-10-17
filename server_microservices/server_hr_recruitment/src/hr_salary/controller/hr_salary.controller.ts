@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Param, Body, Query, Delete } from '@nestjs/common';
+import { Controller, Post, Get, Param, Body, Query, Delete, BadRequestException } from '@nestjs/common';
 import { HrSalaryService } from '../services/hr_salary.services';
 import { HrSalary } from '../entity/hr_salary.entity';
 
@@ -67,4 +67,16 @@ export class HrSalaryController {
   async getPersonnel(@Param('id') id: number) {
     return this.hrSalaryService.getHrSalaryById(id);
   }
+
+  @Get('detail/uers-lock/:id/:cid')
+  async getPersonnelCidID(
+    @Param('id') id: number,
+    @Param('cid') cid: string
+  ) {
+    if (!id || !cid) {
+      throw new BadRequestException('Missing id or cid');
+    }
+    return this.hrSalaryService.getHrSalaryByIdAndCid(id, cid);
+  }
+
 }

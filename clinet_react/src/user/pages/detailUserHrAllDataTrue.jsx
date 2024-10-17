@@ -484,31 +484,7 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
 
         <Col xs={24} sm={24} md={10}>
           <div className="divide-y h-screen overflow-auto border  scroll-container cursor-pointer pb-20 divide-gray-100 rounded-xl   bg-white">
-            <details
-              className="group p-3 [&_summary::-webkit-details-marker]:hidden"
-              open
-            >
-              <summary className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900">
-                <h2 className="text-base font-medium">Thông tin khác</h2>
-
-                <span className="relative size-5 shrink-0">
-                  <svg
-                    className="size-5 shrink-0 transition duration-300 group-open:-rotate-180"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </span>
-              </summary>
-              <div className="">
+          <div className=" p-4">
                 {isEditing ? (
                   <>
                     {' '}
@@ -751,7 +727,6 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
                   </>
                 )}
               </div>
-            </details>
           </div>
         </Col>
       </Row>

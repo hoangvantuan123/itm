@@ -31,13 +31,14 @@ export default function AddUser({ isOpen, onClose, fetchData }) {
   const [form] = Form.useForm()
 
   const handleFinish = async (values) => {
-    const { fullname, username, password } = values
+    const { fullname, username, password , cid} = values
     try {
       const data = await registerUser({
         login: username,
         password: password,
         nameUser: fullname,
         language: 'vi',
+        cid : cid
       })
       message.success(t('Đăng ký tài khoản thành công'))
       form.resetFields()
@@ -110,34 +111,17 @@ export default function AddUser({ isOpen, onClose, fetchData }) {
           >
             <Input.Password size="large" placeholder={t('Nhập mật khẩu')} />
           </Form.Item>
-
           <Form.Item
-            label={t('Tài khoản liên kết đến nhân viên')}
-            name="employeeAccount"
+            label={t('Mã nhân viên')}
+            name="cid"
             rules={[
-              {
-                required: false,
-                message: t('Vui lòng chọn tài khoản liên kết'),
-              },
+              { required: true, message: t('Vui lòng nhập mã nhân viên của người dùng') },
             ]}
             style={{ textAlign: 'left' }}
           >
-            <Select
-              showSearch
-              placeholder={t('Chọn tài khoản nhân viên')}
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                option?.children?.toLowerCase().includes(input.toLowerCase())
-              }
-              size="large"
-            >
-              <Option value="employee1">{t('Nhân viên 1')}</Option>
-              <Option value="employee2">{t('Nhân viên 2')}</Option>
-              <Option value="employee3">{t('Nhân viên 3')}</Option>
-              <Option value="employee4">{t('Nhân viên 4')}</Option>
-              <Option value="employee5">{t('Nhân viên 5')}</Option>
-            </Select>
+            <Input size="large" placeholder={t('Nhập mã nhân viên')} />
           </Form.Item>
+       
         </Card>
       </Form>
     </Drawer>

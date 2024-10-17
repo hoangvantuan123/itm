@@ -364,11 +364,14 @@ export default function PhoneGeneralSettings() {
                 <p className="mt-2 max-w-md cursor-pointer text-pretty text-sm text-indigo-500">
                   <Link to="/u/action=17/employee-interview-data">Quản lý tuyển dụng</Link>
                 </p>
+                <p className="mt-2 max-w-md cursor-pointer text-pretty text-sm text-indigo-500">
+                  <Link to="/u/action=20/data-employee">Danh sách nhân sự</Link>
+                </p>
 
                 <p className="mt-2 max-w-md cursor-pointer text-pretty text-sm text-indigo-500">
                   <Link to="/u/action=20/data-salary">Quản lý chấm công</Link>
                 </p>
-             
+
               </div>
               <div className="h-32 rounded-lg ">
                 <h3 className="mt-2 max-w-md cursor-pointer text-pretty  mb-4 text-base">

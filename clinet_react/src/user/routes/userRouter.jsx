@@ -50,6 +50,7 @@ import DownloadView from '../pages/download'
 import HrSalary from '../pages/salary'
 import DetailSalaryUser from '../pages/detailSalaryUser'
 import Payroll from '../pages/payroll'
+import DetailPayrollUser from '../pages/detailSalaryPayroll'
 const { Content } = Layout
 
 const UserRouter = () => {
@@ -282,7 +283,21 @@ const UserRouter = () => {
                           'work-1-2',
                           'view',
                         ) ? (
-                          <Payroll  permissions={userPermissions} isMobile={isMobile}/>
+                          <Payroll permissions={userPermissions} isMobile={isMobile} />
+                        ) : (
+                          <Unauthorized />
+                        )
+                      }
+                    />
+                    <Route
+                      path="u/action=7/payroll/detail/:id"
+                      element={
+                        checkActionPermission(
+                          userPermissions,
+                          'work-1-2',
+                          'view',
+                        ) ? (
+                          <DetailPayrollUser permissions={userPermissions} isMobile={isMobile}/>
                         ) : (
                           <Unauthorized />
                         )
@@ -385,7 +400,7 @@ const UserRouter = () => {
                           'hr-recruitment-1-3',
                           'view',
                         ) ? (
-                          <EmployeeDataiView permissions={userPermissions} />
+                          <EmployeeDataiView permissions={userPermissions} isMobile={isMobile} />
                         ) : (
                           <Unauthorized />
                         )

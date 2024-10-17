@@ -11,6 +11,8 @@ export default function ShowResult({
     note,
     setNote,
     id,
+    stateNote,
+    setStateNote,
     fetchDataUserId
 }) {
     const [interviewers, setInterviewers] = useState("");
@@ -51,6 +53,7 @@ export default function ShowResult({
             const response = await PutUserInter(id, submissionData)
             if (response.success) {
                 message.success('Cập nhật thành công!')
+                setStateNote(note)
                 handleClose()
                 fetchDataUserId()
             } else {
@@ -64,16 +67,8 @@ export default function ShowResult({
         <Modal
             title={t('Kết quả phỏng vấn')}
             open={isOpen}
-            onCancel={handleClose}
             width={900}
             footer={[
-                <Button
-                    key="cancel"
-                    onClick={handleClose}
-                    style={{ backgroundColor: '#f5f5f5', borderColor: '#d9d9d9' }}
-                >
-                    {t('Thoát')}
-                </Button>,
                 <Button
                     key="submit"
                     type="primary"
@@ -87,7 +82,7 @@ export default function ShowResult({
             <Row gutter={16}>
                 <Col span={12}>
                     <Title level={5}>{t('Người phỏng vấn')}</Title>
-                    <Input  size="large" value={interviewers} rows={6} onChange={handleInterviewers} allowClear />
+                    <Input size="large" value={interviewers} rows={6} onChange={handleInterviewers} allowClear />
                 </Col>
                 <Col span={12}>
                     <Title level={5}>{t('Kết quả phỏng vấn')}</Title>
@@ -97,7 +92,7 @@ export default function ShowResult({
                     </Radio.Group>
                 </Col>
             </Row>
-           
+
             <Row className="mt-3">
                 <Col span={24}>
                     <Title level={5}>{t('Ghi chú')}</Title>

@@ -165,13 +165,14 @@ export default function UserProfile({
     </Menu>
   )
   const onFinish = (values) => {
-    const { nameUser, login, language, active } = values
+    const { nameUser, login, language, active , employeeCode} = values
 
     const data = {
       nameUser,
       login,
       language,
       active,
+      employeeCode
     }
 
     const promises = [PutUserID(user?.id, data)]
@@ -225,6 +226,7 @@ export default function UserProfile({
         login: user?.login,
         language: user?.language,
         active: user?.active,
+        employeeCode: user?.employeeCode
       })
     }
   }, [isModalVisible, user, form])
@@ -371,6 +373,19 @@ export default function UserProfile({
                     <Option value="en">Tiếng Anh</Option>
                     <Option value="fr">Tiếng Pháp</Option>
                   </Select>
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+                <Form.Item
+                  label={t('Mã nhân viên')}
+                  name="employeeCode"
+                  initialValue={user?.employeeCode}
+                  rules={[
+                    { required: true, message: t('Vui lòng nhập mã nhân viên của người dùng') },
+                  ]}
+                  style={{ textAlign: 'left' }}
+                >
+                  <Input size="large" placeholder={t('Nhập mã nhân viên')} />
                 </Form.Item>
               </Col>
             </Row>

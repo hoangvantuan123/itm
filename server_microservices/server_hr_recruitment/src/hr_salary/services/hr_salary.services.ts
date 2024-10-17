@@ -322,5 +322,35 @@ export class HrSalaryService {
         }
     }
 
+    async getHrSalaryByIdAndCid(id: number, cid: string): Promise<any> {
+        try {
+            const inter = await this.hrSalaryRepository.findOne({
+                where: { 
+                    id, 
+                    cid 
+                }
+            });
+    
+            if (!inter) {
+                return {
+                    status: false,
+                    data: [],
+                };
+            }
+    
+            return {
+                status: true,
+                data: inter,
+            };
+        } catch (error) {
+            console.error('Error fetching personnel:', error);
+            return {
+                status: false,
+                data: [],
+            };
+        }
+    }
+    
+
 
 }

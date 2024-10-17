@@ -223,24 +223,33 @@ export class HrRecruitmentServices {
 
 
   async delete(ids: number[]): Promise<{ success: boolean; message: string }> {
+    const BATCH_SIZE = 1000;
+  
+    if (!ids || ids.length === 0) {
+      return { success: false, message: 'No IDs provided for deletion.' };
+    }
+  
+    const idBatches: number[][] = [];
+    for (let i = 0; i < ids.length; i += BATCH_SIZE) {
+      idBatches.push(ids.slice(i, i + BATCH_SIZE));
+    }
+  
     try {
-      const personnels = await this.personnelRepository.findByIds(ids);
-
-      if (personnels.length === 0) {
-        throw new NotFoundException(`Personnel with ids ${ids.join(', ')} not found`);
-      }
-
-    
-      return {
-        success: true,
-        message: 'Personnels and related details deleted successfully',
-      };
+      await this.personnelRepository.manager.transaction(
+        async (transactionalEntityManager) => {
+          for (const batch of idBatches) {
+            await transactionalEntityManager.delete(
+              this.personnelRepository.target,
+              { id: In(batch) }
+            );
+          }
+        }
+      );
+  
+      return { success: true, message: 'Deletion completed successfully.' };
     } catch (error) {
-      this.logger.error(`Error deleting personnels: ${error.message}`, error.stack);
-      return {
-        success: false,
-        message: `Failed to delete personnels: ${error.message}`,
-      };
+      console.error('Error during deletion:', error);
+      return { success: false, message: 'Error occurred during deletion.' };
     }
   }
 

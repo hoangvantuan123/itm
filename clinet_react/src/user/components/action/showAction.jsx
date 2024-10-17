@@ -23,7 +23,7 @@ const SettingIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       id="Settings--Streamline-Solar-Ar"
-      className="w-4 h-4"
+        className="w-4 h-4 opacity-65"
     >
       <path
         stroke="#000000"

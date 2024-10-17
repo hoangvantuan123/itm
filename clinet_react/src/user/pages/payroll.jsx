@@ -266,7 +266,7 @@ export default function Payroll({ permissions, isMobile }) {
     }
 
     const handleNavigateToDetail = (record) => {
-        navigate(`/u/action=20/data-salary/detail/${record.id}`)
+        navigate(`/u/action=7/payroll/detail/${record.id}`)
     }
 
     const columns = useMemo(() => [
