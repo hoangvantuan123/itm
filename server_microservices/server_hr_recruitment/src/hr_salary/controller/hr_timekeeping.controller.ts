@@ -28,9 +28,10 @@ export class HrTimeKeepingController {
     async getTimekeepingByCid(
         @Query('cid') cid: string, 
         @Query('month_year') month_year: string
-    ): Promise<HrTimekeeping[]> {
+    ): Promise<any> {
         return this.hrTimekeepingService.findByCidAndMonthYear(cid, month_year);
     }
+    
     
 
   

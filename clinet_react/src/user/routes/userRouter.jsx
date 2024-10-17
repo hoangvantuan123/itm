@@ -269,7 +269,7 @@ const UserRouter = () => {
                           'work-1-1',
                           'view',
                         ) ? (
-                          <TimeTracking />
+                          <TimeTracking  isMobile={isMobile} />
                         ) : (
                           <Unauthorized />
                         )

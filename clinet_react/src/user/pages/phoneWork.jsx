@@ -356,12 +356,7 @@ export default function PhoneWork() {
           {t('Calendar')}
         </span>
       </Menu.Item>
-      <Menu.Item key="table" onClick={() => setViewMode('table')}>
-        <span className="flex items-center gap-2">
-          <TableIcon />
-          {t('Table')}
-        </span>
-      </Menu.Item>
+     
     </Menu>
   )
   return (
@@ -380,13 +375,13 @@ export default function PhoneWork() {
             </Button>
           </>
         )}
-
+{/* 
        
         <Dropdown overlay={menu} trigger={['click']}>
           <Button className=" border-none p-2 bg-none shadow-none">
             <CalendarIcon />
           </Button>
-        </Dropdown>
+        </Dropdown> */}
       </div>
       <div>
         {viewMode === 'calendar' ? (

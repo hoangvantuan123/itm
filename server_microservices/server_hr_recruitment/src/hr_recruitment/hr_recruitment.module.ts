@@ -15,17 +15,15 @@ import { HrAllDataController } from './controller/hr_all_data.services.controlle
 import { HrInterServices } from './services/hr_inter.services';
 import { HrInter } from './entity/hr_inter.entity';
 import { HrInerController } from './controller/hr_inter.controller';
-import { HrTimekeeping } from './entity/hr_timekeeping.entity';
-import { HrTimeKeepingController } from './controller/hr_timekeeping.controller';
-import { HrTimeKeepingServices } from './services/hr_timekeeping.services';
+
 @Module({
   imports: [
     DatabaseModule,
-    TypeOrmModule.forFeature([ Personnel , InterviewResult , HrInterviewCandidate, HrInter, HrTimekeeping]),
+    TypeOrmModule.forFeature([ Personnel , InterviewResult , HrInterviewCandidate, HrInter]),
    
   ],
-  providers: [HrRecruitmentServices, HrInterviewServices, HrInterviewCandidatesService, HrAllDataService, HrInterServices, HrTimeKeepingServices],
-  controllers: [HrRecruitmentController, HrInterviewController, HrInterviewCandidatesController, HrAllDataController, HrInerController, HrTimeKeepingController],
+  providers: [HrRecruitmentServices, HrInterviewServices, HrInterviewCandidatesService, HrAllDataService, HrInterServices],
+  controllers: [HrRecruitmentController, HrInterviewController, HrInterviewCandidatesController, HrAllDataController, HrInerController],
   exports: [],
 })
 export class HrRecruitment { }

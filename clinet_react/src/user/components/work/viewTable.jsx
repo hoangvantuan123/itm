@@ -1,220 +1,140 @@
-import { useState } from 'react'
-import { Table, Input, Row, Col } from 'antd'
-import { useTranslation } from 'react-i18next'
-import moment from 'moment'
+import { useState } from 'react';
+import { Table, Input, Row, Col, Typography, Statistic, Card } from 'antd';
+import { useTranslation } from 'react-i18next';
+import moment from 'moment';
+import { ClockCircleOutlined, UserOutlined } from '@ant-design/icons';
+import { Bar } from 'react-chartjs-2'; 
+import { Chart, registerables } from 'chart.js';
 
-const salaryData = [
-  // Dữ liệu mẫu
-  {
-    key: '1',
-    date: '2024-09-01',
-    timeIn: '08:00',
-    timeOut: '17:00',
-    status: 'Present',
-  },
-  {
-    key: '2',
-    date: '2024-09-02',
-    timeIn: '08:15',
-    timeOut: '17:05',
-    status: 'Present',
-  },
-  {
-    key: '3',
-    date: '2024-09-03',
-    timeIn: '09:00',
-    timeOut: '18:00',
-    status: 'Present',
-  },
-  {
-    key: '4',
-    date: '2024-09-04',
-    timeIn: '08:30',
-    timeOut: '17:30',
-    status: 'Present',
-  },
-  {
-    key: '5',
-    date: '2024-09-05',
-    timeIn: '08:00',
-    timeOut: '12:00',
-    status: 'Half Day',
-  },
-  {
-    key: '6',
-    date: '2024-09-06',
-    timeIn: 'N/A',
-    timeOut: 'N/A',
-    status: 'Absent',
-  },
-  {
-    key: '7',
-    date: '2024-09-07',
-    timeIn: '08:00',
-    timeOut: '17:00',
-    status: 'Present',
-  },
-  {
-    key: '8',
-    date: '2024-09-08',
-    timeIn: '08:00',
-    timeOut: '17:00',
-    status: 'Present',
-  },
-  {
-    key: '9',
-    date: '2024-09-09',
-    timeIn: '08:00',
-    timeOut: '16:00',
-    status: 'Present',
-  },
-  {
-    key: '10',
-    date: '2024-09-10',
-    timeIn: '09:00',
-    timeOut: '18:00',
-    status: 'Present',
-  },
-]
+Chart.register(...registerables);
 
-export default function TableView() {
-  const { t } = useTranslation()
-  const [searchTerm, setSearchTerm] = useState('')
+const { Title } = Typography;
 
-  const filteredData = salaryData.filter((item) =>
-    item.date.includes(searchTerm),
+export default function TableView({ salaryData }) {
+  const { t } = useTranslation();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Filter and transform salary data
+  const filteredData = salaryData.flatMap((item) =>
+    item.records.map((record) => ({
+      date: item.date,
+      id: record.id,
+      cid: record.cid,
+      check_in: moment(record.check_in).format('HH:mm'),
+      create_date: moment(record.create_date).format('DD/MM/YYYY HH:mm'),
+      write_date: moment(record.write_date).format('DD/MM/YYYY HH:mm'),
+      working_hours: 8.5, // Placeholder for actual working hours
+    })),
   )
+  .filter((item) => item.date.includes(searchTerm))
+  .sort((a, b) => moment(b.date) - moment(a.date));
 
-  const totalWorkingHours = filteredData.reduce((total, record) => {
-    const timeIn = moment(record.timeIn, 'HH:mm')
-    const timeOut = moment(record.timeOut, 'HH:mm')
+  // Calculate totals
+  const totalWorkingHours = filteredData.reduce((total, record) => total + record.working_hours, 0);
+  const totalLateDays = filteredData.filter((record) =>
+    moment(record.check_in, 'HH:mm').isAfter(moment('08:00', 'HH:mm'))
+  ).length;
+  const totalAbsentDays = filteredData.filter(record => !record.check_in).length;
 
-    if (timeIn.isValid() && timeOut.isValid()) {
-      const duration = moment.duration(timeOut.diff(timeIn))
-      return total + duration.asHours()
-    }
-    return total
-  }, 0)
-
-  const totalLateDays = filteredData.filter(
-    (record) =>
-      moment(record.timeIn, 'HH:mm').isValid() &&
-      moment(record.timeIn, 'HH:mm').isAfter(moment('08:00', 'HH:mm')),
-  ).length
-
-  const totalAbsentDays = filteredData.filter(
-    (record) => record.status === 'Absent',
-  ).length
-
+  // Table columns
   const columns = [
     {
       title: t('Date'),
       dataIndex: 'date',
       key: 'date',
+      sorter: (a, b) => moment(a.date).diff(moment(b.date)),
+      render: date => <span style={{ fontWeight: 'bold' }}>{date}</span>,
     },
     {
-      title: t('Time In'),
-      dataIndex: 'timeIn',
-      key: 'timeIn',
+      title: t('Check In'),
+      dataIndex: 'check_in',
+      key: 'check_in',
       render: (text, record) => (
-        <span
-          style={{
-            color:
-              record.timeIn &&
-              moment(record.timeIn, 'HH:mm').isBefore(moment('08:00', 'HH:mm'))
-                ? 'green'
-                : 'red',
-          }}
-        >
-          {text}
-        </span>
-      ),
-    },
-    {
-      title: t('Time Out'),
-      dataIndex: 'timeOut',
-      key: 'timeOut',
-      render: (text, record) => (
-        <span
-          style={{
-            color:
-              record.timeOut &&
-              moment(record.timeOut, 'HH:mm').isAfter(moment('17:00', 'HH:mm'))
-                ? 'red'
-                : 'green',
-          }}
-        >
+        <span style={{ color: moment(record.check_in, 'HH:mm').isBefore(moment('08:00', 'HH:mm')) ? 'green' : 'red' }}>
           {text}
         </span>
       ),
     },
     {
       title: t('Working Hours'),
-      render: (text, record) => {
-        const timeIn = moment(record.timeIn, 'HH:mm')
-        const timeOut = moment(record.timeOut, 'HH:mm')
+      dataIndex: 'working_hours',
+      key: 'working_hours',
+      render: (hours) => <span>{hours.toFixed(1)} h</span>,
+    },
+  ];
 
-        if (timeIn.isValid() && timeOut.isValid()) {
-          const duration = moment.duration(timeOut.diff(timeIn))
-          return `${duration.hours()}h ${duration.minutes()}m`
-        }
-        return 'N/A'
+  // Chart data
+  const chartData = {
+    labels: filteredData.map(item => item.date),
+    datasets: [{
+      label: t('Working Hours'),
+      data: filteredData.map(item => item.working_hours),
+      backgroundColor: 'rgba(75,192,192,0.4)',
+      borderColor: 'rgba(75,192,192,1)',
+      borderWidth: 1,
+    }],
+  };
+
+  // Chart options
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
       },
-      key: 'workingHours',
     },
-    {
-      title: t('Status'),
-      dataIndex: 'status',
-      key: 'status',
-    },
-  ]
+  };
 
   return (
-    <div className="w-full h-screen overflow-auto  pb-36 p-3">
-      <Row gutter={[16, 16]} className="mb-4">
-        <Col xs={12} sm={6}>
-          <div className="border border-gray-300 rounded-lg bg-white p-4 text-center">
-            <strong>{t('Total Working Hours')}</strong>
-            <div>{totalWorkingHours.toFixed(2)}h</div>
-          </div>
+    <div className="w-full h-screen overflow-auto flex flex-col p-3" style={{ height: 'calc(100vh - 20px)' }}>
+      <Title level={4} className="text-center mb-4">{t('Attendance Overview')}</Title>
+      <Row gutter={[16, 16]} style={{ flex: 1 }}>
+        <Col xs={24} md={12} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <Row gutter={[16, 16]} justify="space-around" align="middle">
+            {[
+              { title: t('Total Working Hours'), value: totalWorkingHours.toFixed(1), suffix: 'h', color: '#3f8600', icon: <ClockCircleOutlined />, bgColor: '#e6f7ff', borderColor: '#91d5ff' },
+              { title: t('Total Late Days'), value: totalLateDays, color: '#ff4d4f', icon: <UserOutlined />, bgColor: '#fff1f0', borderColor: '#ffccc7' },
+              { title: t('Total Days'), value: filteredData.length, color: '#3f8600', bgColor: '#f6ffed', borderColor: '#b7eb8f' }
+            ].map((stat, index) => (
+              <Col key={index} xs={12} sm={8}>
+                <Card bordered={false} style={{ backgroundColor: stat.bgColor, borderColor: stat.borderColor, textAlign: 'center' }}>
+                  <Statistic 
+                    title={stat.title} 
+                    value={stat.value} 
+                    prefix={stat.icon} 
+                    suffix={stat.suffix} 
+                    valueStyle={{ color: stat.color }} 
+                  />
+                </Card>
+              </Col>
+            ))}
+          </Row>
+          <Bar data={chartData} options={options} />
         </Col>
-        <Col xs={12} sm={6}>
-          <div className="border border-gray-300 rounded-lg bg-white p-4 text-center">
-            <strong>{t('Total Late Days')}</strong>
-            <div>{totalLateDays}</div>
-          </div>
-        </Col>
-        <Col xs={12} sm={6}>
-          <div className="border border-gray-300 rounded-lg bg-white p-4 text-center">
-            <strong>{t('Total Absent Days')}</strong>
-            <div>{totalAbsentDays}</div>
-          </div>
-        </Col>
-        <Col xs={12} sm={6}>
-          <div className="border border-gray-300 rounded-lg bg-white p-4 text-center">
-            <strong>{t('Total Days')}</strong>
-            <div>{filteredData.length}</div>
-          </div>
-        </Col>
-      </Row>
-      <Row style={{ marginBottom: 16 }}>
-        <Col span={24}>
-          <Input
-            placeholder={t('Search by date')}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+        <Col xs={24} md={12} style={{ display: 'flex', flexDirection: 'column' }}>
+          <Row style={{ marginBottom: 16 }}>
+            <Col span={24}>
+              <Input
+                placeholder={t('Search by date')}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{ borderRadius: '4px', marginBottom: '16px' }}
+              />
+            </Col>
+          </Row>
+          <Table
+            size="small"
+            columns={columns}
+            dataSource={filteredData}
+            pagination={false}
+            locale={{ emptyText: t('No Data') }}
+            scroll={{ x: true }}
+            bordered
+            rowClassName={(record, index) => index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}
+            className="cursor-pointer"
+            style={{ height: 'calc(100vh - 300px)', overflowY: 'scroll' }}
           />
         </Col>
       </Row>
-      <Table
-        columns={columns}
-        dataSource={filteredData}
-        pagination={false}
-        locale={{ emptyText: t('No Data') }}
-        scroll={{ x: true }}
-        bordered
-        className="bg-slate-50 cursor-pointer pb-0 md:pb-40"
-      />
     </div>
-  )
+  );
 }

@@ -14,6 +14,7 @@ import {
   CheckCircleOutlined,
   ExclamationCircleOutlined,
   CloseCircleOutlined,
+  LeftOutlined, RightOutlined
 } from '@ant-design/icons'
 import dayjs from 'dayjs'
 import 'dayjs/locale/vi'
@@ -25,10 +26,10 @@ import {
   TableOutlined,
   UnorderedListOutlined,
 } from '@ant-design/icons'
-
+import { GetTimekeepingUser } from '../../features/timekeeping/getTimeKeeping'
 import { Helmet } from 'react-helmet'
-import ListView from '../components/work/viewList'
 import TableView from '../components/work/viewTable'
+import moment from 'moment'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -283,282 +284,168 @@ const NotificationIcon = () => {
 
 
 
+export default function TimeTracking({ isMobile }) {
+  const userFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'));
+  const userId = userFromLocalStorage.id;
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const now = dayjs().tz('Asia/Ho_Chi_Minh');
 
-export default function TimeTracking() {
-  const userFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'))
-  const userNameLogin = userFromLocalStorage?.login || 'none'
-  const userId = userFromLocalStorage.id
-  const { t } = useTranslation()
+  const [value, setValue] = useState(() => now);
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [checkInOutHistory, setCheckInOutHistory] = useState([]);
+  const [viewModeList, setViewModeList] = useState('month'); // Default to 'month'
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedDate, setSelectedDate] = useState(now); // Đặt mặc định là ngày hiện tại
+  const [highlightedDate, setHighlightedDate] = useState(moment());
+  
 
-  // Lấy ngày hiện tại theo múi giờ Việt Nam
-  const now = dayjs().tz('Asia/Ho_Chi_Minh')
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const monthYear = `${String(selectedDate.month() + 1).padStart(2, '0')}-${selectedDate.year()}`;
+      const cid = "VM31122002"; // Replace with your actual ID
+      const response = await GetTimekeepingUser(cid, monthYear);
 
-  // Khai báo state
-  const [value, setValue] = useState(() => now)
-  const [selectedValue, setSelectedValue] = useState(() => now)
-  const [drawerVisible, setDrawerVisible] = useState(false)
-  const [checkInOutHistory, setCheckInOutHistory] = useState([]) // Dữ liệu chấm công cho ngày đã chọn
-  const [miniCalendarVisible, setMiniCalendarVisible] = useState(false)
-  const [viewMode, setViewMode] = useState('calendar')
-
-  const [isMobile, setIsMobile] = useState(false)
-  const navigate = useNavigate()
+      if (response.success) {
+        setData(response.data.data);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      console.error('Error fetching data:', err);
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth <= 820
-      setIsMobile(mobile)
+    fetchData();
+    if(isMobile) {
+      navigate('/u/phone/work');
+      }
+  }, [selectedDate, isMobile]); // Fetch data whenever selectedDate changes
 
-      if (mobile) {
-        navigate('/u/phone/work')
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setHighlightedDate(date);
+    setCheckInOutHistory(data.find(item => item.date === date.format('YYYY-MM-DD'))?.records || []);
+    setDrawerVisible(true); // Show Drawer when selecting a date
+  };
+
+  const getColorForDate = (date) => {
+    const dateStr = date.format('YYYY-MM-DD');
+    const dateData = data.find(item => item.date === dateStr);
+
+    if (dateData) {
+      const recordCount = dateData.records.length;
+
+      if (recordCount === 1) {
+        return 'bg-yellow-200 text-yellow-800';
+      } else if (recordCount >= 2) {
+        return 'bg-blue-200 text-blue-800'; 
       }
     }
+    return ''; 
+  };
 
-    handleResize()
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [navigate])
-
-  const sampleData = [
-    {
-      date: '2024-09-09',
-      records: [
-        { key: 1, timeIn: '08:00', timeOut: '17:00', status: 'On Time' },
-      ],
-    },
-    {
-      date: '2024-09-10',
-      records: [{ key: 1, timeIn: '08:15', timeOut: '17:00', status: 'Late' }],
-    },
-    {
-      date: '2024-09-11',
-      records: [
-        { key: 1, timeIn: '08:00', timeOut: '17:00', status: 'On Time' },
-      ],
-    },
-    {
-      date: '2024-09-12',
-      records: [{ key: 1, timeIn: '09:00', timeOut: '17:00', status: 'Late' }],
-    },
-    {
-      date: '2024-09-21',
-      records: [
-        { key: 1, timeIn: '08:00', timeOut: '17:00', status: 'On Time' },
-      ],
-    },
-    {
-      date: '2024-10-01',
-      records: [{ key: 1, timeIn: '08:30', timeOut: '17:00', status: 'Late' }],
-    },
-    {
-      date: '2024-10-05',
-      records: [
-        { key: 1, timeIn: '08:00', timeOut: '17:00', status: 'On Time' },
-      ],
-    },
-    {
-      date: '2023-11-15',
-      records: [{ key: 1, timeIn: '08:45', timeOut: '17:00', status: 'Late' }],
-    },
-    {
-      date: '2023-11-20',
-      records: [{ key: 1, timeIn: '08:00', timeOut: '17:00', status: 'Late' }],
-    },
-    {
-      date: '2023-12-10',
-      records: [{ key: 1, timeIn: '08:15', timeOut: '17:00', status: 'Late' }],
-    },
-    {
-      date: '2023-12-15',
-      records: [
-        { key: 1, timeIn: '08:00', timeOut: '17:00', status: 'On Time' },
-      ],
-    },
-  ]
-
-  const onSelect = (newValue) => {
-    const selectedDate = newValue.tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD')
-    setValue(newValue)
-    setSelectedValue(newValue)
-    const data =
-      sampleData.find((item) => item.date === selectedDate)?.records || []
-    setCheckInOutHistory(data)
-    setDrawerVisible(true) // Mở Drawer khi chọn ngày
-  }
-
-  const dateCellRender = (date) => {
-    const selectedDate = date.tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD')
-    const record = sampleData.find((item) => item.date === selectedDate)
-
-    if (!record) return <div></div>
-
-    const icons = record.records.map((r, index) => {
-      let icon = null
-      if (r.status === 'Absent') {
-        icon = (
-          <>
-            <CloseCircleOutlined style={{ color: 'red', fontSize: '16px' }} />
-          </>
-        )
-      } else if (r.status === 'Late') {
-        icon = (
-          <>
-            <ExclamationCircleOutlined
-              style={{ color: 'yellow', fontSize: '16px' }}
-            />
-          </>
-        )
-      } else {
-        icon = (
-          <>
-            <CheckCircleOutlined style={{ color: 'green', fontSize: '16px' }} />
-          </>
-        )
-      }
-
-      // Hiển thị thêm timeIn
-      return (
-        <div key={index} className="flex items-center gap-2">
-          {icon}
-          <span>{r.timeIn}</span>
-        </div>
-      )
-    })
-
-    return <div className="flex flex-col items-center">{icons}</div>
-  }
-
-  // Cột cho bảng chấm công
-  const columns = [
-    {
-      title: t('Date'),
-      dataIndex: 'date',
-      key: 'date',
-    },
-    {
-      title: t('Time In'),
-      dataIndex: 'timeIn',
-      key: 'timeIn',
-    },
-    {
-      title: t('Time Out'),
-      dataIndex: 'timeOut',
-      key: 'timeOut',
-    },
-    {
-      title: t('Status'),
-      dataIndex: 'status',
-      key: 'status',
-    },
-  ]
-
-  // Dữ liệu bảng lương
-  const salaryData = sampleData.flatMap((day) =>
-    day.records.map((record) => ({
-      date: day.date,
-      timeIn: record.timeIn,
-      timeOut: record.timeOut,
-      status: record.status,
-    })),
-  )
-
-  // Dữ liệu danh sách
-  const listData = sampleData.flatMap((day) =>
-    day.records.map((record) => ({
-      date: day.date,
-      timeIn: record.timeIn,
-      timeOut: record.timeOut,
-      status: record.status,
-    })),
-  )
+  const monthDates = Array.from({ length: selectedDate.daysInMonth() }, (_, i) => 
+    moment(selectedDate).date(i + 1)
+  );
 
   const handleMenuClick = (e) => {
-    setViewMode(e.key)
-  }
-  const notifications = [
-    { id: 1, message: 'Bạn có một tin nhắn mới.', date: '2024-09-21' },
-    { id: 2, message: 'Đã cập nhật trạng thái dự án.', date: '2024-09-20' },
-    { id: 3, message: 'Bạn được mời tham gia cuộc họp.', date: '2024-09-19' },
-    {
-      id: 4,
-      message: 'Thành công trong việc hoàn thành nhiệm vụ.',
-      date: '2024-09-18',
-    },
-  ]
-  // Tạo menu cho Dropdown
+    setViewModeList(e.key);
+  };
+
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="calendar">
+      <Menu.Item key="month">
         <span className="flex items-center gap-2">
-          <CalendarIcon2 />
-          {t('Calendar')}
+          <CalendarOutlined />
+          {t('Month View')}
         </span>
       </Menu.Item>
-      <Menu.Item key="table">
+      <Menu.Item key="week">
         <span className="flex items-center gap-2">
-          <TableIcon />
-          {t('Table')}
+          <TableOutlined />
+          {t('Week View')}
         </span>
       </Menu.Item>
     </Menu>
-  )
-  const menuNotifications = (
-    <Menu>
-      {notifications.map((notification) => (
-        <Menu.Item key={notification.id}>
-          <div>
-            <div>{notification.message}</div>
-            <div style={{ fontSize: '12px', color: 'gray' }}>
-              {notification.date}
-            </div>
-          </div>
-        </Menu.Item>
-      ))}
-    </Menu>
-  )
+  );
+
+  // Hàm xử lý chuyển tháng
+  const handlePrevMonth = () => {
+    setSelectedDate(selectedDate.subtract(1, 'month'));
+  };
+
+  const handleNextMonth = () => {
+    setSelectedDate(selectedDate.add(1, 'month'));
+  };
+
   return (
     <div className="w-full bg-white">
       <Helmet>
-        <title>ITM - {t('Default')}</title>
+        <title>ITM - {t('Time Tracking')}</title>
       </Helmet>
       <div className="h-screen">
         <div className="w-full p-2 flex items-center justify-end bg-white">
-          <Dropdown overlay={menuNotifications} trigger={['click']}>
-            <Button className=" border-none  p-2 bg-none shadow-none">
-              <NotificationIcon />
-            </Button>
-          </Dropdown>
           <Dropdown overlay={menu} trigger={['click']}>
-            <Button className=" border-none p-2 bg-none shadow-none">
-              <CalendarIcon />
+            <Button className="border-none p-2 bg-none shadow-none">
+              <CalendarOutlined />
             </Button>
           </Dropdown>
         </div>
-        <div className="flex ">
-          {viewMode === 'calendar' && (
-            <>
-              <Calendar
-                className="p-1 w-full"
-                value={value}
-                onSelect={onSelect}
-                dateCellRender={dateCellRender}
-              />
-            </>
-          )}
-          {viewMode === 'table' && <TableView />}
+        <div className="p-2">
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center">
+              <Button onClick={handlePrevMonth} icon={<LeftOutlined />} />
+              <span className="font-semibold mx-2">
+                {t(`months.${selectedDate.format('M')}`)} {selectedDate.format('YYYY')}
+              </span>
+              <Button onClick={handleNextMonth} icon={<RightOutlined />} />
+            </div>
+          </div>
+          <div className="grid grid-cols-7 gap-2">
+            {monthDates.map((date, index) => (
+              <div
+                key={index}
+                className={`text-center rounded-lg pb-1 ${getColorForDate(date)} ${date.isSame(highlightedDate, 'day') ? 'bg-blue-100' : ''}`}
+                onClick={() => handleDateChange(date)}
+              >
+                <span className="text-xs text-gray-500 ">
+                  {date.format('ddd')}
+                </span>
+                <br />
+                {date.format('DD')}
+              </div>
+            ))}
+          </div>
         </div>
 
         <Drawer
           title={t('Check-in Details')}
           open={drawerVisible}
           onClose={() => setDrawerVisible(false)}
-          width={800}
+          width={500}
         >
           <Table
-            columns={columns}
+            columns={[
+              {
+                title: t('Check In'),
+                dataIndex: 'check_in',
+                key: 'check_in',
+                render: (text) => moment(text).format('HH:mm'),
+              },
+              {
+                title: t('Check Out'),
+                dataIndex: 'check_out',
+                key: 'check_out',
+                render: (text) => moment(text).format('HH:mm'),
+              },
+            ]}
             dataSource={checkInOutHistory}
             pagination={false}
             locale={{ emptyText: t('No Data') }}
@@ -566,5 +453,5 @@ export default function TimeTracking() {
         </Drawer>
       </div>
     </div>
-  )
+  );
 }

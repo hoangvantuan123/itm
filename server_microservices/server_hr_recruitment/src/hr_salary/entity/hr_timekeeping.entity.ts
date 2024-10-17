@@ -9,7 +9,7 @@ export class HrTimekeeping {
     cid: string;
 
     @Column({ type: 'timestamp' ,  nullable: true})
-    checkin: Date;
+    check_in: Date;
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     create_date: Date;
