@@ -410,7 +410,24 @@
     "total_check_in_or_check_out" : "Tổng số lần không chấm giờ ra, giờ vào",
     "no_data_check_for_check_in" : "No data for check in",
     "late_in_early_out" :"ĐI MUỘN, VỀ SỚM",
-    "detailed_work_table" :"BẢNG CÔNG CHI TIẾT"
+    "detailed_work_table" :"BẢNG CÔNG CHI TIẾT",
+    "start" : "Bắt đầu",
+    "stop" : "Kết thúc", 
+    "day_off" : "Day off",
+    "overtime_normal_150" : "Tăng ca ngày thường 150%",
+    "overtime_normal_200" : "Tăng ca ngày thường ban đêm 200%",
+    "overtime_normal_210" : "Tăng ca ngày thường ban đêm 210%",
+    "at_night" : "Ban đêm",
+    "overtime_sunday_200" : "Tăng ca ngày chủ nhật 200%",
+    "overtime_sunday_270" : "Tăng ca ban đêm chủ nhật 270%",
+    "overtime_holiday_300" : "Tăng ca ngày Ngày lễ 300%",
+    "overtime_holiday_390" : "Tăng ca ban đêm Ngày lễ 390%",
+    "working_day" : "Công thực tế",
+    "late_in" : "Đi muộn",
+    "early_out" : "Về sớm"
+
+
+
 
 
 

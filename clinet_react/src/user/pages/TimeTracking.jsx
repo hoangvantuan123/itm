@@ -1,311 +1,46 @@
 import {
-  Calendar,
+  CalendarOutlined,
+  TableOutlined,
+  LeftOutlined,
+  RightOutlined,
+} from '@ant-design/icons';
+import {
   Table,
   Drawer,
   Button,
-  List,
-  Typography,
   Dropdown,
   Menu,
-} from 'antd'
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import {
-  CheckCircleOutlined,
-  ExclamationCircleOutlined,
-  CloseCircleOutlined,
-  LeftOutlined, RightOutlined
-} from '@ant-design/icons'
-import dayjs from 'dayjs'
-import 'dayjs/locale/vi'
-import timezone from 'dayjs/plugin/timezone'
-import utc from 'dayjs/plugin/utc'
-import { useTranslation } from 'react-i18next'
-import {
-  CalendarOutlined,
-  TableOutlined,
-  UnorderedListOutlined,
-} from '@ant-design/icons'
-import { GetTimekeepingUser } from '../../features/timekeeping/getTimeKeeping'
-import { Helmet } from 'react-helmet'
-import TableView from '../components/work/viewTable'
-import moment from 'moment'
+} from 'antd';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { Helmet } from 'react-helmet';
+import { useTranslation } from 'react-i18next';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import { GetTimekeepingUser } from '../../features/timekeeping/getTimeKeeping';
 
-dayjs.extend(utc)
-dayjs.extend(timezone)
-const CalendarIcon = () => {
-  return (
-    <svg
-      className="w-5 h-5 opacity-65 "
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M8 2V5"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M16 2V5"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M3.5 9.08997H20.5"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        stroke-miterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        stroke-miterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M15.6947 13.7H15.7037"
-        stroke="#292D32"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M15.6947 16.7H15.7037"
-        stroke="#292D32"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M11.9955 13.7H12.0045"
-        stroke="#292D32"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M11.9955 16.7H12.0045"
-        stroke="#292D32"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M8.29431 13.7H8.30329"
-        stroke="#292D32"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M8.29431 16.7H8.30329"
-        stroke="#292D32"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-const CalendarIcon2 = () => {
-  return (
-    <svg
-      className="w-4 h-4 opacity-65 "
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M8 2V5"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M16 2V5"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M3.5 9.08997H20.5"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        stroke-miterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        stroke-miterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M15.6947 13.7H15.7037"
-        stroke="#292D32"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M15.6947 16.7H15.7037"
-        stroke="#292D32"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M11.9955 13.7H12.0045"
-        stroke="#292D32"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M11.9955 16.7H12.0045"
-        stroke="#292D32"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M8.29431 13.7H8.30329"
-        stroke="#292D32"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M8.29431 16.7H8.30329"
-        stroke="#292D32"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-const TableIcon = () => {
-  return (
-    <svg
-      className="w-4 h-4 opacity-65 "
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M2.03 8.5H22"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M2.03 15.5H22"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M8.51 21.99V2.01001"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M15.51 21.99V2.01001"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-const NotificationIcon = () => {
-  return (
-    <svg
-      className="w-5 h-5 opacity-65 "
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 6.43994V9.76994"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-      />
-      <path
-        d="M12.02 2C8.34002 2 5.36002 4.98 5.36002 8.66V10.76C5.36002 11.44 5.08002 12.46 4.73002 13.04L3.46002 15.16C2.68002 16.47 3.22002 17.93 4.66002 18.41C9.44002 20 14.61 20 19.39 18.41C20.74 17.96 21.32 16.38 20.59 15.16L19.32 13.04C18.97 12.46 18.69 11.43 18.69 10.76V8.66C18.68 5 15.68 2 12.02 2Z"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-      />
-      <path
-        d="M15.33 18.8201C15.33 20.6501 13.83 22.1501 12 22.1501C11.09 22.1501 10.25 21.7701 9.65004 21.1701C9.05004 20.5701 8.67004 19.7301 8.67004 18.8201"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeMiterlimit="10"
-      />
-    </svg>
-  )
-}
-
-
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export default function TimeTracking({ isMobile }) {
-  const userFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'));
-  const userId = userFromLocalStorage.id;
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const now = dayjs().tz('Asia/Ho_Chi_Minh');
 
-  const [value, setValue] = useState(() => now);
-  const [drawerVisible, setDrawerVisible] = useState(false);
-  const [checkInOutHistory, setCheckInOutHistory] = useState([]);
-  const [viewModeList, setViewModeList] = useState('month'); // Default to 'month'
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(now); // Đặt mặc định là ngày hiện tại
-  const [highlightedDate, setHighlightedDate] = useState(moment());
-  
+  const now = dayjs().tz('Asia/Ho_Chi_Minh'); // Current date
+  const [selectedDate, setSelectedDate] = useState(now); // Current month
+  const [highlightedDate, setHighlightedDate] = useState(now); // Highlighted day
+  const [checkInOutHistory, setCheckInOutHistory] = useState([]); // Records for the selected date
+  const [data, setData] = useState([]); // Month data
+  const [loading, setLoading] = useState(true); // Loading state
+  const [drawerVisible, setDrawerVisible] = useState(false); // Drawer visibility
+  const [tableData, setTableData] = useState([]); // Data for the table
 
   const fetchData = async () => {
     setLoading(true);
     try {
       const monthYear = `${String(selectedDate.month() + 1).padStart(2, '0')}-${selectedDate.year()}`;
-      const cid = "VM31122002"; // Replace with your actual ID
+      const cid = 'VM31122002'; // Replace with the actual ID
       const response = await GetTimekeepingUser(cid, monthYear);
 
       if (response.success) {
@@ -321,137 +56,217 @@ export default function TimeTracking({ isMobile }) {
     }
   };
 
+  // Fetch data when selectedDate changes (month or year change)
   useEffect(() => {
     fetchData();
-    if(isMobile) {
+    if (isMobile) {
       navigate('/u/phone/work');
-      }
-  }, [selectedDate, isMobile]); // Fetch data whenever selectedDate changes
+    }
+  }, [selectedDate, isMobile]); // Re-run whenever `selectedDate` changes
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
     setHighlightedDate(date);
-    setCheckInOutHistory(data.find(item => item.date === date.format('YYYY-MM-DD'))?.records || []);
-    setDrawerVisible(true); // Show Drawer when selecting a date
+    const records = data.find((item) => item.date === date.format('YYYY-MM-DD'))?.records || [];
+    setCheckInOutHistory(records);
+    setDrawerVisible(true);
+
+    // Initialize a value object
+    const values = {
+      start: 0,
+      stop: 0,
+      day_off: 0,
+      overtime_normal_150: 0,
+      overtime_normal_200: 0,
+      overtime_normal_210: 0,
+      at_night: 0,
+      overtime_sunday_200: 0,
+      overtime_sunday_270: 0,
+      overtime_holiday_300: 0,
+      overtime_holiday_390: 0,
+      working_day: 0,
+      late_in: 0,
+      early_out: 0,
+    };
+
+    // Loop through records to populate the values based on WkItemSeq
+    records.forEach(record => {
+      switch (record.WkItemSeq) {
+        case 29: // Giờ vào thực tế
+          values.start = record.DTime || 0;
+          break;
+        case 43: // Giờ về thực tế
+          values.stop = record.DTime || 0;
+          break;
+        case 42: // Thêm giờ ca ngày 150%
+          values.overtime_normal_150 = record.DTime || 0;
+          break;
+        case 41: // Tăng ca ngày thường ban đêm 200%
+          values.overtime_normal_200 = record.DTime || 0;
+          break;
+        case 32: // Giờ về 
+          values.stop = record.DTime || 0;
+          break;
+        case 36: // Giờ vào 
+          values.start = record.DTime || 0;
+          break;
+        case 74: //Thêm giờ ca đêm 210%
+          values.overtime_normal_210 = record.DTime || 0;
+          break;
+        case 40: //Ban Đêm
+          values.at_night = record.DTime || 0;
+          break;
+        case 31: // Chủ nhật ca ngày 200%
+          values.overtime_sunday_200 = record.DTime || 0;
+          break;
+        case 39: // 
+          values.overtime_sunday_270 = record.DTime || 0;
+          break;
+        case 38: // 
+          values.overtime_holiday_300 = record.DTime || 0;
+          break;
+        case 35: // 
+          values.overtime_holiday_390 = record.DTime || 0;
+          break;
+        case 11: // 
+          values.working_day = record.DTCnt || 0;
+          break;
+        case 34: // 
+          values.late_in = record.DTime || 0;
+          break;
+        case 33: // 
+          values.early_out = record.DTime || 0;
+          break;
+
+      }
+    });
+
+    // Update the table data based on the collected values
+    setTableData([
+      { key: t('hr_payroll.start'), value: values.start },
+      { key: t('hr_payroll.stop'), value: values.stop },
+      { key: t('hr_payroll.day_off'), value: values.day_off },
+      { key: t('hr_payroll.overtime_normal_150'), value: values.overtime_normal_150 },
+      { key: t('hr_payroll.overtime_normal_200'), value: values.overtime_normal_200 },
+      { key: t('hr_payroll.overtime_normal_210'), value: values.overtime_normal_210 },
+      { key: t('hr_payroll.at_night'), value: values.at_night },
+      { key: t('hr_payroll.overtime_sunday_200'), value: values.overtime_sunday_200 },
+      { key: t('hr_payroll.overtime_sunday_270'), value: values.overtime_sunday_270 },
+      { key: t('hr_payroll.overtime_holiday_300'), value: values.overtime_holiday_300 },
+      { key: t('hr_payroll.overtime_holiday_390'), value: values.overtime_holiday_390 },
+      { key: t('hr_payroll.working_day'), value: values.working_day },
+      { key: t('hr_payroll.late_in'), value: values.late_in },
+      { key: t('hr_payroll.early_out'), value: values.early_out },
+    ]);
+  };
+
+  const handlePrevMonth = () => {
+    setSelectedDate((prevDate) => prevDate.subtract(1, 'month'));
+  };
+
+  const handleNextMonth = () => {
+    setSelectedDate((prevDate) => prevDate.add(1, 'month'));
   };
 
   const getColorForDate = (date) => {
     const dateStr = date.format('YYYY-MM-DD');
-    const dateData = data.find(item => item.date === dateStr);
+    const dateData = data.find((item) => item.date === dateStr);
 
     if (dateData) {
-      const recordCount = dateData.records.length;
+      const hasArrival = dateData.records.some((rec) => rec.WkItemSeq === 29);
+      const hasDeparture = dateData.records.some((rec) => rec.WkItemSeq === 43);
 
-      if (recordCount === 1) {
+      if (hasArrival && hasDeparture) {
+        return 'bg-green-200 text-green-800';
+      } else if (hasArrival || hasDeparture) {
         return 'bg-yellow-200 text-yellow-800';
-      } else if (recordCount >= 2) {
-        return 'bg-blue-200 text-blue-800'; 
+      } else {
+        return 'bg-red-200 text-red-800';
       }
     }
-    return ''; 
+    return '';
   };
 
-  const monthDates = Array.from({ length: selectedDate.daysInMonth() }, (_, i) => 
-    moment(selectedDate).date(i + 1)
+  const monthDates = Array.from(
+    { length: selectedDate.daysInMonth() },
+    (_, i) => dayjs(selectedDate).date(i + 1)
   );
-
-  const handleMenuClick = (e) => {
-    setViewModeList(e.key);
-  };
 
   const menu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="month">
-        <span className="flex items-center gap-2">
-          <CalendarOutlined />
-          {t('Month View')}
-        </span>
-      </Menu.Item>
-      <Menu.Item key="week">
-        <span className="flex items-center gap-2">
-          <TableOutlined />
-          {t('Week View')}
-        </span>
-      </Menu.Item>
-    </Menu>
+    <Menu
+      onClick={({ key }) => { }}
+      items={[
+        {
+          key: 'month',
+          label: (
+            <span className="flex items-center gap-2">
+              <CalendarOutlined />
+              {t('Month View')}
+            </span>
+          ),
+        },
+      ]}
+    />
   );
 
-  // Hàm xử lý chuyển tháng
-  const handlePrevMonth = () => {
-    setSelectedDate(selectedDate.subtract(1, 'month'));
-  };
-
-  const handleNextMonth = () => {
-    setSelectedDate(selectedDate.add(1, 'month'));
-  };
-
   return (
-    <div className="w-full bg-white">
+    <div className="w-full h-screen bg-white flex flex-col">
       <Helmet>
         <title>ITM - {t('Time Tracking')}</title>
       </Helmet>
-      <div className="h-screen">
-        <div className="w-full p-2 flex items-center justify-end bg-white">
-          <Dropdown overlay={menu} trigger={['click']}>
-            <Button className="border-none p-2 bg-none shadow-none">
-              <CalendarOutlined />
-            </Button>
-          </Dropdown>
-        </div>
-        <div className="p-2">
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center">
-              <Button onClick={handlePrevMonth} icon={<LeftOutlined />} />
-              <span className="font-semibold mx-2">
-                {t(`months.${selectedDate.format('M')}`)} {selectedDate.format('YYYY')}
-              </span>
-              <Button onClick={handleNextMonth} icon={<RightOutlined />} />
-            </div>
-          </div>
-          <div className="grid grid-cols-7 gap-2">
-            {monthDates.map((date, index) => (
-              <div
-                key={index}
-                className={`text-center rounded-lg pb-1 ${getColorForDate(date)} ${date.isSame(highlightedDate, 'day') ? 'bg-blue-100' : ''}`}
-                onClick={() => handleDateChange(date)}
-              >
-                <span className="text-xs text-gray-500 ">
-                  {date.format('ddd')}
-                </span>
-                <br />
-                {date.format('DD')}
-              </div>
-            ))}
-          </div>
-        </div>
 
-        <Drawer
-          title={t('Check-in Details')}
-          open={drawerVisible}
-          onClose={() => setDrawerVisible(false)}
-          width={500}
-        >
-          <Table
-            columns={[
-              {
-                title: t('Check In'),
-                dataIndex: 'check_in',
-                key: 'check_in',
-                render: (text) => moment(text).format('HH:mm'),
-              },
-              {
-                title: t('Check Out'),
-                dataIndex: 'check_out',
-                key: 'check_out',
-                render: (text) => moment(text).format('HH:mm'),
-              },
-            ]}
-            dataSource={checkInOutHistory}
-            pagination={false}
-            locale={{ emptyText: t('No Data') }}
-          />
-        </Drawer>
+      {/* Header */}
+      <div className="w-full p-2 flex items-center justify-between bg-white border-b">
+        <Button icon={<LeftOutlined />} onClick={handlePrevMonth} />
+        <span className="font-semibold">
+          {t(`months.${selectedDate.format('M')}`)} {selectedDate.format('YYYY')}
+        </span>
+        <Button icon={<RightOutlined />} onClick={handleNextMonth} />
       </div>
+
+      {/* Calendar Grid */}
+      <div className="flex-1 grid grid-cols-7  gap-4 p-4">
+        {monthDates.map((date, index) => (
+          <div
+            key={index}
+            className={`h-32 text-center rounded-lg flex flex-col p-4 cursor-pointer hover:bg-blue-50 ${getColorForDate(date)}
+              ${date.isSame(highlightedDate, 'day') ? 'bg-blue-100' : ''}`}
+            onClick={() => handleDateChange(date)}
+          >
+            <span className="text-sm text-gray-500">{date.format('ddd')}</span>
+            <span className="text-lg font-semibold">{date.format('DD')}</span>
+          </div>
+        ))}
+      </div>
+
+
+      {/* Drawer for Attendance Records */}
+      <Drawer
+        title={t('Attendance Records')}
+        closable
+        onClose={() => setDrawerVisible(false)}
+        open={drawerVisible}
+        width={700}
+      >
+        <Table
+          dataSource={tableData}
+
+          bordered
+          columns={[
+            {
+              title: t('hr_payroll.category'),
+              dataIndex: 'key',
+              key: 'key',
+            },
+            {
+              title: t('hr_payroll.value'),
+              dataIndex: 'value',
+              key: 'value',
+            },
+          ]}
+          pagination={false}
+          loading={loading}
+        />
+      </Drawer>
     </div>
   );
 }

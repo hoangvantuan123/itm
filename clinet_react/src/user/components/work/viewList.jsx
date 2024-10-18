@@ -83,7 +83,7 @@ export default function ListView({ setViewModeList, viewModeList }) {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const now = selectedDate; 
+      const now = selectedDate;
       const monthYear = `${String(now.month() + 1).padStart(2, '0')}-${now.year()}`;
       const cid = "VM31122002";
       const response = await GetTimekeepingUser(cid, monthYear);
@@ -151,19 +151,29 @@ export default function ListView({ setViewModeList, viewModeList }) {
     const dateData = data.find(item => item.date === dateStr);
 
     if (dateData) {
-      const recordCount = dateData.records.length;
+      const records = dateData.records;
 
-      if (recordCount === 1) {
-        return 'bg-yellow-200 text-yellow-800'; // Color for one record
-      } else if (recordCount >= 2) {
-        return ' bg-green-200 text-blue-800'; // Color for two or more records
+      const hasArrival = records.some(record => record.WkItemSeq === 29); // Giờ đến (ERP)
+      const hasDeparture = records.some(record => record.WkItemSeq === 43); // Giờ về thực tế (ERP)
+      const hasOT = records.some(record => record.IsOT === 1); // Làm thêm giờ (OT)
+
+
+      if (hasArrival && hasDeparture) {
+        return hasOT
+          ? 'bg-purple-200 text-purple-800'
+          : 'bg-green-200 text-green-800';
+      } else if (hasArrival || hasDeparture) {
+        return 'bg-yellow-200 text-yellow-800';
+      } else {
+        return 'bg-red-200 text-red-800';
       }
     }
-    return ''; 
+    return '';
   };
 
+
   return (
-    <div className="h-screen overflow-hidden  bg-white">
+    <div className="  h-screen overflow-auto  bg-white">
       <div className="p-2">
         {viewModeList === 'month' && (
           <div className="flex justify-between mb-4">
@@ -219,35 +229,27 @@ export default function ListView({ setViewModeList, viewModeList }) {
         )}
       </div>
 
-      <div className="p-4 h-screen pb-5 bg-slate-50 rounded-3xl shadow-md overflow-hidden">
-        <h3 className="text-lg mb-2 font-semibold">
-          {selectedDate.format('YYYY-MM-DD')}
-        </h3>
-        <h4 className="text-gray-600 mb-4">Thời gian đã chấm công</h4>
+ 
 
-        <div className="bg-gray-100 rounded-lg p-4 mb-4">
-  <h4 className="text-blue-600">Check-in</h4>
-  <p className="text-gray-800">
-    {data.find(item => item.date === selectedDate.format('YYYY-MM-DD'))?.records.length > 0
-      ? moment(data.find(item => item.date === selectedDate.format('YYYY-MM-DD')).records[0].check_in).format('HH:mm') // Always show the first record's check-in time
-      : 'Not Available'}
-  </p>
-</div>
+        <div className="flex-1  h-screen p-4 bg-slate-50 rounded-3xl shadow-md">
+          <h3 className="text-lg mb-2 font-semibold">
+            {selectedDate.format('YYYY-MM-DD')}
+          </h3>
+          <h4 className="text-gray-800 mt-3 mb-3">Danh sách các bản ghi:</h4>
 
-<div className="bg-gray-100 rounded-lg p-4">
-  <h4 className="text-green-600">Check-out</h4>
-  <p className="text-gray-800">
-    {data.find(item => item.date === selectedDate.format('YYYY-MM-DD'))?.records.length > 0
-      ? data.find(item => item.date === selectedDate.format('YYYY-MM-DD')).records.length === 1
-        ? '00:00' // Display 00:00 if there's only one record
-        : moment(data.find(item => item.date === selectedDate.format('YYYY-MM-DD')).records[data.find(item => item.date === selectedDate.format('YYYY-MM-DD')).records.length - 1].check_in).format('HH:mm') // Use the last record's check-in time otherwise
-      : 'Not Available'}
-  </p>
-</div>
-
-
-
-      </div>
+          <ul className=" pb-32 h-screen">
+              {data.find(item => item.date === selectedDate.format('YYYY-MM-DD'))?.records.length > 0 ? (
+                data.find(item => item.date === selectedDate.format('YYYY-MM-DD')).records.map((record, index) => (
+                  <li key={index} className="bg-gray-100 rounded-lg p-4 mb-4">
+                    <h4 className="text-gray-500">{record?.WkItemName}</h4>
+                    <p className="text-gray-800">{record?.DTime}</p>
+                  </li>
+                ))
+              ) : (
+                <li className="bg-gray-100 rounded-lg p-4 mb-4">Không có bản ghi nào</li>
+              )}
+            </ul>
+        </div>
     </div>
   );
 }

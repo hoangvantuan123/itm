@@ -23,7 +23,7 @@ export default function TableView({ salaryData }) {
       check_in: moment(record.check_in).format('HH:mm'),
       create_date: moment(record.create_date).format('DD/MM/YYYY HH:mm'),
       write_date: moment(record.write_date).format('DD/MM/YYYY HH:mm'),
-      working_hours: 8.5, // Placeholder for actual working hours
+      working_hours: 8.5, 
     })),
   )
   .filter((item) => item.date.includes(searchTerm))
