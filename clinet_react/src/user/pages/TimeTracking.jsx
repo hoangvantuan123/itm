@@ -70,7 +70,6 @@ export default function TimeTracking({ isMobile }) {
     setCheckInOutHistory(records);
     setDrawerVisible(true);
 
-    // Initialize a value object
     const values = {
       start: 0,
       stop: 0,
@@ -87,8 +86,6 @@ export default function TimeTracking({ isMobile }) {
       late_in: 0,
       early_out: 0,
     };
-
-    // Loop through records to populate the values based on WkItemSeq
     records.forEach(record => {
       switch (record.WkItemSeq) {
         case 29: // Giờ vào thực tế
@@ -140,7 +137,6 @@ export default function TimeTracking({ isMobile }) {
       }
     });
 
-    // Update the table data based on the collected values
     setTableData([
       { key: t('hr_payroll.start'), value: values.start },
       { key: t('hr_payroll.stop'), value: values.stop },
@@ -222,7 +218,27 @@ export default function TimeTracking({ isMobile }) {
         </span>
         <Button icon={<RightOutlined />} onClick={handleNextMonth} />
       </div>
+      <div className="flex gap-4 p-2 ">
+  
+    {/* Trạng thái Xanh Lá */}
+    <div className="flex items-center gap-3">
+      <div className="w-4 h-4 bg-green-200 rounded-md"></div>
+      <span className="text-green-800 text-xs">Đã vào và ra đúng giờ</span>
+    </div>
 
+    {/* Trạng thái Vàng */}
+    <div className="flex items-center gap-3">
+      <div className="w-4 h-4 bg-yellow-200 rounded-md"></div>
+      <span className="text-yellow-800 text-xs">Chỉ có vào hoặc ra</span>
+    </div>
+
+    {/* Trạng thái Đỏ */}
+    <div className="flex items-center gap-3">
+      <div className="w-4 h-4 bg-red-200 rounded-md"></div>
+      <span className="text-red-800 text-xs">Thiếu thông tin vào/ra hoặc là ngày nghỉ</span>
+    </div>
+   
+  </div>
       {/* Calendar Grid */}
       <div className="flex-1 grid grid-cols-7  gap-4 p-4">
         {monthDates.map((date, index) => (

@@ -10,9 +10,13 @@ import {
   Menu,
   Tabs,
   Button,
+  Drawer,
   Dropdown,
+  Divider
 } from 'antd'
-
+import {
+  QuestionCircleOutlined
+} from '@ant-design/icons'
 const { Search } = Input
 import decodeJWT from '../../utils/decode-JWT'
 const { Title, Text } = Typography
@@ -107,37 +111,7 @@ const CalendarIcon2 = () => {
     </svg>
   )
 }
-const NotificationIcon = () => {
-  return (
-    <svg
-      className="w-6 h-6 opacity-65 "
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 6.43994V9.76994"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-      />
-      <path
-        d="M12.02 2C8.34002 2 5.36002 4.98 5.36002 8.66V10.76C5.36002 11.44 5.08002 12.46 4.73002 13.04L3.46002 15.16C2.68002 16.47 3.22002 17.93 4.66002 18.41C9.44002 20 14.61 20 19.39 18.41C20.74 17.96 21.32 16.38 20.59 15.16L19.32 13.04C18.97 12.46 18.69 11.43 18.69 10.76V8.66C18.68 5 15.68 2 12.02 2Z"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-      />
-      <path
-        d="M15.33 18.8201C15.33 20.6501 13.83 22.1501 12 22.1501C11.09 22.1501 10.25 21.7701 9.65004 21.1701C9.05004 20.5701 8.67004 19.7301 8.67004 18.8201"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeMiterlimit="10"
-      />
-    </svg>
-  )
-}
+
 const CalendarIcon = () => {
   return (
     <svg
@@ -234,93 +208,57 @@ const KeyOpenIcon = () => {
       <path
         d="M7.25998 2H16.73C17.38 2 17.96 2.02003 18.48 2.09003C21.25 2.40003 22 3.70001 22 7.26001V13.58C22 17.14 21.25 18.44 18.48 18.75C17.96 18.82 17.39 18.84 16.73 18.84H7.25998C6.60998 18.84 6.02998 18.82 5.50998 18.75C2.73998 18.44 1.98999 17.14 1.98999 13.58V7.26001C1.98999 3.70001 2.73998 2.40003 5.50998 2.09003C6.02998 2.02003 6.60998 2 7.25998 2Z"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M13.58 8.32007H17.2599"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M6.73999 14.11H6.75998H17.27"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M7 22H17"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M7.1947 8.30005H7.20368"
         stroke="#292D32"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M10.4945 8.30005H10.5035"
         stroke="#292D32"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )
 }
 
-const TableIcon = () => {
+const InfoIcon = () => {
   return (
-    <svg
-      className="w-4 h-4 opacity-65 "
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M2.03 8.5H22"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M2.03 15.5H22"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M8.51 21.99V2.01001"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M15.51 21.99V2.01001"
-        stroke="#292D32"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg   className="w-6 h-6 opacity-65 "viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M12 8V13" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M11.9945 16H12.0035" stroke="#292D32" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
+    
   )
 }
 export default function PhoneWork() {
@@ -328,6 +266,13 @@ export default function PhoneWork() {
   const [isMobile, setIsMobile] = useState(false)
   const [viewModeList, setViewModeList] = useState('month')
   const [viewMode, setViewMode] = useState('calendar')
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
   const toggleViewModeList = () => {
     setViewModeList(viewModeList === 'month' ? 'week' : 'month')
   }
@@ -373,25 +318,63 @@ export default function PhoneWork() {
             >
               <KeyOpenIcon />
             </Button>
+            <Button
+              className=" border-none  p-2 bg-none shadow-none"
+              onClick={showDrawer}
+            >
+           <QuestionCircleOutlined   style={{
+        fontSize: '22px',
+      }}  className="opacity-65 bg-none"/>
+      
+            </Button>
           </>
         )}
-{/* 
-       
-        <Dropdown overlay={menu} trigger={['click']}>
-          <Button className=" border-none p-2 bg-none shadow-none">
-            <CalendarIcon />
-          </Button>
-        </Dropdown> */}
+
       </div>
+      <Drawer
+  placement="bottom"
+  closable={false}
+  onClose={onClose}
+  open={open}
+  height="340"
+   
+>
+  <div className="flex flex-col gap-4 ">
+    <div className="text-gray-600 text-sm font-semibold">
+      Các màu sắc dưới đây thể hiện trạng thái của từng ngày:
+    </div>
+
+    {/* Trạng thái Xanh Lá */}
+    <div className="flex items-center gap-3">
+      <div className="w-8 h-8 bg-green-200 rounded-md"></div>
+      <span className="text-green-800 text-xs">Đã vào và ra đúng giờ</span>
+    </div>
+
+    {/* Trạng thái Vàng */}
+    <div className="flex items-center gap-3">
+      <div className="w-8 h-8 bg-yellow-200 rounded-md"></div>
+      <span className="text-yellow-800 text-xs">Chỉ có vào hoặc ra</span>
+    </div>
+
+    {/* Trạng thái Đỏ */}
+    <div className="flex items-center gap-3">
+      <div className="w-8 h-8 bg-red-200 rounded-md"></div>
+      <span className="text-red-800 text-xs">Thiếu thông tin vào/ra hoặc là ngày nghỉ</span>
+    </div>
+    {/* Thông Báo Liên Hệ */}
+    <div className="mt-6 flex justify-center text-center text-gray-600 text-xs">
+      <p>Nếu cần hỗ trợ, vui lòng liên hệ với bộ phận hành chính nhân sự để được giải đáp. Xin cảm ơn.</p>
+    </div>
+  </div>
+</Drawer>
+
+
+
       <div>
-        {viewMode === 'calendar' ? (
-          <ListView
+      <ListView
             viewModeList={viewModeList}
             setViewModeList={setViewModeList}
           />
-        ) : (
-          <TableView />
-        )}
       </div>
     </div>
   )

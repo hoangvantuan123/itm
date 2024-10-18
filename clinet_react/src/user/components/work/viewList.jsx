@@ -6,6 +6,7 @@ import {
   ClockCircleOutlined,
   CalendarOutlined,
   AppstoreOutlined,
+  QuestionCircleOutlined
 } from '@ant-design/icons'
 import { GetTimekeepingUser } from '../../../features/timekeeping/getTimeKeeping'
 
@@ -66,7 +67,6 @@ export default function ListView({ setViewModeList, viewModeList }) {
     const handleResize = () => {
       const mobile = window.innerWidth <= 820;
       setIsMobile(mobile);
-
       if (!mobile) {
         navigate('/u/action=6/time_tracking');
       }
@@ -74,17 +74,13 @@ export default function ListView({ setViewModeList, viewModeList }) {
 
     handleResize();
     window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, [navigate]);
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const now = selectedDate;
-      const monthYear = `${String(now.month() + 1).padStart(2, '0')}-${now.year()}`;
+      const monthYear = `${String(selectedDate.month() + 1).padStart(2, '0')}-${selectedDate.year()}`;
       const cid = "VM31122002";
       const response = await GetTimekeepingUser(cid, monthYear);
 
@@ -103,65 +99,62 @@ export default function ListView({ setViewModeList, viewModeList }) {
 
   useEffect(() => {
     fetchData();
-  }, [selectedDate]); // 
+  }, [selectedDate]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
     setHighlightedDate(date);
     setListContent(true);
   };
-
   const getWeekDates = (date) => {
-    const startOfWeek = date.clone().startOf('week');
-    return Array.from({ length: 7 }, (_, i) =>
-      startOfWeek.clone().add(i, 'days'),
-    );
+    const startOfWeek = date.clone().startOf('isoWeek'); // Thứ Hai
+    return Array.from({ length: 7 }, (_, i) => startOfWeek.clone().add(i, 'days'));
   };
-
+  
   const getMonthDates = (date) => {
-    const startOfMonth = date.clone().startOf('month');
-    const endOfMonth = date.clone().endOf('month');
+    const startOfMonth = date.clone().startOf('month'); 
+    const endOfMonth = date.clone().endOf('month'); 
+  
     const monthDates = [];
-
-    for (
-      let d = startOfMonth.clone();
-      d.isBefore(endOfMonth.clone().add(1, 'days'));
-      d.add(1, 'days')
-    ) {
-      if (d.month() === date.month()) {
-        monthDates.push(d.clone());
-      }
+    for (let d = startOfMonth.clone(); d.isBefore(endOfMonth.clone().add(1, 'days')); d.add(1, 'days')) {
+      monthDates.push(d.clone());
     }
-    return monthDates;
+  
+    const firstDayOfMonth = monthDates[0].day(); 
+    const daysToAdd = (firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1); 
+    const adjustedMonthDates = [];
+    const startDate = startOfMonth.clone().subtract(daysToAdd, 'days');
+  
+    for (let i = 0; i < daysToAdd; i++) {
+      adjustedMonthDates.push(startDate.clone().add(i, 'days'));
+    }
+  
+    const allDates = adjustedMonthDates.concat(monthDates);
+  
+    const completeMonthDates = allDates.slice(0, 42);
+    
+    return completeMonthDates; 
   };
+  
+  
 
-  const handlePrevMonth = () => {
-    setSelectedDate((prevDate) => prevDate.clone().subtract(1, 'month'));
-  };
 
-  const handleNextMonth = () => {
-    setSelectedDate((prevDate) => prevDate.clone().add(1, 'month'));
-  };
+  const handlePrevMonth = () => setSelectedDate((prevDate) => prevDate.clone().subtract(1, 'month'));
+  const handleNextMonth = () => setSelectedDate((prevDate) => prevDate.clone().add(1, 'month'));
 
   const weekDates = getWeekDates(selectedDate);
   const monthDates = getMonthDates(selectedDate);
 
   const getColorForDate = (date) => {
     const dateStr = date.format('YYYY-MM-DD');
-    const dateData = data.find(item => item.date === dateStr);
+    const dateData = data.find((item) => item.date === dateStr);
 
     if (dateData) {
-      const records = dateData.records;
-
-      const hasArrival = records.some(record => record.WkItemSeq === 29); // Giờ đến (ERP)
-      const hasDeparture = records.some(record => record.WkItemSeq === 43); // Giờ về thực tế (ERP)
-      const hasOT = records.some(record => record.IsOT === 1); // Làm thêm giờ (OT)
-
+      const hasArrival = dateData.records.some((rec) => rec.WkItemSeq === 29);
+      const hasDeparture = dateData.records.some((rec) => rec.WkItemSeq === 43);
 
       if (hasArrival && hasDeparture) {
-        return hasOT
-          ? 'bg-purple-200 text-purple-800'
-          : 'bg-green-200 text-green-800';
+        return 'bg-green-200 text-green-800';
       } else if (hasArrival || hasDeparture) {
         return 'bg-yellow-200 text-yellow-800';
       } else {
@@ -171,16 +164,110 @@ export default function ListView({ setViewModeList, viewModeList }) {
     return '';
   };
 
+  // New function to process records and return an array of values
+  const processRecords = (records) => {
+    const values = {
+      start: 0,
+      stop: 0,
+      day_off: 0,
+      overtime_normal_150: 0,
+      overtime_normal_200: 0,
+      overtime_normal_210: 0,
+      at_night: 0,
+      overtime_sunday_200: 0,
+      overtime_sunday_270: 0,
+      overtime_holiday_300: 0,
+      overtime_holiday_390: 0,
+      working_day: 0,
+      late_in: 0,
+      early_out: 0,
+    };
 
+    records.forEach(record => {
+      switch (record.WkItemSeq) {
+        case 29: // Giờ vào thực tế
+          values.start = record.DTime || 0;
+          break;
+        case 43: // Giờ về thực tế
+          values.stop = record.DTime || 0;
+          break;
+        case 42: // Thêm giờ ca ngày 150%
+          values.overtime_normal_150 = record.DTime || 0;
+          break;
+        case 41: // Tăng ca ngày thường ban đêm 200%
+          values.overtime_normal_200 = record.DTime || 0;
+          break;
+        case 32: // Giờ về
+          values.stop = record.DTime || 0;
+          break;
+        case 36: // Giờ vào
+          values.start = record.DTime || 0;
+          break;
+        case 74: // Thêm giờ ca đêm 210%
+          values.overtime_normal_210 = record.DTime || 0;
+          break;
+        case 40: // Ban Đêm
+          values.at_night = record.DTime || 0;
+          break;
+        case 31: // Chủ nhật ca ngày 200%
+          values.overtime_sunday_200 = record.DTime || 0;
+          break;
+        case 39: // 
+          values.overtime_sunday_270 = record.DTime || 0;
+          break;
+        case 38: // 
+          values.overtime_holiday_300 = record.DTime || 0;
+          break;
+        case 35: // 
+          values.overtime_holiday_390 = record.DTime || 0;
+          break;
+        case 11: // 
+          values.working_day = record.DTCnt || 0;
+          break;
+        case 34: // 
+          values.late_in = record.DTime || 0;
+          break;
+        case 33: // 
+          values.early_out = record.DTime || 0;
+          break;
+      }
+    });
+
+    return values;
+  };
+
+  // Get processed values for the selected date
+  const currentRecords = data.find(item => item.date === selectedDate.format('YYYY-MM-DD'))?.records || [];
+  const processedValues = processRecords(currentRecords);
+  const getLabel = (key) => {
+    const labels = {
+      start: "Giờ vào thực tế",
+      stop: "Giờ về thực tế",
+      day_off: "Dayoff",
+      overtime_normal_150: "Thêm giờ ca ngày 150%",
+      overtime_normal_200: "Tăng ca ngày thường ban đêm 200%",
+      overtime_normal_210: "Thêm giờ ca đêm 210%",
+      at_night: "Ban Đêm",
+      overtime_sunday_200: "Chủ nhật ca ngày 200%",
+      overtime_sunday_270: "Tăng ca Chủ nhật 270%",
+      overtime_holiday_300: "Thêm giờ ngày lễ 300%",
+      overtime_holiday_390: "Thêm giờ ngày lễ 390%",
+      working_day: "Số ngày làm việc",
+      late_in: "Giờ đi muộn",
+      early_out: "Giờ về sớm",
+    };
+  
+    return labels[key] || key;
+  };
+  
   return (
-    <div className="  h-screen overflow-auto  bg-white">
+    <div className="h-screen overflow-y-auto bg-white">
       <div className="p-2">
         {viewModeList === 'month' && (
           <div className="flex justify-between mb-4">
             <span className="font-semibold">
               {t(`months.${selectedDate.format('M')}`)} {selectedDate.format('YYYY')}
             </span>
-
             <div className="flex items-center gap-2">
               <Button className="border-none p-2 bg-white shadow-none" onClick={handlePrevMonth}>
                 <ArrowLeftIcon />
@@ -201,7 +288,7 @@ export default function ListView({ setViewModeList, viewModeList }) {
                 onClick={() => handleDateChange(date)}
               >
                 {index < 7 && (
-                  <span className="text-xs text-gray-500 ">
+                  <span className="text-xs text-gray-500">
                     {date.format('ddd')}
                   </span>
                 )}
@@ -229,27 +316,27 @@ export default function ListView({ setViewModeList, viewModeList }) {
         )}
       </div>
 
- 
+      <div className="h-full flex flex-col">
+  <ul className="flex-1 pb-32 bg-slate-50 p-4 rounded-3xl shadow-md">
+  <h3 className="text-lg mb-2 font-semibold">
+    {selectedDate.format('YYYY-MM-DD')}
+  </h3>
+  <h4 className="text-gray-800 mt-3 mb-3">Danh sách các bản ghi:</h4>
 
-        <div className="flex-1  h-screen p-4 bg-slate-50 rounded-3xl shadow-md">
-          <h3 className="text-lg mb-2 font-semibold">
-            {selectedDate.format('YYYY-MM-DD')}
-          </h3>
-          <h4 className="text-gray-800 mt-3 mb-3">Danh sách các bản ghi:</h4>
+    {currentRecords.length > 0 ? (
+      Object.entries(processedValues).map(([key, value], index) => (
+        <li key={index} className="bg-gray-100 rounded-lg p-4 mb-4">
+          <h4 className="text-gray-500">{getLabel(key)}</h4>
+          <p className="text-gray-800">{value}</p>
+        </li>
+      ))
+    ) : (
+      <li className="bg-gray-100 rounded-lg p-4 mb-4">Không có bản ghi nào</li>
+    )}
+  </ul>
+</div>
 
-          <ul className=" pb-32 h-screen">
-              {data.find(item => item.date === selectedDate.format('YYYY-MM-DD'))?.records.length > 0 ? (
-                data.find(item => item.date === selectedDate.format('YYYY-MM-DD')).records.map((record, index) => (
-                  <li key={index} className="bg-gray-100 rounded-lg p-4 mb-4">
-                    <h4 className="text-gray-500">{record?.WkItemName}</h4>
-                    <p className="text-gray-800">{record?.DTime}</p>
-                  </li>
-                ))
-              ) : (
-                <li className="bg-gray-100 rounded-lg p-4 mb-4">Không có bản ghi nào</li>
-              )}
-            </ul>
-        </div>
     </div>
   );
 }
+
