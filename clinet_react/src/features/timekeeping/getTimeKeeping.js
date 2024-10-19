@@ -1,12 +1,11 @@
 import axios from 'axios';
 import { HOST_API_PUBLIC_HR } from '../../services';
-import { accessToken } from '../../services/tokenService';
-
-export const GetTimekeepingUser = async (cid, monthYear) => {
+import { accessToken , getEmployeeCode} from '../../services/tokenService';
+export const GetTimekeepingUser = async (monthYear) => {
   try {
     const token = accessToken();  
-
-    const url = `${HOST_API_PUBLIC_HR}hr-timekeeping?cid=${cid}&month_year=${monthYear}`;
+    const employeeCode = getEmployeeCode();
+    const url = `${HOST_API_PUBLIC_HR}hr-timekeeping?cid=${employeeCode}&month_year=${monthYear}`;
 
     const response = await axios.get(url, {
       headers: {

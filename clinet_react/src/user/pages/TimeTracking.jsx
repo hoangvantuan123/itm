@@ -40,8 +40,7 @@ export default function TimeTracking({ isMobile }) {
     setLoading(true);
     try {
       const monthYear = `${String(selectedDate.month() + 1).padStart(2, '0')}-${selectedDate.year()}`;
-      const cid = 'VM31122002'; // Replace with the actual ID
-      const response = await GetTimekeepingUser(cid, monthYear);
+      const response = await GetTimekeepingUser( monthYear);
 
       if (response.success) {
         setData(response.data.data);
@@ -89,49 +88,43 @@ export default function TimeTracking({ isMobile }) {
     records.forEach(record => {
       switch (record.WkItemSeq) {
         case 29: // Giờ vào thực tế
-          values.start = record.DTime || 0;
+          values.start = record.d_time || 0;
           break;
         case 43: // Giờ về thực tế
-          values.stop = record.DTime || 0;
+          values.stop = record.d_time || 0;
           break;
         case 42: // Thêm giờ ca ngày 150%
-          values.overtime_normal_150 = record.DTime || 0;
+          values.overtime_normal_150 = record.d_time || 0;
           break;
         case 41: // Tăng ca ngày thường ban đêm 200%
-          values.overtime_normal_200 = record.DTime || 0;
-          break;
-        case 32: // Giờ về 
-          values.stop = record.DTime || 0;
-          break;
-        case 36: // Giờ vào 
-          values.start = record.DTime || 0;
+          values.overtime_normal_200 = record.d_time || 0;
           break;
         case 74: //Thêm giờ ca đêm 210%
-          values.overtime_normal_210 = record.DTime || 0;
+          values.overtime_normal_210 = record.d_time || 0;
           break;
         case 40: //Ban Đêm
-          values.at_night = record.DTime || 0;
+          values.at_night = record.d_time || 0;
           break;
         case 31: // Chủ nhật ca ngày 200%
-          values.overtime_sunday_200 = record.DTime || 0;
+          values.overtime_sunday_200 = record.d_time || 0;
           break;
         case 39: // 
-          values.overtime_sunday_270 = record.DTime || 0;
+          values.overtime_sunday_270 = record.d_time || 0;
           break;
         case 38: // 
-          values.overtime_holiday_300 = record.DTime || 0;
+          values.overtime_holiday_300 = record.d_time || 0;
           break;
         case 35: // 
-          values.overtime_holiday_390 = record.DTime || 0;
+          values.overtime_holiday_390 = record.d_time || 0;
           break;
         case 11: // 
-          values.working_day = record.DTCnt || 0;
+          values.working_day = record.dt_cnt || 0;
           break;
         case 34: // 
-          values.late_in = record.DTime || 0;
+          values.late_in = record.d_time || 0;
           break;
         case 33: // 
-          values.early_out = record.DTime || 0;
+          values.early_out = record.d_time || 0;
           break;
 
       }

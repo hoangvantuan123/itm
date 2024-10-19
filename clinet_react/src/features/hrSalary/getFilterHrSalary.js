@@ -12,7 +12,6 @@ export const GetFilterHrSalary = async (
   date,
   nameTags = [],
   cid = [],
-  syn,
   department = []
 ) => {
   try {
@@ -23,14 +22,13 @@ export const GetFilterHrSalary = async (
     const departmentString = department.join(',')
 
     const response = await axios.get(
-      `${HOST_API_PUBLIC_HR}hr-salary/filter`, {
+      `${HOST_API_PUBLIC_HR}hr-timekeeping/filter`, {
         params: {
           page,
           limit,
           date,
           nameTags: nameTagsString,
           cid: citString,
-          syn,
           department: departmentString
         },
         headers: {

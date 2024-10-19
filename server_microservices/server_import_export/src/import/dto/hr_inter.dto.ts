@@ -27,7 +27,6 @@ export class CreateHrInterDto {
     candidate_type?: string;
     supplier_details?: string;
 
-    // Các trường mới thêm từ Personnel entity
     introducer_department?: string;
     introducer_introducer_name?: string;
     introducer_phone_number?: string;

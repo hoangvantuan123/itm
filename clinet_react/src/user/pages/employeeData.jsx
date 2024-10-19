@@ -502,11 +502,7 @@ export default function EmployeeDataiView({ permissions, isMobile }) {
       <div className="p-2 mb flex items-center justify-between">
         <span className="inline-flex overflow-hidden">
           <div className="flex items-center gap-2">
-            <Select defaultValue="Table" className="w-28" size="large">
-              <Option value="1">{t('Table')}</Option>
-              <Option value="2">{t('Grid')}</Option>
-              <Option value="3">{t('List')}</Option>
-            </Select>
+       
             {canCreate && (
               <ImportAction
                 fetchData={fetchData}

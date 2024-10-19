@@ -6,6 +6,7 @@ import { CreatePersonnelDto } from '../dto/hr_personnel.dto';
 import { CreateEducationDto } from '../dto/hr_education.dto';
 import { HrInterviewCandidateDTO } from '../dto/hr_interview_candidates.dto';
 import { CreateHrInterDto } from '../dto/hr_inter.dto';
+import { HrTimekeepingDto } from '../dto/hr_timekeeping.dto';
 
 @Injectable()
 export class ImportServices {
@@ -29,6 +30,9 @@ export class ImportServices {
                 break;
             case 'hr_inter':
                 await this.processHRInter(importData, 'hr_inter');
+                break;
+            case 'hr_timekeeping':
+                await this.processHRTimeckeeping(importData, 'hr_timekeeping');
                 break;
             default:
                 throw new NotFoundException(`Model ${model} không được hỗ trợ`);
@@ -221,147 +225,6 @@ export class ImportServices {
             throw new NotFoundException(`Unable to insert data into table ${tableName}`);
         }
     }
-
-
-
-
-
-
-    private async saveInterviewResults(personnelIds: number[]): Promise<void> {
-        const interviewEntities = personnelIds.map(personnelId => ({
-            interview_result: false,
-            recruitment_department: 'Default Department',
-            position: 'Default Position',
-            interviewer_name: 'Default Interviewer',
-            appearance_criteria: 'Default Appearance',
-            height: 'N/A',
-            criminal_record: 'No',
-            education_level: 'High School',
-            reading_writing: 'Yes',
-            calculation_ability: 'Yes',
-            personnel_id: { id: personnelId },
-        }));
-
-        const insertQuery = `INSERT INTO hr_interview_results (personnel_id, interview_result, recruitment_department, position, interviewer_name, appearance_criteria, height, criminal_record, education_level, reading_writing, calculation_ability) VALUES `;
-
-        const values: string[] = interviewEntities.map(entity => {
-            return `(
-                ${entity.personnel_id.id},
-                ${entity.interview_result ? 'TRUE' : 'FALSE'},
-                '${entity.recruitment_department ?? ''}',
-                '${entity.position ?? ''}',
-                '${entity.interviewer_name ?? ''}',
-                '${entity.appearance_criteria ?? ''}',
-                '${entity.height ?? ''}',
-                '${entity.criminal_record ?? ''}',
-                '${entity.education_level ?? ''}',
-                '${entity.reading_writing ?? ''}',
-                '${entity.calculation_ability ?? ''}'
-            )`;
-        });
-
-        const finalQuery = insertQuery + values.join(', ');
-        try {
-            await this.entityManager.query(finalQuery);
-            this.logger.log(`Đã ghi ${interviewEntities.length} bản ghi vào bảng hr_interview_results`);
-        } catch (error) {
-            this.logger.error(`Lỗi khi ghi dữ liệu vào bảng hr_interview_results`, error);
-            throw new NotFoundException(`Không thể ghi dữ liệu vào bảng hr_interview_results`);
-        }
-    }
-
-    private async processHRPersonnelDatas(importData: Array<{ [key: string]: any }>, tableNames: string): Promise<void> {
-        const batchSize = 1000;
-        const totalBatches = Math.ceil(importData.length / batchSize);
-        const tables = tableNames.split(',');
-
-        for (let i = 0; i < totalBatches; i++) {
-            const batch = importData.slice(i * batchSize, (i + 1) * batchSize);
-            const dataToSave: { [key: string]: Array<any> } = {};
-
-            batch.forEach(record => {
-                tables.forEach(table => {
-                    if (!dataToSave[table]) {
-                        dataToSave[table] = [];
-                    }
-
-                    switch (table) {
-                        case 'hr_personnel':
-                            if (record.full_name !== undefined && record.gender !== undefined) {
-                                dataToSave[table].push({
-                                    full_name: record.full_name,
-                                    gender: record.gender,
-                                    interview_date: record.interview_date,
-                                    start_date: record.start_date,
-                                    birth_date: record.birth_date,
-                                    id_number: record.id_number,
-                                    id_issue_date: record.id_issue_date,
-                                    ethnicity: record.ethnicity,
-                                    id_issue_place: record.id_issue_place,
-                                    insurance_number: record.insurance_number,
-                                    tax_number: record.tax_number,
-                                    phone_number: record.phone_number,
-                                    email: record.email,
-                                    alternate_phone_number: record.alternate_phone_number,
-                                    alternate_name: record.alternate_name,
-                                    alternate_relationship: record.alternate_relationship,
-                                    birth_address: record.birth_address,
-                                    birth_province: record.birth_province,
-                                    birth_district: record.birth_district,
-                                    birth_ward: record.birth_ward,
-                                    current_address: record.current_address,
-                                    current_province: record.current_province,
-                                    current_district: record.current_district,
-                                    current_ward: record.current_ward,
-                                    type_personnel: record.type_personnel ?? true,
-                                } as CreatePersonnelDto);
-                            }
-                            break;
-
-                        case 'hr_language':
-                            // Handle hr_language data processing here
-                            break;
-
-                        case 'hr_family':
-                            // Handle hr_family data processing here
-                            break;
-
-                        case 'hr_experience':
-                            // Handle hr_experience data processing here
-                            break;
-
-                        case 'hr_education':
-                            if (record.school || record.major || record.years || record.start_year || record.graduation_year || record.grade) {
-                                dataToSave[table].push({
-                                    school: record.school,
-                                    major: record.major,
-                                    years: record.years,
-                                    start_year: record.start_year,
-                                    graduation_year: record.graduation_year,
-                                    grade: record.grade,
-                                } as CreateEducationDto);
-                            }
-                            break;
-
-                    }
-                });
-            });
-
-            // Save data for each table
-            for (const table of tables) {
-                const validBatch = dataToSave[table];
-                if (validBatch && validBatch.length > 0) {
-                    console.log("Table:", table);
-                    console.log("Data to save:", validBatch);
-                    // Call your save function here, e.g., await saveData(table, validBatch);
-                }
-            }
-        }
-    }
-
-
-
-
 
     private async processHRInterviewCandidates(importData: any[], tableName: string): Promise<void> {
         const batchSize = 1000;
@@ -639,6 +502,87 @@ export class ImportServices {
         }
     }
 
+
+
+    private async processHRTimeckeeping(importData: any[], tableName: string): Promise<void> {
+        const batchSize = 1000;
+        const totalBatches = Math.ceil(importData.length / batchSize);
+
+        for (let i = 0; i < totalBatches; i++) {
+            const batch = importData.slice(i * batchSize, (i + 1) * batchSize);
+
+            const validBatch: HrTimekeepingDto[] = batch.map(record => {
+                return {
+                    empid: record.empid,
+                    empname: record.empname,
+                    department_name: record.department_name,
+                    wk_item_seq: record.wk_item_seq,
+                    wk_item_name: record.wk_item_name,
+                    company_seq: record.company_seq,
+                    wk_date: record.wk_date,
+                    emp_seq: record.emp_seq,
+                    dt_cnt: record.dt_cnt,
+                    d_time: record.d_time,
+                    min_cnt: record.min_cnt,
+                    umgrp_seq: record.umgrp_seq,
+                    umwkgrp_seq: record.umwkgrp_seq,
+                    last_user_seq: record.last_user_seq,
+                    last_date_time: record.last_date_time,
+                    is_ot: record.is_ot,
+                } as HrTimekeepingDto;
+            }).filter(record => record.empid !== undefined);
+
+            if (validBatch.length === 0) {
+                continue;
+            }
+            await this.saveBatchTimecheeping(validBatch, tableName);
+        }
+    }
+
+    private async saveBatchTimecheeping(batch: Record<string, any>[], tableName: string): Promise<number[]> {
+        const values: string[] = batch.map((record) => {
+            const filteredColumnsAndValues = Object.keys(record).reduce((acc, col) => {
+                const value = record[col];
+                if (value !== undefined) {
+                    acc.columns.push(col);
+
+                    if (value === '') {
+                        acc.values.push('NULL');
+                    } else {
+                        acc.values.push(`'${value}'`);
+                    }
+                }
+                return acc;
+            }, { columns: [], values: [] } as { columns: string[], values: string[] });
+
+            if (filteredColumnsAndValues.columns.length === 0) return '';
+
+            return `(${filteredColumnsAndValues.values.join(', ')})`;
+        }).filter(value => value.trim() !== '');
+
+        if (values.length === 0) {
+            this.logger.warn(`No valid records to insert into ${tableName}`);
+            return [];
+        }
+
+        const finalColumns = Object.keys(batch[0]).reduce((acc, col) => {
+            const value = batch[0][col];
+            if (value !== undefined) {
+                acc.push(col);
+            }
+            return acc;
+        }, [] as string[]);
+
+        const finalQuery = `INSERT INTO ${tableName} (${finalColumns.join(', ')}) VALUES ` + values.join(', ') + ' RETURNING id';
+
+        try {
+            await this.entityManager.query(finalQuery);
+       
+        } catch (error) {
+            this.logger.error(`Error inserting data into table ${tableName}`, error);
+            throw new NotFoundException(`Unable to insert data into table ${tableName}`);
+        }
+    }
 
 
 }    

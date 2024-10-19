@@ -365,7 +365,7 @@ export default function ShowAction({
           <span className="text-gray-500">{t('Actions')}</span>
         </button>
       </Dropdown>
-      {actionUsers === 'actionUsers' && (
+      {selectedMenuKey === 'action_show_6' && (
         <ChangePassSelect
           userData={userData}
           selectedRowKeys={selectedRowKeys}

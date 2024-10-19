@@ -23,17 +23,48 @@ export class HrTimeKeepingController {
             };
         }
     }
-    
+
     @Get()
     async getTimekeepingByCid(
-        @Query('cid') cid: string, 
+        @Query('cid') cid: string,
         @Query('month_year') month_year: string
     ): Promise<any> {
         return this.hrTimekeepingService.findByCidAndMonthYear(cid, month_year);
     }
-    
-    
 
-  
+
+    @Get('list')
+    async findAll(
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10000,
+    ): Promise<{ data: any[]; total: number; totalPages: number }> {
+        return this.hrTimekeepingService.getAllHrSalarysPageLimit({}, page, limit);
+    }
+
+    @Get('filter')
+    async getAllFilter(
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 500,
+        @Query('date') date?: string,
+        @Query('nameTags') nameTags?: string,
+        @Query('cid') cid?: string,
+        @Query('department') department?: string,
+    ): Promise<{ data: any; total: number; totalPages: number }> {
+        const filter: Record<string, any> = {
+            nameTags: nameTags ? nameTags.split(',') : [],
+            cid: cid ? cid.split(',') : [],
+            department: department ? department.split(',') : []
+        };
+
+        return await this.hrTimekeepingService.getAllHrSalarysPageLimitFilter(filter, page, limit, date);
+    }
+
+    @Get('detail')
+    async getPersonnel(@Query('cid') cid: string,
+        @Query('month_year') month_year: string) {
+        return this.hrTimekeepingService.getHrSalaryById(cid, month_year);
+    }
+
+
 
 }

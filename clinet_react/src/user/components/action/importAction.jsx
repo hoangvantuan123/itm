@@ -183,10 +183,12 @@ export default function ImportAction({
         open={showDropdown}
         onClick={handleOnClick}
       >
-        <Button size="large" className="bg-white">
-          <DataIcon />
-        </Button>
        
+        <button   className="border-[1.3px] border-[#d9d9d9] rounded-lg p-[0.6rem] w-auto flex items-center space-x-2 bg-white hover:bg-gray-100">
+          <DataIcon />
+          <span className="text-gray-500">{t('Import')}</span>
+        </button>
+     
       </Dropdown>
       <ImportForm
         fetchData={fetchData}

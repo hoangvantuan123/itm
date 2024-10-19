@@ -39,32 +39,12 @@ const { Content } = Layout
 const { Option } = Select
 
 const columnConfig = [
-  { key: 'cid', label: 'cid' },
-  { key: 'name', label: 'name' },
-  { key: 'department', label: 'department' },
-  { key: 'monthly_salary', label: 'monthly_salary' },
-  { key: 'total', label: 'total' },
-  { key: 'normal_150', label: 'normal_150' },
-  { key: 'normal_200', label: 'normal_200' },
-  { key: 'normal_210', label: 'normal_210' },
-  { key: 'night_30', label: 'night_30' },
-  { key: 'sunday_200', label: 'sunday_200' },
-  { key: 'sunday_270', label: 'sunday_270' },
-  { key: 'holiday_300', label: 'holiday_300' },
-  { key: 'holiday_390', label: 'holiday_390' },
-  { key: 'total_late_in', label: 'total_late_in' },
-  { key: 'total_early_out', label: 'total_early_out' },
-  { key: 'total_late_in_early_out', label: 'total_late_in_early_out' },
-  { key: 'tong_ngay_nghi', label: 'tong_ngay_nghi' },
-  { key: 'paid_leave', label: 'paid_leave' },
-  { key: 'nghi_co_phep_khong_luong', label: 'nghi_co_phep_khong_luong' },
-  { key: 'phep_thang_nay', label: 'phep_thang_nay' },
-  { key: 'ton_phep_thang_nay', label: 'ton_phep_thang_nay' },
-  { key: 'so_ngay_di_lam_trong_thang', label: 'so_ngay_di_lam_trong_thang' },
-  { key: 'so_ngay_di_lam_thuc_te', label: 'so_ngay_di_lam_thuc_te' },
-  { key: 'muon_phep', label: 'muon_phep' },
+  { key: 'department_name', label: 'department' },
+  { key: 'empid', label: 'cid' },
+  { key: 'empname', label: 'name' },
+  { key: 'date', label: 'monthly_salary' },
 
-  { key: 'synchronize', label: 'synchronize' },
+
 ]
 
 const CloumnIcon = () => {
@@ -146,26 +126,18 @@ export default function HrSalary({ permissions, isMobile }) {
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [nameTags, setNameTags] = useState([])
   const [cid, setCid] = useState([])
-  const [phoneNumberTags, setPhoneNumberTags] = useState([])
-  const [citizenshipIdTags, setCitizenshipIdTags] = useState([])
   const [isDrawerVisibleFilter, setIsDrawerVisibleFilter] = useState(false)
   const [actionUsers, setActionUsers] = useState(null)
   const [actionImport, setActionImport] = useState(null)
   const [syn, setSyn] = useState(null)
-  const [applicantType, setApplicantType] = useState([])
-  const [interviewDate, setInterviewDate] = useState(null)
-  const [applicantStatus, setApplicantStatus] = useState([])
   const [isModalOpenAddHr, setIsModalOpenAddHr] = useState(false)
-  const [table] = useState('hr_salary')
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [selectedUser, setSelectedUser] = useState(null)
   const [department, setDepartment] = useState([])
 
   const handleOnClickAction = () => {
     setActionUsers('actionHrSalary')
   }
   const handleOnClickActionImport = () => {
-    setActionImport('hr_salary')
+    setActionImport('hr_timekeeping')
   }
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys)
@@ -237,14 +209,13 @@ export default function HrSalary({ permissions, isMobile }) {
   const fetchDataFilter = async () => {
     setLoading(true)
     try {
-      const date = dateRange ? dateRange.format('MM/YYYY') : null;
+      const date = dateRange ? dateRange.format('MM-YYYY') : null;
       const response = await GetFilterHrSalary(
         page,
         limit,
         date,
         nameTags,
         cid,
-        syn,
         department,
       )
 
@@ -299,7 +270,7 @@ export default function HrSalary({ permissions, isMobile }) {
   }
 
   const handleNavigateToDetail = (record) => {
-    navigate(`/u/action=20/data-salary/detail/${record.id}`)
+    navigate(`/u/action=20/data-salary/detail/${record.empid}/${record.date}`)
   }
 
   const columns = useMemo(() => [
@@ -323,11 +294,6 @@ export default function HrSalary({ permissions, isMobile }) {
       dataIndex: key,
       key: key,
       render: (text, record) => {
-
-
-        if (key === 'synchronize' && visibleColumns[key]) {
-          return <CustomTagSyn status={record.synchronize} />;
-        }
 
         return visibleColumns[key] ? text : null;
       },
@@ -516,11 +482,14 @@ export default function HrSalary({ permissions, isMobile }) {
         /> </>) : (<> <div className="p-2  flex items-center justify-between">
           <span className="inline-flex overflow-hidden">
             <div className="flex items-center gap-2">
-              <Select defaultValue="Table" className="w-28" size="large">
-                <Option value="1">{t('Table')}</Option>
-                <Option value="2">{t('Grid')}</Option>
-                <Option value="3">{t('List')}</Option>
-              </Select>
+            {canCreate && (
+              <ImportAction
+                fetchData={fetchData}
+                handleOnClickActionImport={handleOnClickActionImport}
+                setActionImport={setActionImport}
+                actionImport={actionImport}
+              />
+            )}
               <DatePicker size="large" value={dateRange}
                 onChange={handleDateChange} renderExtraFooter={() => 'extra footer'} picker="month" />
 
@@ -538,7 +507,6 @@ export default function HrSalary({ permissions, isMobile }) {
                 syn={syn}
                 setDepartment={setDepartment}
                 department={department}
-
               />
 
               <Button
@@ -548,24 +516,7 @@ export default function HrSalary({ permissions, isMobile }) {
               >
                 <CloumnIcon />
               </Button>
-              {selectedRowKeys != null && selectedRowKeys.length > 0 && canEdit && (
-                <SynActionHrInter
-                  fetchData={fetchData}
-                  selectedRowKeys={selectedRowKeys}
-                />
-              )}
-              {selectedRowKeys != null && selectedRowKeys.length > 0 && (
-                <ShowAction
-                  handleOnClickAction={handleOnClickAction}
-                  actionUsers={actionUsers}
-                  setActionUsers={setActionUsers}
-                  setSelectedRowKeys={setSelectedRowKeys}
-                  selectedRowKeys={selectedRowKeys}
-                  fetchDataUser={fetchData}
-                  canDelete={canDelete}
-                  table={table}
-                />
-              )}
+          
             </div>
           </span>
 

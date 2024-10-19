@@ -13,7 +13,7 @@ export const GetHrSalaryPageLimit = async (
 ) => {
   try {
     const token = accessToken()
-    const response = await axios.get(`${HOST_API_PUBLIC_HR}hr-salary`, {
+    const response = await axios.get(`${HOST_API_PUBLIC_HR}hr-timekeeping/list`, {
       params: {
         page,
         limit,

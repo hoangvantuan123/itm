@@ -36,7 +36,6 @@ import { registerUser } from '../../features/auth/API/registerAPI'
 import { GetUserGroupsPageLimitID } from '../../features/resUsers/getUserGroupsPageLimitID'
 import '../../static/css/scroll_container.css'
 import '../../static/css/drawer_cusstom.css'
-import ImportForm from '../components/import'
 import { checkActionPermission } from '../../permissions'
 
 const { Option } = Select

@@ -5,53 +5,53 @@ export class HrTimekeeping {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: 'text' })
-    EmpId: string;
-
-    @Column({ type: 'text' })
-    EmpName: string;
-
-    @Column({ type: 'text' })
-    DepartmentName: string;
-
-    @Column({ type: 'int' ,  nullable: true})
-    WkItemSeq: number;
+    @Column({  type: 'text',  nullable: true })
+    empid: string;
 
     @Column({ type: 'text',  nullable: true })
-    WkItemName: string;
+    empname: string;
 
-    @Column({ type: 'int',  nullable: true })
-    CompanySeq: number;
+    @Column({ type: 'text' ,  nullable: true})
+    department_name: string;
+
+    @Column({ type: 'int' ,  nullable: true})
+    wk_item_seq: number;
 
     @Column({ type: 'text',  nullable: true })
-    WkDate: string;
+    wk_item_name: string;
 
     @Column({ type: 'int',  nullable: true })
-    EmpSeq: number;
+    company_seq: number;
 
-    @Column({ type: 'int',  nullable: true })
-    DTCnt: number;
+    @Column({ type: 'text',  nullable: true })
+    wk_date: string;
+
+    @Column({ type: 'text',  nullable: true })
+    emp_seq: number;
+
+    @Column({ type: 'text',  nullable: true })
+    dt_cnt: string;
 
     @Column({ type: 'int' ,  nullable: true})
-    DTime: number;
+    d_time: number;
 
     @Column({ type: 'int' ,  nullable: true})
-    MinCnt: number;
+    min_cnt: number;
 
     @Column({ type: 'int',  nullable: true })
-    UMGrpSeq: number;
+    umgrp_seq: number;
 
     @Column({ type: 'int',  nullable: true })
-    UMWkGrpSeq: number;
+    umwkgrp_seq: number;
 
     @Column({ type: 'int' ,  nullable: true})
-    LastUserSeq: number;
+    last_user_seq: number;
 
     @Column({ type: 'text', nullable: true })
-    LastDateTime: string;
+    last_date_time: string;
 
-    @Column({ type: 'int', nullable: true  })
-    IsOT: number;
+    @Column({ type: 'text', nullable: true  })
+    is_ot: string;
 
     
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

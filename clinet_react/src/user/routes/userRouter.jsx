@@ -423,7 +423,7 @@ const UserRouter = () => {
                       }
                     />
                     <Route
-                      path="/u/action=20/data-salary/detail/:id"
+                      path="/u/action=20/data-salary/detail/:id/:month_year"
                       element={
                         checkActionPermission(
                           userPermissions,

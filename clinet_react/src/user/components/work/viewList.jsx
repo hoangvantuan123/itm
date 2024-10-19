@@ -81,8 +81,7 @@ export default function ListView({ setViewModeList, viewModeList }) {
     setLoading(true);
     try {
       const monthYear = `${String(selectedDate.month() + 1).padStart(2, '0')}-${selectedDate.year()}`;
-      const cid = "VM31122002";
-      const response = await GetTimekeepingUser(cid, monthYear);
+      const response = await GetTimekeepingUser(monthYear);
 
       if (response.success) {
         setData(response.data.data);
@@ -110,33 +109,33 @@ export default function ListView({ setViewModeList, viewModeList }) {
     const startOfWeek = date.clone().startOf('isoWeek'); // Thứ Hai
     return Array.from({ length: 7 }, (_, i) => startOfWeek.clone().add(i, 'days'));
   };
-  
+
   const getMonthDates = (date) => {
-    const startOfMonth = date.clone().startOf('month'); 
-    const endOfMonth = date.clone().endOf('month'); 
-  
+    const startOfMonth = date.clone().startOf('month');
+    const endOfMonth = date.clone().endOf('month');
+
     const monthDates = [];
     for (let d = startOfMonth.clone(); d.isBefore(endOfMonth.clone().add(1, 'days')); d.add(1, 'days')) {
       monthDates.push(d.clone());
     }
-  
-    const firstDayOfMonth = monthDates[0].day(); 
-    const daysToAdd = (firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1); 
+
+    const firstDayOfMonth = monthDates[0].day();
+    const daysToAdd = (firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1);
     const adjustedMonthDates = [];
     const startDate = startOfMonth.clone().subtract(daysToAdd, 'days');
-  
+
     for (let i = 0; i < daysToAdd; i++) {
       adjustedMonthDates.push(startDate.clone().add(i, 'days'));
     }
-  
+
     const allDates = adjustedMonthDates.concat(monthDates);
-  
+
     const completeMonthDates = allDates.slice(0, 42);
-    
-    return completeMonthDates; 
+
+    return completeMonthDates;
   };
-  
-  
+
+
 
 
   const handlePrevMonth = () => setSelectedDate((prevDate) => prevDate.clone().subtract(1, 'month'));
@@ -256,10 +255,10 @@ export default function ListView({ setViewModeList, viewModeList }) {
       late_in: "Giờ đi muộn",
       early_out: "Giờ về sớm",
     };
-  
+
     return labels[key] || key;
   };
-  
+
   return (
     <div className="h-screen overflow-y-auto bg-white">
       <div className="p-2">
@@ -317,24 +316,24 @@ export default function ListView({ setViewModeList, viewModeList }) {
       </div>
 
       <div className="h-full flex flex-col">
-  <ul className="flex-1 pb-32 bg-slate-50 p-4 rounded-3xl shadow-md">
-  <h3 className="text-lg mb-2 font-semibold">
-    {selectedDate.format('YYYY-MM-DD')}
-  </h3>
-  <h4 className="text-gray-800 mt-3 mb-3">Danh sách các bản ghi:</h4>
+        <ul className="flex-1 pb-32 bg-slate-50 p-4 rounded-3xl shadow-md">
+          <h3 className="text-lg mb-2 font-semibold">
+            {selectedDate.format('YYYY-MM-DD')}
+          </h3>
+          <h4 className="text-gray-800 mt-3 mb-3">Danh sách các bản ghi:</h4>
 
-    {currentRecords.length > 0 ? (
-      Object.entries(processedValues).map(([key, value], index) => (
-        <li key={index} className="bg-gray-100 rounded-lg p-4 mb-4">
-          <h4 className="text-gray-500">{getLabel(key)}</h4>
-          <p className="text-gray-800">{value}</p>
-        </li>
-      ))
-    ) : (
-      <li className="bg-gray-100 rounded-lg p-4 mb-4">Không có bản ghi nào</li>
-    )}
-  </ul>
-</div>
+          {currentRecords.length > 0 ? (
+            Object.entries(processedValues).map(([key, value], index) => (
+              <li key={index} className="bg-gray-100 rounded-lg p-4 mb-4">
+                <h4 className="text-gray-500">{getLabel(key)}</h4>
+                <p className="text-gray-800">{value}</p>
+              </li>
+            ))
+          ) : (
+            <li className="bg-gray-100 rounded-lg p-4 mb-4">Không có bản ghi nào</li>
+          )}
+        </ul>
+      </div>
 
     </div>
   );
