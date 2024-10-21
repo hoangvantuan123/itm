@@ -33,14 +33,12 @@
 
   }
 
-  :where(.css-1hpnbz2).ant-drawer .ant-drawer-content {
-    border-top-left-radius: 13px !important;
-    border-top-right-radius: 13px !important;
-  }
+
   :where(.css-dev-only-do-not-override-1hpnbz2).ant-drawer [class^="ant-drawer"]{
     border-top-left-radius: 13px !important;
     border-top-right-radius: 13px !important;
   }
+ 
   :where(.css-qnu6hi).ant-drawer .ant-drawer-content{
     border-top-left-radius: 13px !important;
     border-top-right-radius: 13px !important;
