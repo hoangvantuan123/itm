@@ -25,12 +25,7 @@ import moment from 'moment-timezone'
 
 import { GetHrSalaryPageLimit } from '../../features/hrSalary/getSalaryPageLimit'
 import { GetFilterHrSalary } from '../../features/hrSalary/getFilterHrSalary'
-import ShowAction from '../components/action/showAction'
-import FieldActionInter from '../components/action/fieldActionInter'
 import AddHrInter from '../components/add/addHrInter'
-import CustomTagInter from '../components/tags/customTagInter'
-import CustomTagSyn from '../components/tags/customTagSyn'
-import SynActionHrInter from '../components/action/synActionHrInter'
 import { MailOutlined, PhoneOutlined, UserOutlined, HomeOutlined, TeamOutlined } from '@ant-design/icons';
 
 import FieldActionSalary from '../components/action/fieldActionHrSalary'
@@ -182,31 +177,10 @@ export default function HrSalary({ permissions, isMobile }) {
     'view',
   )
 
+ 
+
+
   const fetchData = async () => {
-    setLoading(true)
-    try {
-      const date = dateRange ? dateRange.format('MM/YYYY') : null;
-      const response = await GetHrSalaryPageLimit(
-        page,
-        limit,
-        date
-      )
-
-      if (response.success) {
-        setData(response.data.data)
-        setTotal(response.data.total)
-      } else {
-        throw new Error(response.message)
-      }
-    } catch (err) {
-      setData([])
-    } finally {
-      setLoading(false)
-    }
-  };
-
-
-  const fetchDataFilter = async () => {
     setLoading(true)
     try {
       const date = dateRange ? dateRange.format('MM-YYYY') : null;
@@ -233,11 +207,10 @@ export default function HrSalary({ permissions, isMobile }) {
   };
 
   useEffect(() => {
-    if (!isDrawerVisibleFilter) {
-      fetchData()
-    }
-
-  }, [page, limit, dateRange])
+    fetchData();
+  }, [page, limit, dateRange, nameTags, cid, department]);
+  
+  
 
   const handleTableChange = (pagination) => {
     setPage(pagination.current)
@@ -379,17 +352,13 @@ export default function HrSalary({ permissions, isMobile }) {
 
   const handleApplyFilter = async () => {
     setIsDrawerVisibleFilter(false)
-
-    await fetchDataFilter()
+    await fetchData()
   }
 
-  const handleDateChange = (dates) => {
-    if (dates) {
-      setDateRange(dates)
-    } else {
-      setDateRange(null)
-    }
-  }
+ 
+  const handleDateChange = async (dates) => {
+    setDateRange(dates);
+  };
 
   const openModalAddUser = () => {
     setIsModalOpenAddHr(true)
@@ -408,20 +377,17 @@ export default function HrSalary({ permissions, isMobile }) {
             <Col span={24} key={item?.id} style={{ marginBottom: 16 }}>
               <Card
                 size="small"
-                title={item?.cid}
+                title={<>{item?.empid} -  {item?.date}</>}
                 onClick={() => handleNavigateToDetail(item)}
-                extra={<CustomTagSyn status={item?.synchronize} />}
               >
                 <p>
                   <UserOutlined style={{ marginRight: 8 }} />
-                  {item?.name}
+                  {item?.empname}
                 </p>
                 <p>
-                  {item?.department}
+                  {item?.department_name}
                 </p>
-                <p>
-                  {item?.monthly_salary}
-                </p>
+                
               </Card>
             </Col>
           ))}
@@ -447,7 +413,14 @@ export default function HrSalary({ permissions, isMobile }) {
         </h1>
 
       </div>
-      {isMobile ? (<><div className="p-2  flex items-center justify-between">  <div className="flex items-center gap-2">           <FieldActionSalary
+      {isMobile ? (<>
+      
+      
+      
+      
+      
+      <div className="p-2  flex items-center justify-between"> 
+        <FieldActionSalary
         dateRange={dateRange}
         setDateRange={setDateRange}
         handleApplyFilter={handleApplyFilter}
@@ -461,12 +434,10 @@ export default function HrSalary({ permissions, isMobile }) {
         syn={syn}
         setDepartment={setDepartment}
         department={department}
+        isMobile={isMobile}
 
-      /></div>
-
-
-
-      </div>   <Pagination
+      />
+      <Pagination
           simple={{
             readOnly: true,
           }}
@@ -478,8 +449,13 @@ export default function HrSalary({ permissions, isMobile }) {
             handleTableChange({ current: page, pageSize })
 
           }
-          className="mb-2 mt-2  right-0 flex items-end justify-end"
-        /> </>) : (<> <div className="p-2  flex items-center justify-between">
+        /> 
+
+
+
+      </div> 
+        
+        </>) : (<> <div className="p-2  flex items-center justify-between">
           <span className="inline-flex overflow-hidden">
             <div className="flex items-center gap-2">
             {canCreate && (

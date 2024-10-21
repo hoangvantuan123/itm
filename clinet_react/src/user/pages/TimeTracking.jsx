@@ -86,7 +86,7 @@ export default function TimeTracking({ isMobile }) {
       early_out: 0,
     };
     records.forEach(record => {
-      switch (record.WkItemSeq) {
+      switch (record.wk_item_seq) {
         case 29: // Giờ vào thực tế
           values.start = record.d_time || 0;
           break;
@@ -161,8 +161,8 @@ export default function TimeTracking({ isMobile }) {
     const dateData = data.find((item) => item.date === dateStr);
 
     if (dateData) {
-      const hasArrival = dateData.records.some((rec) => rec.WkItemSeq === 29);
-      const hasDeparture = dateData.records.some((rec) => rec.WkItemSeq === 43);
+      const hasArrival = dateData.records.some((rec) => rec.wk_item_seq === 29);
+      const hasDeparture = dateData.records.some((rec) => rec.wk_item_seq === 43);
 
       if (hasArrival && hasDeparture) {
         return 'bg-green-200 text-green-800';

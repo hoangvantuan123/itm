@@ -8,16 +8,14 @@ import {
 
 export const GetHrSalaryPageLimit = async (
   page = 1,
-  limit = 10,
-  date
+  limit = 10
 ) => {
   try {
     const token = accessToken()
     const response = await axios.get(`${HOST_API_PUBLIC_HR}hr-timekeeping/list`, {
       params: {
         page,
-        limit,
-        date,
+        limit
       },
       headers: {
         'Authorization': `Bearer ${token}`,

@@ -201,7 +201,7 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
     'view',
   )
 
-  const fetchData = async () => {
+ /*  const fetchData = async () => {
     setLoading(true)
     try {
       const [startDate, endDate] = dateRange.map((date) =>
@@ -225,10 +225,10 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
     } finally {
       setLoading(false)
     }
-  };
+  }; */
 
 
-  const fetchDataFilter = async () => {
+  const fetchData = async () => {
     setLoading(true)
     try {
       const [startDate, endDate] = dateRange.map((date) =>
@@ -452,7 +452,7 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
   const handleApplyFilter = async () => {
     setIsDrawerVisibleFilter(false)
 
-    await fetchDataFilter()
+    await fetchData()
   }
 
   const handleDateChange = (dates) => {

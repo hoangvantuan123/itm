@@ -190,7 +190,7 @@ const UserRouter = () => {
                           'home',
                           'view',
                         ) ? (
-                          <Home />
+                          <Home permissions={userPermissions} />
                         ) : (
                           <Unauthorized />
                         )
@@ -222,7 +222,7 @@ const UserRouter = () => {
                           'notifications',
                           'view',
                         ) ? (
-                          <Notifications />
+                          <PhoneNotifications />
                         ) : (
                           <Unauthorized />
                         )
@@ -290,7 +290,7 @@ const UserRouter = () => {
                       }
                     />
                     <Route
-                      path="u/action=7/payroll/detail/:id"
+                      path="u/action=7/payroll/detail/:id/:month_year"
                       element={
                         checkActionPermission(
                           userPermissions,

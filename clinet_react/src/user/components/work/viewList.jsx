@@ -149,8 +149,8 @@ export default function ListView({ setViewModeList, viewModeList }) {
     const dateData = data.find((item) => item.date === dateStr);
 
     if (dateData) {
-      const hasArrival = dateData.records.some((rec) => rec.WkItemSeq === 29);
-      const hasDeparture = dateData.records.some((rec) => rec.WkItemSeq === 43);
+      const hasArrival = dateData.records.some((rec) => rec.wk_item_seq === 29);
+      const hasDeparture = dateData.records.some((rec) => rec.wk_item_seq === 43);
 
       if (hasArrival && hasDeparture) {
         return 'bg-green-200 text-green-800';
@@ -183,51 +183,51 @@ export default function ListView({ setViewModeList, viewModeList }) {
     };
 
     records.forEach(record => {
-      switch (record.WkItemSeq) {
+      switch (record.wk_item_seq) {
         case 29: // Giờ vào thực tế
-          values.start = record.DTime || 0;
+          values.start = record.d_time || 0;
           break;
         case 43: // Giờ về thực tế
-          values.stop = record.DTime || 0;
+          values.stop = record.d_time || 0;
           break;
         case 42: // Thêm giờ ca ngày 150%
-          values.overtime_normal_150 = record.DTime || 0;
+          values.overtime_normal_150 = record.d_time || 0;
           break;
         case 41: // Tăng ca ngày thường ban đêm 200%
-          values.overtime_normal_200 = record.DTime || 0;
+          values.overtime_normal_200 = record.d_time || 0;
           break;
         case 32: // Giờ về
-          values.stop = record.DTime || 0;
+          values.stop = record.d_time || 0;
           break;
         case 36: // Giờ vào
-          values.start = record.DTime || 0;
+          values.start = record.d_time || 0;
           break;
         case 74: // Thêm giờ ca đêm 210%
-          values.overtime_normal_210 = record.DTime || 0;
+          values.overtime_normal_210 = record.d_time || 0;
           break;
         case 40: // Ban Đêm
-          values.at_night = record.DTime || 0;
+          values.at_night = record.d_time || 0;
           break;
         case 31: // Chủ nhật ca ngày 200%
-          values.overtime_sunday_200 = record.DTime || 0;
+          values.overtime_sunday_200 = record.d_time || 0;
           break;
         case 39: // 
-          values.overtime_sunday_270 = record.DTime || 0;
+          values.overtime_sunday_270 = record.d_time || 0;
           break;
         case 38: // 
-          values.overtime_holiday_300 = record.DTime || 0;
+          values.overtime_holiday_300 = record.d_time || 0;
           break;
         case 35: // 
-          values.overtime_holiday_390 = record.DTime || 0;
+          values.overtime_holiday_390 = record.d_time || 0;
           break;
         case 11: // 
-          values.working_day = record.DTCnt || 0;
+          values.working_day = record.dt_cnt || 0;
           break;
         case 34: // 
-          values.late_in = record.DTime || 0;
+          values.late_in = record.d_time || 0;
           break;
         case 33: // 
-          values.early_out = record.DTime || 0;
+          values.early_out = record.d_time || 0;
           break;
       }
     });

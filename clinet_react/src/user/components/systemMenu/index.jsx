@@ -64,18 +64,20 @@ export default function MenuDrawer({
         sequence: selectedDetails.sequence || '',
         parent_id: selectedDetails.parent_id || null,
         key: selectedDetails.key_name || '',
+        parent_path: selectedDetails.parent_path || ''
       })
       fetchData()
     }
   }, [selectedDetails?.id, selectedDetails])
 
   const handleFinish = async (values) => {
-    const { name, sequence, parent_id, key } = values
+    const { name, sequence, parent_id, key, parent_path } = values
     const data = {
       name,
       sequence,
       ...(parent_id !== undefined ? { parent_id } : {}),
       key,
+      parent_path
     }
 
     try {
@@ -99,7 +101,7 @@ export default function MenuDrawer({
       title={<Title level={4}>{selectedDetails?.name}</Title>}
       open={isModalVisible}
       onClose={handleCancel}
-      width={900}
+      width={600}
       closable={false}
       extra={[
         <Button key="cancel" onClick={handleCancel}>
@@ -166,6 +168,15 @@ export default function MenuDrawer({
             />
           </Form.Item>
         </div>
+        <Form.Item
+            label={t('Parent path')}
+            name="parent_path"
+            style={{ textAlign: 'left' }}
+            className="w-full"
+            rules={[{ required: true, message: t('Vui lòng nhập Parent Path ') }]}
+          >
+            <Input size="large" placeholder={t('Nhập Parent Path')} />
+          </Form.Item>
         <Form.Item
           label="Menu cha"
           name="parent_id"

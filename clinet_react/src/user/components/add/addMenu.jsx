@@ -53,12 +53,13 @@ export default function AddMenu({ isOpen, onClose, fetchTableData }) {
     setLoading(false)
   }
   const handleFinish = async (values) => {
-    const { name, sequence, parent_id, key } = values
+    const { name, sequence, parent_id, key, parent_path } = values
     const data = {
       name,
       sequence,
       ...(parent_id !== undefined ? { parent_id } : null),
       key,
+      parent_path
     }
     try {
       const result = await PostMenu(
@@ -66,8 +67,8 @@ export default function AddMenu({ isOpen, onClose, fetchTableData }) {
         data.sequence,
         data.parent_id,
         data.key,
+        data.parent_path,
       )
-      console.log('result', result)
       if (result.success) {
         message.success(t('Tạo menu thành công'))
         fetchTableData()
@@ -88,13 +89,13 @@ export default function AddMenu({ isOpen, onClose, fetchTableData }) {
   return (
     <Drawer
       title={
-        <Title level={4} style={{ textAlign: 'center' }}>
+        <Title level={5} >
           {t('Thêm mục Menu')}
         </Title>
       }
       open={isOpen}
       closable={false}
-      width={900}
+      width={600}
       extra={[
         <Button key="cancel" onClick={onClose}>
           {t('Hủy')}
@@ -149,7 +150,17 @@ export default function AddMenu({ isOpen, onClose, fetchTableData }) {
           >
             <Input size="large" placeholder={t('Nhập key hiển thị')} />
           </Form.Item>
+      
         </div>
+        <Form.Item
+            label={t('Parent path')}
+            name="parent_path"
+            style={{ textAlign: 'left' }}
+            className="w-full"
+            rules={[{ required: true, message: t('Vui lòng nhập Parent Path ') }]}
+          >
+            <Input size="large" placeholder={t('Nhập Parent Path')} />
+          </Form.Item>
         <Form.Item
           label="Menu cha"
           name="parent_id"

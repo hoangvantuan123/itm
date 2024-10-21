@@ -93,19 +93,11 @@ export default function FieldActionInter({
 
   return (
     <>
-      <div className="flex flex-col items-start">
-        <div className="flex items-center space-x-2">
-          
-          <Button
-            size="large"
-            className="bg-white"
-            onClick={() => setIsDrawerVisible(true)}
-          >
-            <FieldIcon />
-          </Button>
-        </div>
-      </div>
-
+      
+      <button    onClick={() => setIsDrawerVisible(true)}  className="border-[1.3px] border-[#d9d9d9] rounded-lg p-[0.6rem] w-auto flex items-center space-x-2 bg-white hover:bg-gray-100">
+          <FieldIcon />
+          <span className="text-gray-500">{t('Filter')}</span>
+        </button>
       <Drawer
         title="Filter Options"
         placement="right"

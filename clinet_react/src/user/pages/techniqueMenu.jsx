@@ -161,6 +161,17 @@ export default function TechniqueMenu({ permissions }) {
       },
       ...(visibleColumns.parent_name ? {} : { parent_name: () => null }),
     },
+    {
+      title: 'Parent Path',
+      dataIndex: 'parent_path',
+      key: 'parent_path',
+      sorter: (a, b) => {
+        const A = a.parent_path || ''
+        const B = b.parent_path || ''
+        return A.localeCompare(B)
+      },
+      ...(visibleColumns.parent_path ? {} : { parent_path: () => null }),
+    },
   ]
 
   const handleViewDetails = (group) => {
@@ -280,11 +291,7 @@ export default function TechniqueMenu({ permissions }) {
           <div className="p-2 mb flex items-center justify-between">
             <span className="inline-flex overflow-hidden">
               <div className="flex items-center gap-2">
-                <Select defaultValue="Tùy chọn" className="w-28" size="large">
-                  <Option value="1">Table</Option>
-                  <Option value="2">Grid</Option>
-                  <Option value="3">List</Option>
-                </Select>
+             
                 {canCreate && <ImportAction />}
 
                 {selectedRowKeys != null && selectedRowKeys.length > 0 && (

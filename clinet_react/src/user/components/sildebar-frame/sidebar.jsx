@@ -601,7 +601,7 @@ const Sidebar = ({ permissions }) => {
                   </SubMenu>
                 )}
 
-                {checkMenuPermission(permissions, 'setting-3-1', 'view') && (
+               {/*  {checkMenuPermission(permissions, 'setting-3-1', 'view') && (
                   <SubMenu
                     key="setting-3-1"
                     title={
@@ -641,7 +641,7 @@ const Sidebar = ({ permissions }) => {
                         </Menu.Item>
                       )}
                   </SubMenu>
-                )}
+                )} */}
               </SubMenu>
             )}
           </Menu>

@@ -168,6 +168,9 @@ export default function Profile({ permissions }) {
   const [selectedMenuKey, setSelectedMenuKey] = useState('1')
   const userFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'))
   const userNameLogin = userFromLocalStorage?.login || 'none'
+  const userName = userFromLocalStorage?.userName || 'none'
+  const userEmail = userFromLocalStorage?.userEmail || 'none'
+  const userPhone = userFromLocalStorage?.userPhone || 'none'
   const avatar = userFromLocalStorage?.avatar || DefaultAvatar
   const [form] = Form.useForm()
   const canView = checkActionPermission(permissions, 'setting', 'view')
@@ -195,7 +198,6 @@ export default function Profile({ permissions }) {
   const menu = (
     <Menu onClick={handleMenuClick} style={{ width: 200 }}>
       <Menu.Item key="1">{t('phone_profile.menu_item_1')}</Menu.Item>
-      <Menu.Item key="2">{t('phone_profile.menu_item_2')}</Menu.Item>
       <Menu.Item key="3">{t('phone_profile.menu_item_3')}</Menu.Item>
       <Menu.Item key="logout_5" style={{ color: 'red' }} onClick={handleLogout}>
         {t('phone_profile.menu_item_4')}
@@ -243,8 +245,8 @@ export default function Profile({ permissions }) {
                   </span>
                 </div>
               </div>
-              <Card style={{ marginBottom: '20px' }}>
-                <Title level={5}>{t('Thông tin cá nhân')}</Title>
+              <Card size="small" style={{ marginBottom: '20px' }} className="bg-slate-50  border-none">
+                <Title level={5}>{t('personal_settings_key_menu_01.personal_information')}</Title>
                 <ul className="space-y-1">
                   <li>
                     <a className="flex items-center gap-2 rounded-lg  py-2 text-gray-500  hover:text-gray-500 ">
@@ -252,7 +254,7 @@ export default function Profile({ permissions }) {
 
                       <span className="text-sm font-medium">
                         {' '}
-                        Hoàng Văn Tuấn{' '}
+                       {userName}
                       </span>
                     </a>
                   </li>
@@ -260,7 +262,7 @@ export default function Profile({ permissions }) {
                     <a className="flex items-center gap-2 rounded-lg  py-2 text-gray-500  hover:text-gray-500 ">
                       <IdIcon />
 
-                      <span className="text-sm font-medium"> NV09876532 </span>
+                      <span className="text-sm font-medium"> {userNameLogin} </span>
                     </a>
                   </li>
                   <li>
@@ -268,8 +270,7 @@ export default function Profile({ permissions }) {
                       <MailIcon />
 
                       <span className="text-sm font-medium">
-                        {' '}
-                        tuanvhoang31@gmail.com{' '}
+                        {userEmail}
                       </span>
                     </a>
                   </li>
@@ -277,19 +278,19 @@ export default function Profile({ permissions }) {
                     <a className="flex items-center gap-2 rounded-lg  py-2 text-gray-500  hover:text-gray-500 ">
                       <CallIcon />
 
-                      <span className="text-sm font-medium"> 0987654321 </span>
+                      <span className="text-sm font-medium"> {userPhone} </span>
                     </a>
                   </li>
                 </ul>
               </Card>
-              <Card style={{ marginBottom: '20px' }}></Card>
+              <Card size="small" style={{ marginBottom: '20px' }} className="flex  border-none bg-slate-50 items-center justify-center" >{t('personal_settings_key_menu_01.none_event')}</Card>
             </>
           )}
           {selectedMenuKey === '2' && <KeyMenu02 />}
           {selectedMenuKey === '3' && <KeyMenu03 />}
           {selectedMenuKey === '4' && canView && <PhoneGeneralSettings />}
         </div>
-      </div>
+      </div> 
     </div>
   )
 }
