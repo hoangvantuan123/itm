@@ -240,20 +240,20 @@ export default function ListView({ setViewModeList, viewModeList }) {
   const processedValues = processRecords(currentRecords);
   const getLabel = (key) => {
     const labels = {
-      start: "Giờ vào thực tế",
-      stop: "Giờ về thực tế",
-      day_off: "Dayoff",
-      overtime_normal_150: "Thêm giờ ca ngày 150%",
-      overtime_normal_200: "Tăng ca ngày thường ban đêm 200%",
-      overtime_normal_210: "Thêm giờ ca đêm 210%",
-      at_night: "Ban Đêm",
-      overtime_sunday_200: "Chủ nhật ca ngày 200%",
-      overtime_sunday_270: "Tăng ca Chủ nhật 270%",
-      overtime_holiday_300: "Thêm giờ ngày lễ 300%",
-      overtime_holiday_390: "Thêm giờ ngày lễ 390%",
-      working_day: "Số ngày làm việc",
-      late_in: "Giờ đi muộn",
-      early_out: "Giờ về sớm",
+      start: t('hr_payroll.start'),
+      stop:  t('hr_payroll.stop'),
+      day_off:t('hr_payroll.sday_offtop'),
+      overtime_normal_150: t('hr_payroll.overtime_normal_150'),
+      overtime_normal_200: t('hr_payroll.overtime_normal_200'),
+      overtime_normal_210: t('hr_payroll.overtime_normal_210'),
+      at_night: t('hr_payroll.at_night'),
+      overtime_sunday_200:t('hr_payroll.overtime_sunday_200'),
+      overtime_sunday_270: t('hr_payroll.overtime_sunday_270'),
+      overtime_holiday_300: t('hr_payroll.overtime_holiday_300'),
+      overtime_holiday_390: t('hr_payroll.overtime_holiday_390'),
+      working_day: t('hr_payroll.working_day'),
+      late_in: t('hr_payroll.late_in'),
+      early_out: t('hr_payroll.early_out'),
     };
 
     return labels[key] || key;
@@ -320,7 +320,7 @@ export default function ListView({ setViewModeList, viewModeList }) {
           <h3 className="text-lg mb-2 font-semibold">
             {selectedDate.format('YYYY-MM-DD')}
           </h3>
-          <h4 className="text-gray-800 mt-3 mb-3">Danh sách các bản ghi:</h4>
+          <h4 className="text-gray-800 mt-3 mb-3">{t('hr_payroll.note')}</h4>
 
           {currentRecords.length > 0 ? (
             Object.entries(processedValues).map(([key, value], index) => (
@@ -330,7 +330,7 @@ export default function ListView({ setViewModeList, viewModeList }) {
               </li>
             ))
           ) : (
-            <li className="bg-gray-100 rounded-lg p-4 mb-4">Không có bản ghi nào</li>
+            <li className="bg-gray-100 rounded-lg p-4 mb-4">{t('hr_payroll.no_note')}</li>
           )}
         </ul>
       </div>

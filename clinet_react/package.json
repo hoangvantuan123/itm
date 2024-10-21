@@ -53,6 +53,7 @@
     "react-router-dom": "^6.21.3",
     "scss": "^0.2.4",
     "serve": "^14.2.3",
+    "socket.io-client": "^4.8.0",
     "uuid": "^9.0.1",
     "vite-plugin-css-injected-by-js": "^3.5.2",
     "xlsx": "^0.18.5",

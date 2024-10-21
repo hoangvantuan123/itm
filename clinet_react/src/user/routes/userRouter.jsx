@@ -51,6 +51,7 @@ import HrSalary from '../pages/salary'
 import DetailSalaryUser from '../pages/detailSalaryUser'
 import Payroll from '../pages/payroll'
 import DetailPayrollUser from '../pages/detailSalaryPayroll'
+import NotificationComponent from '../pages/test'
 const { Content } = Layout
 
 const UserRouter = () => {
@@ -89,6 +90,7 @@ const UserRouter = () => {
     '/downloads',
     '/downloads/ITM-1.0.0.dmg',
     '/downloads/ITM.exe',
+    '/socket-test',
   ]
 
   const checkLoginStatus = () => {
@@ -149,6 +151,10 @@ const UserRouter = () => {
       <Route
         path="/public/apply/information/phone"
         element={<WorkerDeclarationPassForm />}
+      />
+        <Route
+        path="/socket-test"
+        element={<NotificationComponent />}
       />
 
       <Route

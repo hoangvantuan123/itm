@@ -251,16 +251,7 @@ const KeyOpenIcon = () => {
   )
 }
 
-const InfoIcon = () => {
-  return (
-    <svg   className="w-6 h-6 opacity-65 "viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M12 8V13" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M11.9945 16H12.0035" stroke="#292D32" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-    
-  )
-}
+
 export default function PhoneWork() {
   const { t } = useTranslation()
   const [isMobile, setIsMobile] = useState(false)
@@ -341,35 +332,32 @@ export default function PhoneWork() {
 >
   <div className="flex flex-col gap-4 ">
     <div className="text-gray-600 text-sm font-semibold">
-      Các màu sắc dưới đây thể hiện trạng thái của từng ngày:
+    {t('hr_payroll.status_4')}
     </div>
 
     {/* Trạng thái Xanh Lá */}
     <div className="flex items-center gap-3">
       <div className="w-8 h-8 bg-green-200 rounded-md"></div>
-      <span className="text-green-800 text-xs">Đã vào và ra đúng giờ</span>
+      <span className="text-green-800 text-xs">{t('hr_payroll.status_1')}</span>
     </div>
 
     {/* Trạng thái Vàng */}
     <div className="flex items-center gap-3">
       <div className="w-8 h-8 bg-yellow-200 rounded-md"></div>
-      <span className="text-yellow-800 text-xs">Chỉ có vào hoặc ra</span>
+      <span className="text-yellow-800 text-xs">{t('hr_payroll.status_2')}</span>
     </div>
 
     {/* Trạng thái Đỏ */}
     <div className="flex items-center gap-3">
       <div className="w-8 h-8 bg-red-200 rounded-md"></div>
-      <span className="text-red-800 text-xs">Thiếu thông tin vào/ra hoặc là ngày nghỉ</span>
+      <span className="text-red-800 text-xs">{t('hr_payroll.status_3')}</span>
     </div>
     {/* Thông Báo Liên Hệ */}
     <div className="mt-6 flex justify-center text-center text-gray-600 text-xs">
-      <p>Nếu cần hỗ trợ, vui lòng liên hệ với bộ phận hành chính nhân sự để được giải đáp. Xin cảm ơn.</p>
+      <p>{t('hr_payroll.status_5')}</p>
     </div>
   </div>
 </Drawer>
-
-
-
       <div>
       <ListView
             viewModeList={viewModeList}

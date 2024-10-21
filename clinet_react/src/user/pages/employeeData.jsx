@@ -19,22 +19,17 @@ import {
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { PlusOutlined } from '@ant-design/icons'
-import AddUserGroups from '../components/add/addUserGroups'
 import { checkActionPermission } from '../../permissions'
 import ImportAction from '../components/action/importAction'
 import moment from 'moment'
-import Search from '../components/search'
 import FieldActionWorkerRecruitment from '../components/action/fieldActionWorkerRecruitment'
-import { GetHrAllPageLimit } from '../../features/hrAllData/getHrAllPageLimit'
 import { GetFilterHrAllPageLimit } from '../../features/hrAllData/getFilterHrAllPageLimit'
 import ShowAction from '../components/action/showAction'
-import CustomTag from '../components/candidateForm/customTag'
 import CustomTagSyn from '../components/tags/customTagSyn'
 import SynAction from '../components/action/synAction'
 import CustomTypePersonnel from '../components/tags/customTypePersonnel'
 import AddHR from '../components/add/addHr'
 import { MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 const { RangePicker } = DatePicker
 const { Content } = Layout
 const { Option } = Select
@@ -65,50 +60,50 @@ const CloumnIcon = () => {
       <path
         d="M22 6.5H16"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M6 6.5H2"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M10 10C11.933 10 13.5 8.433 13.5 6.5C13.5 4.567 11.933 3 10 3C8.067 3 6.5 4.567 6.5 6.5C6.5 8.433 8.067 10 10 10Z"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M22 17.5H18"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M8 17.5H2"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M14 21C15.933 21 17.5 19.433 17.5 17.5C17.5 15.567 15.933 14 14 14C12.067 14 10.5 15.567 10.5 17.5C10.5 19.433 12.067 21 14 21Z"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )
@@ -190,26 +185,7 @@ export default function EmployeeDataiView({ permissions, isMobile }) {
     'view',
   )
 
-  /* const fetchData = async () => {
-    setLoading(true)
-    try {
-      const [startDate, endDate] = dateRange.map((date) =>
-        date ? date.format('YYYY-MM-DD') : null,
-      )
-      const response = await GetHrAllPageLimit(page, limit, startDate, endDate)
 
-      if (response.success) {
-        setData(response.data.data)
-        setTotal(response.data.total)
-      } else {
-        throw new Error(response.message)
-      }
-    } catch (err) {
-      setData([])
-    } finally {
-      setLoading(false)
-    }
-  } */
   const fetchData = async () => {
     setLoading(true)
     try {

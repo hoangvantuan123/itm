@@ -27,14 +27,14 @@ export default function TimeTracking({ isMobile }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const now = dayjs().tz('Asia/Ho_Chi_Minh'); // Current date
-  const [selectedDate, setSelectedDate] = useState(now); // Current month
-  const [highlightedDate, setHighlightedDate] = useState(now); // Highlighted day
-  const [checkInOutHistory, setCheckInOutHistory] = useState([]); // Records for the selected date
-  const [data, setData] = useState([]); // Month data
-  const [loading, setLoading] = useState(true); // Loading state
-  const [drawerVisible, setDrawerVisible] = useState(false); // Drawer visibility
-  const [tableData, setTableData] = useState([]); // Data for the table
+  const now = dayjs().tz('Asia/Ho_Chi_Minh'); 
+  const [selectedDate, setSelectedDate] = useState(now); 
+  const [highlightedDate, setHighlightedDate] = useState(now); 
+  const [checkInOutHistory, setCheckInOutHistory] = useState([]); 
+  const [data, setData] = useState([]); 
+  const [loading, setLoading] = useState(true); 
+  const [drawerVisible, setDrawerVisible] = useState(false); 
+  const [tableData, setTableData] = useState([]); 
 
   const fetchData = async () => {
     setLoading(true);
@@ -216,19 +216,19 @@ export default function TimeTracking({ isMobile }) {
     {/* Trạng thái Xanh Lá */}
     <div className="flex items-center gap-3">
       <div className="w-4 h-4 bg-green-200 rounded-md"></div>
-      <span className="text-green-800 text-xs">Đã vào và ra đúng giờ</span>
+      <span className="text-green-800 text-xs">{t('hr_payroll.status_1')}</span>
     </div>
 
     {/* Trạng thái Vàng */}
     <div className="flex items-center gap-3">
       <div className="w-4 h-4 bg-yellow-200 rounded-md"></div>
-      <span className="text-yellow-800 text-xs">Chỉ có vào hoặc ra</span>
+      <span className="text-yellow-800 text-xs">{t('hr_payroll.status_2')}</span>
     </div>
 
     {/* Trạng thái Đỏ */}
     <div className="flex items-center gap-3">
       <div className="w-4 h-4 bg-red-200 rounded-md"></div>
-      <span className="text-red-800 text-xs">Thiếu thông tin vào/ra hoặc là ngày nghỉ</span>
+      <span className="text-red-800 text-xs">{t('hr_payroll.status_3')}</span>
     </div>
    
   </div>

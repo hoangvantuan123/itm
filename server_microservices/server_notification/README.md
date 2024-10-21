@@ -1,27 +1,22 @@
-/project-root
+/nestjs-server
 │
 ├── /src
-│   ├── /gateway                  # Nơi chứa WebSocket Gateway
-│   │   ├── notifications.gateway.ts
+│   ├── /gateways                  # Chứa WebSocket Gateway
+│   │   └── notifications.gateway.ts
 │   │
-│   ├── /services                 # Nơi chứa các logic services
-│   │   ├── notification.service.ts
+│   ├── /services                  # Chứa các service logic
+│   │   └── notification.service.ts
 │   │
-│   ├── /modules                  # Các module của NestJS
-│   │   ├── app.module.ts
-│   │   ├── notification.module.ts
+│   ├── /modules                   # Các module trong dự án
+│   │   └── notification.module.ts
 │   │
-│   ├── /utils                    # Các tiện ích dùng chung (Redis, Logger)
-│   │   ├── redis.util.ts
-│   │   ├── logger.util.ts
+│   ├── /common                    # Chứa tiện ích và cấu hình chung
+│   │   ├── /utils                 # Các tiện ích (Redis)
+│   │   │   └── redis.util.ts
+│   │   └── app.module.ts
 │   │
-│   ├── /cluster                  # File khởi động Cluster Mode
-│   │   ├── cluster-setup.ts
-│   │
-│   ├── main.ts    
-        redis.config.ts
-│   ├── database.config.ts              
+│   ├── main.ts                    # Entry point của ứng dụng
 │
-├── package.json
-├── tsconfig.json
-└── README.md
+├── package.json                   # Thông tin dự án và dependencies
+├── tsconfig.json                  # Cấu hình TypeScript
+└── README.md                      # Tài liệu dự án

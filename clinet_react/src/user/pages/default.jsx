@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { Input, Space, Table, Typography, message, Tabs } from 'antd'
 const { Search } = Input
+import BG from '../../assets/ItmLogo.png'
 import decodeJWT from '../../utils/decode-JWT'
 const { Title, Text } = Typography
 const { TabPane } = Tabs

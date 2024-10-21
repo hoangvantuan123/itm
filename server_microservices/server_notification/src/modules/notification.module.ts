@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
-import { NotificationsGateway } from '../gateway/notifications.gateway';
-import { NotificationService } from '../services/notification.service';
-import { RedisService } from '../utils/redis.util';
+import { NotificationsGateway } from '../gateways/notifications.gateway';
 
 @Module({
-  providers: [NotificationsGateway, NotificationService, RedisService],
+  providers: [NotificationsGateway], // Đăng ký NotificationsGateway
 })
 export class NotificationModule {}

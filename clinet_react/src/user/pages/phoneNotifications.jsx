@@ -118,8 +118,9 @@ export default function PhoneNotifications() {
           open={drawerVisible}
           height="30%" headerStyle={{ display: 'none' }} bodyStyle={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
         >
-          <Text strong>Nội dung:</Text>
+          <Text strong>{selectedNotification?.title}</Text>
           <p>{selectedNotification?.content}</p>
+
           <div className="flex items-center mt-4 space-x-2">
             <ClockCircleOutlined style={{ fontSize: '16px', color: 'gray' }} />
             <Text type="secondary">{selectedNotification?.time}</Text>

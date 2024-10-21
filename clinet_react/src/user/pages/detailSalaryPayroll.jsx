@@ -67,20 +67,20 @@ const DetailPayrollUser = React.memo(({ permissions }) => {
         ];
 
         const displayNames = {
-            start: 'Thời gian bắt đầu',
-            stop: 'Thời gian kết thúc',
-            day_off: 'Ngày nghỉ',
-            overtime_normal_150: 'Làm thêm giờ 150%',
-            overtime_normal_200: 'Làm thêm giờ 200%',
-            overtime_normal_210: 'Làm thêm giờ 210%',
-            at_night_30: 'Làm việc ban đêm 30%',
-            overtime_sunday_200: 'Làm thêm Chủ nhật 200%',
-            overtime_sunday_270: 'Làm thêm Chủ nhật 270%',
-            overtime_holiday_300: 'Làm thêm ngày lễ 300%',
-            overtime_holiday_390: 'Làm thêm ngày lễ 390%',
-            working_day: 'Ngày làm việc',
-            late_in: 'Đi muộn',
-            early_out: 'Về sớm',
+            start:  t('hr_payroll.start'),
+            stop:  t('hr_payroll.stop'),
+            day_off: t('hr_payroll.day_off'),
+            overtime_normal_150:  t('hr_payroll.starovertime_normal_150t'),
+            overtime_normal_200:  t('hr_payroll.overtime_normal_200'),
+            overtime_normal_210:  t('hr_payroll.overtime_normal_210'),
+            at_night_30:  t('hr_payroll.at_night_30'),
+            overtime_sunday_200:  t('hr_payroll.overtime_sunday_200'),
+            overtime_sunday_270:  t('hr_payroll.overtime_sunday_270'),
+            overtime_holiday_300:  t('hr_payroll.overtime_holiday_300'),
+            overtime_holiday_390:  t('hr_payroll.overtime_holiday_390'),
+            working_day:  t('hr_payroll.working_day'),
+            late_in:  t('hr_payroll.late_in'),
+            early_out:  t('hr_payroll.early_out'),
         };
 
         const formDataKeys = Object.keys(formData);

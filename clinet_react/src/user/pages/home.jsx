@@ -283,9 +283,9 @@ export default function Home({ permissions }) {
                     </li>
                   ))
                 ) : (
-                  <li className="px-4 py-4 flex flex-col  text-center text-gray-500">
+                  <li className="px-4 py-4 flex flex-col items-center  text-center justify-center text-gray-500">
                     {t('page_home.text_shortcuts')}
-                    <button onClick={() => setOpen(true)} className="px-4 py-3 mt-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                    <button onClick={() => setOpen(true)} className="px-4 py-3 w-56 mt-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                       {t('page_home.get_started')}
                     </button>
                   </li>
@@ -397,9 +397,7 @@ export default function Home({ permissions }) {
                     <BellOutlined className="mr-2 text-base" />
                     <span className="text-sm font-medium">{t('page_home.notification_status')}</span>
                   </div>
-                  <Switch defaultChecked={true} style={{
-                    backgroundColor: '#52c41a',
-                  }} onChange={(checked) => console.log('Trạng thái thông báo:', checked)} />
+                  <Switch defaultChecked  onChange={(checked) => console.log('Trạng thái thông báo:', checked)} />
                 </Link>
               </li>
 

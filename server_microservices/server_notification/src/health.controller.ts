@@ -1,8 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
 import * as si from 'systeminformation';
+import { RedisService } from './services/redis.service';
 
 @Controller('api/check/health')
 export class HealthController {
+  constructor(private readonly redisService: RedisService) {}
+
   @Get()
   async checkHealth() {
     const cpuTemperature = await si.cpuTemperature();
@@ -28,5 +31,12 @@ export class HealthController {
         status: disk.used / disk.size < 0.9 ? 'healthy' : 'full', 
       })),
     };
+  }
+
+
+  @Get('ping')
+  async ping() {
+    const response = await this.redisService.ping();
+    return { message: response };
   }
 }

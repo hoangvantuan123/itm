@@ -425,9 +425,16 @@
     "overtime_holiday_390": "Tăng ca ban đêm Ngày lễ 390%",
     "working_day": "Công thực tế",
     "late_in": "Đi muộn",
-    "early_out": "Về sớm"
+    "early_out": "Về sớm", 
+    "status_1" : "Đã vào và ra đúng giờ", 
+    "status_2" : "Chỉ có vào hoặc ra" , 
+    "status_3" : "Thiếu thông tin vào/ra hoặc là ngày nghỉ", 
+    "status_4" : "Các màu sắc dưới đây thể hiện trạng thái của từng ngày:",
+    "status_5" : "Nếu cần hỗ trợ, vui lòng liên hệ với bộ phận hành chính nhân sự để được giải đáp. Xin cảm ơn.",
+    "note" : "Danh sách các bản ghi", 
+    "no_note" : "Không có bản ghi nào"
 
-  },
+   },
   "page_home": {
     "home": "Trang chủ",
     "job": "CÔNG VIỆC",
@@ -460,9 +467,11 @@
     "confirm": "Bạn có chắc chắn muốn đăng xuất không",
     "cancel": "Hủy",
     "load": "Tải lại trang"
-
-
-
+  }, 
+  "api_status" : {
+    "success": "Thành công",
+    "error": "L��i",
+    "warning": "Cảnh báo"
   }
 
 }
