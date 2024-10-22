@@ -151,10 +151,10 @@ export default function Login() {
 
             </Form.Item>
           </Form>
-          <div className="bottom-0 flex justify-end ">
+         {/*  <div className="bottom-0 flex justify-end ">
             <Link to='/downloads'> <span className="text-gray-500  text-xs">Available for macOS, and Windows (preview)</span></Link>
          
-          </div>
+          </div> */}
           
         </div>
       </div>
