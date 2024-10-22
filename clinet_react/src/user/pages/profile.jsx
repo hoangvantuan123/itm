@@ -168,7 +168,7 @@ export default function Profile({ permissions }) {
   const [selectedMenuKey, setSelectedMenuKey] = useState('1')
   const userFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'))
   const userNameLogin = userFromLocalStorage?.login || 'none'
-  const userName = userFromLocalStorage?.userName || 'none'
+  const userName = userFromLocalStorage?.name_user || 'none'
   const userEmail = userFromLocalStorage?.userEmail || 'none'
   const userPhone = userFromLocalStorage?.userPhone || 'none'
   const avatar = userFromLocalStorage?.avatar || DefaultAvatar

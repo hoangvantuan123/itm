@@ -121,4 +121,25 @@ export class ResUsersController {
 
   }
 
+  @Get('filter')
+  async getAllFilterPersonnel(
+      @Query('page') page: number = 1,
+      @Query('limit') limit: number = 500,
+      @Query('startDate') startDate?: string,
+      @Query('endDate') endDate?: string,
+      @Query('employeeCodeTags') employeeCodeTags?: string,
+      @Query('nameTags') nameTags?: string,
+  ): Promise<{ data: UserDto[]; total: number; totalPages: number }> {
+      const filter: Record<string, any> = {
+          nameTags: nameTags ? nameTags.split(',') : [],
+          employeeCodeTags: employeeCodeTags ? employeeCodeTags.split(',') : [],
+      };
+
+      const start = startDate ? new Date(startDate) : undefined;
+      const end = endDate ? new Date(endDate) : undefined;
+
+      return await this.resUsersService.findAllPageLimitFilter(filter, page, limit, start, end);
+  }
+
+
 }

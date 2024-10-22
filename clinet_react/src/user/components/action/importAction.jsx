@@ -136,6 +136,8 @@ export default function ImportAction({
   const [showDropdown, setShowDropdown] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [tableInfo, setTableInfo] = useState(null)
+  const [load, setLoading] = useState(false)
+  const [error, setError] = useState(null)
   useEffect(() => {
     if (isModalOpen) {
       const fetchTableInfo = async () => {
@@ -183,12 +185,12 @@ export default function ImportAction({
         open={showDropdown}
         onClick={handleOnClick}
       >
-       
-        <button   className="border-[1.3px] border-[#d9d9d9] rounded-lg p-[0.6rem] w-auto flex items-center space-x-2 bg-white hover:bg-gray-100">
+
+        <button className="border-[1.3px] border-[#d9d9d9] rounded-lg p-[0.6rem] w-auto flex items-center space-x-2 bg-white hover:bg-gray-100">
           <DataIcon />
           <span className="text-gray-500">{t('Import')}</span>
         </button>
-     
+
       </Dropdown>
       <ImportForm
         fetchData={fetchData}

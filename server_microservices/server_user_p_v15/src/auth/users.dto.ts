@@ -18,7 +18,7 @@ export class UserDto {
   karma: number;
   rankId?: number;
   nextRankId?: number;
-  employeeCode?: string;
+  employee_code?: string;
   name?: string;
   language?: string;
 

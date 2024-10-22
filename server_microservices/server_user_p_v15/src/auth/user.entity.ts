@@ -69,15 +69,23 @@ export class Users {
   nextRankId: number;
 
   @Column({ nullable: true,  unique: true})
-  employeeCode: string;
+  employee_code: string;
 
   @Column({ nullable: true })
-  nameUser: string;
+  name_user: string;
 
   @Column({ nullable: true })
   language: string;
 
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  create_date: Date;
 
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  write_date: Date;
   beforeInsert() {
     this.hashPassword();
   }

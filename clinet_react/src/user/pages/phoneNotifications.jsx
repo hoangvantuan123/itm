@@ -116,6 +116,12 @@ export default function PhoneNotifications() {
           placement="bottom"
           onClose={closeDrawer}
           open={drawerVisible}
+          styles={{
+            wrapper: {
+              borderRadius: '16px 16px 0 0', 
+               overflow: 'hidden' 
+            }
+          }}
           height="30%" headerStyle={{ display: 'none' }} bodyStyle={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
         >
           <Text strong>{selectedNotification?.title}</Text>

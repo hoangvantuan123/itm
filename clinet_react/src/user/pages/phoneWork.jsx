@@ -328,6 +328,12 @@ export default function PhoneWork() {
   onClose={onClose}
   open={open}
   height="340"
+  styles={{
+    wrapper: {
+      borderRadius: '16px 16px 0 0', 
+       overflow: 'hidden' 
+    }
+  }}
    
 >
   <div className="flex flex-col gap-4 ">

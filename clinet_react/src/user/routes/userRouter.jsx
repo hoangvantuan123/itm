@@ -51,7 +51,6 @@ import HrSalary from '../pages/salary'
 import DetailSalaryUser from '../pages/detailSalaryUser'
 import Payroll from '../pages/payroll'
 import DetailPayrollUser from '../pages/detailSalaryPayroll'
-import NotificationComponent from '../pages/test'
 const { Content } = Layout
 
 const UserRouter = () => {
@@ -152,10 +151,7 @@ const UserRouter = () => {
         path="/public/apply/information/phone"
         element={<WorkerDeclarationPassForm />}
       />
-        <Route
-        path="/socket-test"
-        element={<NotificationComponent />}
-      />
+
 
       <Route
         path="/downloads"
@@ -275,7 +271,7 @@ const UserRouter = () => {
                           'work-1-1',
                           'view',
                         ) ? (
-                          <TimeTracking  isMobile={isMobile} />
+                          <TimeTracking isMobile={isMobile} />
                         ) : (
                           <Unauthorized />
                         )
@@ -303,7 +299,7 @@ const UserRouter = () => {
                           'work-1-2',
                           'view',
                         ) ? (
-                          <DetailPayrollUser permissions={userPermissions} isMobile={isMobile}/>
+                          <DetailPayrollUser permissions={userPermissions} isMobile={isMobile} />
                         ) : (
                           <Unauthorized />
                         )

@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   UnauthorizedException,
+  BadRequestException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -23,24 +24,37 @@ export class AppService {
     const saltRounds = 10;
     return bcrypt.hash(password, saltRounds);
   }
+
+
+
+
   async registerUser(registrationData: RegistrationDto): Promise<Users> {
-    const { login, password, nameUser, language , cid} = registrationData;
+    const { login, password, nameUser, language, cid } = registrationData;
+
     const existingUser = await this.userService.findUserByEmail(login);
     if (existingUser) {
-      throw new Error('User with this login already exists');
+      throw new BadRequestException('User with this login already exists');
+    }
+
+    const existingEmployeeCode = await this.userService.findUserByEmployeeCode(cid);
+    if (existingEmployeeCode) {
+      throw new BadRequestException('User with this employee code already exists');
     }
 
     const hashedPassword = await this.hashPassword(password);
+
     const newUser = new Users();
     newUser.login = login;
     newUser.password = hashedPassword;
-    newUser.nameUser = nameUser;
+    newUser.name_user = nameUser;
     newUser.language = language;
-    newUser.employeeCode = cid;
+    newUser.employee_code = cid;
 
     const savedUser = await this.userService.createUser(newUser);
     return savedUser;
   }
+
+
 
   async loginUser(
     loginData: LoginDto,
@@ -80,7 +94,7 @@ export class AppService {
           id: user.id,
           login: user.login,
           partnerId: user.partnerId,
-          employeeCode: user.employeeCode
+          employee_code: user.employee_code
         },
         jwtConstants.secret,
       );
@@ -90,7 +104,9 @@ export class AppService {
         partnerId: user.partnerId,
         language: user.language,
         active: user.active,
-        employeeCode: user.employeeCode
+        employee_code: user.employee_code,
+        id: user.id,
+        name_user: user.name_user
       };
 
       return {
@@ -162,7 +178,7 @@ export class AppService {
   }
 
 
-  
+
 
   async refreshToken(token: string): Promise<{ token: string }> {
     try {

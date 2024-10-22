@@ -49,6 +49,7 @@ export class UsersPermissionsService {
         'um.sequence AS sequence',
         'um.key AS key_name',
         'um.name AS menu_name',
+        'um.parent_path AS parent_path',
       ])
       .getRawMany();
 
@@ -57,12 +58,13 @@ export class UsersPermissionsService {
 
   private mergePermissions(data: any[]): any[] {
     const mergedData = data.reduce((acc, item) => {
-      const {menu_id, menu_name,key_name, pm_view, pm_edit, pm_create, pm_delete } = item;
+      const {menu_id, menu_name,key_name,parent_path, pm_view, pm_edit, pm_create, pm_delete } = item;
 
       if (!acc[menu_id]) {
         acc[menu_id] = {
           menu_name: menu_name,
           key_name: key_name,
+          parent_path: parent_path,
           pm_view: pm_view,
           pm_edit: pm_edit,
           pm_create: pm_create,
@@ -79,4 +81,8 @@ export class UsersPermissionsService {
     }, {});
     return Object.values(mergedData);
   }
+
+
+
+  
 }

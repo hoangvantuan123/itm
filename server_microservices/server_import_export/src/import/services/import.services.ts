@@ -7,7 +7,8 @@ import { CreateEducationDto } from '../dto/hr_education.dto';
 import { HrInterviewCandidateDTO } from '../dto/hr_interview_candidates.dto';
 import { CreateHrInterDto } from '../dto/hr_inter.dto';
 import { HrTimekeepingDto } from '../dto/hr_timekeeping.dto';
-
+import { CreateUserDto } from '../dto/users.dto';
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class ImportServices {
     private readonly logger = new Logger(ImportServices.name);
@@ -33,6 +34,9 @@ export class ImportServices {
                 break;
             case 'hr_timekeeping':
                 await this.processHRTimeckeeping(importData, 'hr_timekeeping');
+                break;
+            case 'users':
+                await this.processUsers(importData, 'users');
                 break;
             default:
                 throw new NotFoundException(`Model ${model} không được hỗ trợ`);
@@ -577,12 +581,121 @@ export class ImportServices {
 
         try {
             await this.entityManager.query(finalQuery);
-       
+
         } catch (error) {
             this.logger.error(`Error inserting data into table ${tableName}`, error);
             throw new NotFoundException(`Unable to insert data into table ${tableName}`);
         }
     }
 
+
+    private async hashPassword(password: string): Promise<string> {
+        const saltRounds = 10;
+        return bcrypt.hash(password, saltRounds);
+    }
+
+    private async processUsers(importData: any[], tableName: string): Promise<void> {
+        const batchSize = 1000;
+        const totalBatches = Math.ceil(importData.length / batchSize);
+    
+        for (let i = 0; i < totalBatches; i++) {
+            const batch = importData.slice(i * batchSize, (i + 1) * batchSize);
+    
+            const validBatch: CreateUserDto[] = batch.map(record => {
+                return {
+                    companyId: record.companyId,
+                    partnerId: record.partnerId,
+                    active: record.active,
+                    login: record.login,
+                    password: record.password, // Chúng ta sẽ mã hóa password sau
+                    employee_code: record.employee_code,
+                    name_user: record.name_user,
+                    language: record.language
+                } as CreateUserDto;
+            }).filter(record => record.login !== undefined);
+    
+            if (validBatch.length === 0) {
+                continue;
+            }
+    
+            const loginCodes = validBatch.map(record => `'${record.login}'`).join(", ");
+            const employeeCodes = validBatch.map(record => `'${record.employee_code}'`).join(", ");
+    
+            // Kiểm tra bản ghi đã tồn tại
+            const existingRecords = await this.entityManager.query(
+                `SELECT login FROM ${tableName} WHERE login IN (${loginCodes})`
+            );
+            const existingEmployeeCodeRecords = await this.entityManager.query(
+                `SELECT employee_code FROM ${tableName} WHERE employee_code IN (${employeeCodes})`
+            );
+    
+            if (existingRecords.length > 0) {
+                const duplicateLogins = existingRecords.map((record: any) => record.login).join(", ");
+                this.logger.error(`Duplicate login codes found: ${duplicateLogins}`);
+                throw new Error(`Duplicate login codes detected: ${duplicateLogins}`);
+            }
+            if (existingEmployeeCodeRecords.length > 0) {
+                const duplicateEmployeeCodes = existingEmployeeCodeRecords.map((record: any) => record.employee_code).join(", ");
+                this.logger.error(`Duplicate employee codes found: ${duplicateEmployeeCodes}`);
+                throw new Error(`Duplicate employee codes detected: ${duplicateEmployeeCodes}`);
+            }
+    
+            const hashedBatch = await Promise.all(validBatch.map(async record => {
+                const hashedPassword = await this.hashPassword(record.password);
+                return {
+                    ...record,
+                    password: hashedPassword // Cập nhật password thành hashed password
+                };
+            }));
+    
+            await this.saveBatchUser(hashedBatch, tableName);
+        }
+    }
+    
+
+    private async saveBatchUser(batch: Record<string, any>[], tableName: string): Promise<number[]> {
+        const values: string[] = batch.map((record) => {
+            const filteredColumnsAndValues = Object.keys(record).reduce((acc, col) => {
+                const value = record[col];
+                if (value !== undefined) {
+                    acc.columns.push(col);
+
+                    if (value === '') {
+                        acc.values.push('NULL');
+                    } else {
+                        acc.values.push(`'${value}'`);
+                    }
+                }
+                return acc;
+            }, { columns: [], values: [] } as { columns: string[], values: string[] });
+
+            if (filteredColumnsAndValues.columns.length === 0) return '';
+
+            return `(${filteredColumnsAndValues.values.join(', ')})`;
+        }).filter(value => value.trim() !== '');
+
+        if (values.length === 0) {
+            this.logger.warn(`No valid records to insert into ${tableName}`);
+            return [];
+        }
+
+        const finalColumns = Object.keys(batch[0]).reduce((acc, col) => {
+            const value = batch[0][col];
+            if (value !== undefined) {
+                acc.push(col);
+            }
+            return acc;
+        }, [] as string[]);
+
+        const finalQuery = `INSERT INTO ${tableName} (${finalColumns.join(', ')}) VALUES ` + values.join(', ') + ' RETURNING id';
+
+        try {
+            await this.entityManager.query(finalQuery);
+
+        } catch (error) {
+            this.logger.error(`Error inserting data into table ${tableName}`, error);
+            throw new NotFoundException(`Unable to insert data into table ${tableName}`);
+        }
+    }
 
 }    

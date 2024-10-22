@@ -165,68 +165,67 @@ export default function UserProfile({
     </Menu>
   )
   const onFinish = (values) => {
-    const { nameUser, login, language, active , employeeCode} = values
-
+    const { name_user, login, language, active, employee_code } = values;
+  
     const data = {
-      nameUser,
+      name_user,
       login,
       language,
       active,
-      employeeCode
-    }
-
-    const promises = [PutUserID(user?.id, data)]
-
+      employee_code,
+    };
+  
+    const promises = [PutUserID(user?.id, data)];
+  
     if (selectedGroups.length > 0) {
-      promises.push(PostResUserIdGroups(user?.id, selectedGroups))
+      promises.push(PostResUserIdGroups(user?.id, selectedGroups));
     }
+  
     if (deletedGroups.length > 0) {
-      promises.push(DeleteResUserGroups(deletedGroups))
+      promises.push(DeleteResUserGroups(deletedGroups));
     }
-
-    // Thông báo cho người dùng rằng quá trình đang diễn ra
-    message.loading(t('Đang cập nhật...'))
-
+  
+  
     Promise.all(promises)
       .then((results) => {
-        let success = true
-        let errorMessage = ''
-
+        let success = true;
+        let errorMessage = '';
+  
         results.forEach((result) => {
           if (!result.success) {
-            success = false
-            errorMessage = result.message || 'Lỗi khi cập nhật!'
+            success = false;
+            errorMessage = result.message || t('Lỗi khi cập nhật!');
           }
-        })
-
+        });
+  
         if (success) {
-          setDeletedGroups([])
-          setSelectedGroups([])
-          fetchDataGroupStatus(user?.id)
-          message.success(t('Cập nhật giá trị thành công'))
+          setDeletedGroups([]);
+          setSelectedGroups([]);
+          fetchDataGroupStatus(user?.id);
+          message.success(t('Cập nhật giá trị thành công'));
         } else {
-          message.error(errorMessage)
+          message.error(errorMessage);
         }
       })
       .catch((error) => {
-        message.error(error.message || t('Lỗi khi cập nhật!'))
+        message.error(error.message || t('Lỗi khi cập nhật!'));
       })
       .finally(() => {
-        message.destroy()
-      })
-  }
-
+        message.destroy(loadingMessage); // Xóa thông báo loading khi quá trình hoàn tất
+      });
+  };
+  
   useEffect(() => {
     if (isModalVisible === true) {
       fetchDataGroupStatus(user?.id)
     }
     if (user) {
       form.setFieldsValue({
-        nameUser: user?.name,
+        name_user: user?.name_user,
         login: user?.login,
         language: user?.language,
         active: user?.active,
-        employeeCode: user?.employeeCode
+        employee_code: user?.employee_code
       })
     }
   }, [isModalVisible, user, form])
@@ -335,7 +334,7 @@ export default function UserProfile({
               <Col xs={24} md={24}>
                 <Form.Item
                   label="Họ và Tên"
-                  name="nameUser"
+                  name="name_user"
                   initialValue={user?.name}
                   rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
                 >
@@ -378,8 +377,8 @@ export default function UserProfile({
               <Col xs={24} md={12}>
                 <Form.Item
                   label={t('Mã nhân viên')}
-                  name="employeeCode"
-                  initialValue={user?.employeeCode}
+                  name="employee_code"
+                  initialValue={user?.employee_code}
                   rules={[
                     { required: true, message: t('Vui lòng nhập mã nhân viên của người dùng') },
                   ]}

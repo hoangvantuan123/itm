@@ -22,9 +22,7 @@ import * as XLSX from 'xlsx'
 import Papa from 'papaparse'
 import { importData } from '../../../features/import/import'
 import { TestImportData } from '../../../features/import/test_import'
-
-const { Title } = Typography
-const { Sider, Content } = Layout
+import BG from '../../../assets/ItmLogo.png'
 const { Option, OptGroup } = Select
 
 const FileIcon = () => {
@@ -62,62 +60,7 @@ export default function ImportForm({
   const [connectValues, setConnectValues] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [row, setRow] = useState(0)
-  const handleCheck = async () => {
-    if (!selectedTable || Object.keys(connectValues).length === 0) {
-      message.error(t('Vui lòng chọn bảng và ít nhất một cột để kiểm tra'))
-      return
-    }
-
-    setIsLoading(true)
-
-    try {
-      const mappedData = selectedTable.data.map((row) => {
-        const newRow = {}
-        selectedTable.columns.forEach((col) => {
-          const mappedColumn = connectValues[col]
-          if (mappedColumn) {
-            newRow[mappedColumn] = row[col]
-          }
-        })
-        return newRow
-      })
-
-      const batchSize = 1000
-      const totalRows = mappedData.length
-      const promises = []
-
-      for (let i = 0; i < totalRows; i += batchSize) {
-        const batch = mappedData.slice(i, i + batchSize)
-
-        const data = {
-          method: 'execute_import',
-          model: actionImport,
-          data: batch,
-        }
-
-        promises.push(TestImportData(data))
-      }
-      const results = await Promise.all(promises)
-      results.forEach((result) => {
-        if (result.data.status === 200) {
-          message.success(t('Dữ liệu kiểm tra đã được đáp ứng!'))
-        } else if (result.data.status === 400) {
-          message.error(t(`Lỗi: ${result.message}`))
-        }
-      })
-    } catch (error) {
-      if (error.response && error.response.data) {
-        const { status, message: errorMessage } = error.response.data
-        message.error(
-          t(`Đã xảy ra lỗi trong quá trình kiểm tra dữ liệu: ${errorMessage}`),
-        )
-      } else {
-        message.error(t('Đã xảy ra lỗi trong quá trình kiểm tra dữ liệu'))
-      }
-    } finally {
-      setIsLoading(false)
-    }
-  }
+ 
   const handleUpload = async () => {
     if (!selectedTable || Object.keys(connectValues).length === 0) {
       message.error(t('Vui lòng chọn bảng và ít nhất một cột để kiểm tra'))
@@ -179,228 +122,232 @@ export default function ImportForm({
   }
 
   const handleFileChange = (info) => {
-    const { file, fileList } = info
+    const { file, fileList } = info;
     const isCsvOrXlsx =
-      file.type === 'text/csv' ||
-      file.type ===
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        file.type === 'text/csv' ||
+        file.type ===
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
     if (!isCsvOrXlsx) {
-      message.error(t('Chỉ hỗ trợ tệp CSV hoặc XLSX'))
-      return
+        message.error(t('Chỉ hỗ trợ tệp CSV hoặc XLSX'));
+        return;
     }
 
-    setFileName(file.name)
-    setFileList(fileList)
-    setTables([])
+    setFileName(file.name);
+    setFileList(fileList);
+    setTables([]);
 
-    const newConnectValues = {}
+    const newConnectValues = {};
     const defaultMappings = {
-      'CID': 'employee_code',
-      'Name': 'full_name',
-      'Đăng ký bp trên ERP': 'erp_department_registration',
-      'Team': 'team',
-      'Part': 'part',
-      'Production': 'production',
-      'Section': 'section',
-      'Job field': 'job_field',
-      'Position': 'position',
-      'Entering day': 'entering_day',
-      'Leaving day': 'leaving_day',
-      'PROBATION (day)': 'probation_days',
-      'Ngày ký HĐ lần 1': 'official_date_first',
-      'Ngày ký HĐ lần 2': 'official_date_second',
-      'CCCD': 'id_number',
-      'Ngày cấp': 'id_issue_date',
-      'Nơi cấp': 'id_issue_place',
-      'Date of birth': 'birth_date',
-      'Tuổi': 'age',
-      'Đếm tháng': 'month_count',
-      'Phone Number': 'phone_number',
-      'Gender': 'gender',
-      'Email': 'email',
-      'Partner name': 'partner_name',
-      'Partner phone number': 'partner_phone_number',
-      'Số con': 'number_of_children',
-      'Children name 1': 'children_name_1',
-      'Children birth date 1': 'children_birth_date_1',
-      'Children gender 1': 'children_gender_1',
-      'Children name 2': 'children_name_2',
-      'Children birth date 2': 'children_birth_date_2',
-      'Children gender 2': 'children_gender_2',
-      'Children name 3': 'children_name_3',
-      'Children birth date 3': 'children_birth_date_3',
-      'Children gender 3': 'children_gender_3',
-      'Father name': 'father_name',
-      'Father phone number': 'father_phone_number',
-      'Mother name': 'mother_name',
-      'Mother phone number': 'mother_phone_number',
-      'Xã 1': 'birth_ward',
-      'Huyện 1': 'birth_district',
-      'Tỉnh 1': 'birth_province',
-      'Thôn xóm 2': 'current_address',
-      'Xã 2': 'current_ward',
-      'Huyện 2': 'current_district',
-      'Tỉnh 2': 'current_province',
-      'Địa chỉ quê quán': 'birth_address',
-      'Địa chỉ đăng ký hộ khẩu': 'current_address',
-      'Khoảng cách từ nơi đăng ký hộ khẩu đến công ty':
-        'distance_from_household_to_company',
-      'Highest level of education': 'highest_education_level',
-      'School name': 'school_name',
-      'Major': 'major',
-      'Company name 1': 'company_name_1',
-      'Entrance day 1': 'entrance_day_1',
-      'Leaving day 1': 'leaving_day_1',
-      'Working department 1': 'work_department_1',
-      'Work responsibility 1': 'work_responsibility_1',
-      'Company name 2': 'company_name_2',
-      'Entrance day 2': 'entrance_day_2',
-      'Leaving day 2': 'leaving_day_2',
-      'Working department 2': 'work_department_2',
-      'Work responsibility 2': 'work_responsibility_2',
-      'Dân tộc': 'ethnicity',
-      'ĐÓNG BHXH': 'social_insurance',
-      'Interview date': 'interview_date',
-      'Start date': 'start_date',
-      'School year': 'school_year',
-      'Year ended': 'year_ended',
-      'Year of graduation': 'year_of_graduation',
-      'Classification': 'classification',
-      'Salary 2': 'salary_2',
-      'Salary 1': 'salary_1',
+        'CID': 'employee_code',
+        'Name': 'full_name',
+        'Đăng ký bp trên ERP': 'erp_department_registration',
+        'Team': 'team',
+        'Part': 'part',
+        'Production': 'production',
+        'Section': 'section',
+        'Job field': 'job_field',
+        'Position': 'position',
+        'Entering day': 'entering_day',
+        'Leaving day': 'leaving_day',
+        'PROBATION (day)': 'probation_days',
+        'Ngày ký HĐ lần 1': 'official_date_first',
+        'Ngày ký HĐ lần 2': 'official_date_second',
+        'CCCD': 'id_number',
+        'Ngày cấp': 'id_issue_date',
+        'Nơi cấp': 'id_issue_place',
+        'Date of birth': 'birth_date',
+        'Tuổi': 'age',
+        'Đếm tháng': 'month_count',
+        'Phone Number': 'phone_number',
+        'Gender': 'gender',
+        'Email': 'email',
+        'Partner name': 'partner_name',
+        'Partner phone number': 'partner_phone_number',
+        'Số con': 'number_of_children',
+        'Children name 1': 'children_name_1',
+        'Children birth date 1': 'children_birth_date_1',
+        'Children gender 1': 'children_gender_1',
+        'Children name 2': 'children_name_2',
+        'Children birth date 2': 'children_birth_date_2',
+        'Children gender 2': 'children_gender_2',
+        'Children name 3': 'children_name_3',
+        'Children birth date 3': 'children_birth_date_3',
+        'Children gender 3': 'children_gender_3',
+        'Father name': 'father_name',
+        'Father phone number': 'father_phone_number',
+        'Mother name': 'mother_name',
+        'Mother phone number': 'mother_phone_number',
+        'Xã 1': 'birth_ward',
+        'Huyện 1': 'birth_district',
+        'Tỉnh 1': 'birth_province',
+        'Thôn xóm 2': 'current_address',
+        'Xã 2': 'current_ward',
+        'Huyện 2': 'current_district',
+        'Tỉnh 2': 'current_province',
+        'Địa chỉ quê quán': 'birth_address',
+        'Địa chỉ đăng ký hộ khẩu': 'current_address',
+        'Khoảng cách từ nơi đăng ký hộ khẩu đến công ty':
+            'distance_from_household_to_company',
+        'Highest level of education': 'highest_education_level',
+        'School name': 'school_name',
+        'Major': 'major',
+        'Company name 1': 'company_name_1',
+        'Entrance day 1': 'entrance_day_1',
+        'Leaving day 1': 'leaving_day_1',
+        'Working department 1': 'work_department_1',
+        'Work responsibility 1': 'work_responsibility_1',
+        'Company name 2': 'company_name_2',
+        'Entrance day 2': 'entrance_day_2',
+        'Leaving day 2': 'leaving_day_2',
+        'Working department 2': 'work_department_2',
+        'Work responsibility 2': 'work_responsibility_2',
+        'Dân tộc': 'ethnicity',
+        'ĐÓNG BHXH': 'social_insurance',
+        'Interview date': 'interview_date',
+        'Start date': 'start_date',
+        'School year': 'school_year',
+        'Year ended': 'year_ended',
+        'Year of graduation': 'year_of_graduation',
+        'Classification': 'classification',
+        'Salary 2': 'salary_2',
+        'Salary 1': 'salary_1',
 
-      'Language 1': 'language_1',
-      'Certificate Type 1': 'certificate_type_1',
-      'Score 1': 'score_1',
-      'Level 1': 'level_1',
+        'Language 1': 'language_1',
+        'Certificate Type 1': 'certificate_type_1',
+        'Score 1': 'score_1',
+        'Level 1': 'level_1',
 
-      'Language 2': 'language_2',
-      'Certificate Type 2': 'certificate_type_2',
-      'Score 2': 'score_2',
-      'Level 2': 'level_2',
+        'Language 2': 'language_2',
+        'Certificate Type 2': 'certificate_type_2',
+        'Score 2': 'score_2',
+        'Level 2': 'level_2',
 
-      'Language 3': 'language_3',
-      'Certificate Type 3': 'certificate_type_3',
-      'Score 3': 'score_3',
-      'Level 3': 'level_3',
-    }
+        'Language 3': 'language_3',
+        'Certificate Type 3': 'certificate_type_3',
+        'Score 3': 'score_3',
+        'Level 3': 'level_3',
+    };
 
     const dateFields = [
-      'Interview date',
-      'Start date',
-      'Date of birth',
-      'Ngày cấp',
-      'Entering day',
-      'Leaving day',
-      'Ngày ký HĐ lần 1',
-      'Ngày ký HĐ lần 2',
-      'Children birth date 1',
-      'Children birth date 2',
-      'Children birth date 3',
-      'Entrance day 1',
-      'Entrance day 2',
-      'Leaving day 1',
-      'Leaving day 2',
-    ]
+        'Interview date',
+        'Start date',
+        'Date of birth',
+        'Ngày cấp',
+        'Entering day',
+        'Leaving day',
+        'Ngày ký HĐ lần 1',
+        'Ngày ký HĐ lần 2',
+        'Children birth date 1',
+        'Children birth date 2',
+        'Children birth date 3',
+        'Entrance day 1',
+        'Entrance day 2',
+        'Leaving day 1',
+        'Leaving day 2',
+    ];
 
     const ExcelDateToJSDate = (date) => {
-      return new Date(Math.round((date - 25569) * 86400 * 1000))
-    }
+        return new Date(Math.round((date - 25569) * 86400 * 1000));
+    };
 
     const formatDateToString = (date) => {
-      const year = date.getFullYear()
-      const month = String(date.getMonth() + 1).padStart(2, '0') // Tháng 0-11
-      const day = String(date.getDate()).padStart(2, '0')
-      return `${year}-${month}-${day}` // Trả về định dạng YYYY-MM-DD
-    }
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng 0-11
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`; // Trả về định dạng YYYY-MM-DD
+    };
 
     if (file.type === 'text/csv') {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        const csvData = e.target.result
-        Papa.parse(csvData, {
-          complete: (result) => {
-            if (result.errors.length) {
-              console.error('Errors:', result.errors)
-            }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const csvData = e.target.result;
+            Papa.parse(csvData, {
+                complete: (result) => {
+                    if (result.errors.length) {
+                        console.error('Errors:', result.errors);
+                    }
 
-            if (!result.data || result.data.length === 0) {
-              message.error(t('Không có dữ liệu trong tệp CSV'))
-              return
-            }
+                    if (!result.data || result.data.length === 0) {
+                        message.error(t('Không có dữ liệu trong tệp CSV'));
+                        return;
+                    }
 
-            const columns = Object.keys(result.data[0])
-            setTables([{ name: 'CSV Data', columns, data: result.data }])
+                    // Check if result.data[0] is defined
+                    if (result.data.length > 0) {
+                        const columns = Object.keys(result.data[0]);
+                        setTables([{ name: 'CSV Data', columns, data: result.data }]);
+                    }
+
+                    tableInfo?.forEach((table) => {
+                        table.columns.forEach((column) => {
+                            for (const [key, mappedName] of Object.entries(defaultMappings)) {
+                                if (column.name === mappedName) {
+                                    newConnectValues[key] = column.name;
+                                }
+                            }
+                        });
+                    });
+
+                    setConnectValues(newConnectValues);
+                    message.success(t('Tải lên thành công tệp CSV'));
+                },
+                header: true,
+                skipEmptyLines: true,
+            });
+        };
+
+        reader.readAsText(file);
+    } else if (
+        file.type ===
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    ) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const allTables = [];
+
+            workbook.SheetNames.forEach((sheetName) => {
+                const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+                if (worksheet.length > 0) { // Ensure worksheet has data
+                    const columns = Object.keys(worksheet[0]);
+                    const wrappedData = worksheet.map((row) => {
+                        return Object.fromEntries(
+                            Object.entries(row).map(([key, value]) => {
+                                if (dateFields.includes(key) && !isNaN(value)) {
+                                    const dateValue = ExcelDateToJSDate(Number(value));
+                                    value = formatDateToString(dateValue);
+                                }
+                                return [key, String(value)];
+                            }),
+                        );
+                    });
+
+                    allTables.push({ name: sheetName, columns, data: wrappedData });
+                }
+            });
+
+            setTables(allTables);
 
             tableInfo?.forEach((table) => {
-              table.columns.forEach((column) => {
-                for (const [key, mappedName] of Object.entries(
-                  defaultMappings,
-                )) {
-                  if (column.name === mappedName) {
-                    newConnectValues[key] = column.name
-                  }
-                }
-              })
-            })
+                table.columns.forEach((column) => {
+                    for (const [key, mappedName] of Object.entries(defaultMappings)) {
+                        if (column.name === mappedName) {
+                            newConnectValues[key] = column.name;
+                        }
+                    }
+                });
+            });
 
-            setConnectValues(newConnectValues)
-            message.success(t('Tải lên thành công tệp CSV'))
-          },
-          header: true,
-          skipEmptyLines: true,
-        })
-      }
+            setConnectValues(newConnectValues);
+            message.success(t('Tải lên thành công tệp XLSX'));
+        };
 
-      reader.readAsText(file)
-    } else if (
-      file.type ===
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    ) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        const data = new Uint8Array(e.target.result)
-        const workbook = XLSX.read(data, { type: 'array' })
-        const allTables = []
-
-        workbook.SheetNames.forEach((sheetName) => {
-          const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName])
-          const columns = Object.keys(worksheet[0])
-          const wrappedData = worksheet.map((row) => {
-            return Object.fromEntries(
-              Object.entries(row).map(([key, value]) => {
-                if (dateFields.includes(key) && !isNaN(value)) {
-                  const dateValue = ExcelDateToJSDate(Number(value))
-                  value = formatDateToString(dateValue)
-                }
-                return [key, String(value)]
-              }),
-            )
-          })
-
-          allTables.push({ name: sheetName, columns, data: wrappedData })
-        })
-
-        setTables(allTables)
-
-        tableInfo?.forEach((table) => {
-          table.columns.forEach((column) => {
-            for (const [key, mappedName] of Object.entries(defaultMappings)) {
-              if (column.name === mappedName) {
-                newConnectValues[key] = column.name
-              }
-            }
-          })
-        })
-
-        setConnectValues(newConnectValues)
-        message.success(t('Tải lên thành công tệp XLSX'))
-      }
-
-      reader.readAsArrayBuffer(file.originFileObj || file)
+        reader.readAsArrayBuffer(file.originFileObj || file);
     }
-  }
+};
+
 
   const handleConnectChange = (value, key) => {
     setConnectValues((prevValues) => ({
@@ -524,117 +471,8 @@ export default function ImportForm({
           <>
             <div className="grid h-[calc(100vh-300px)] overflow-hidden">
               <div className="flex flex-col justify-center items-center text-center h-full">
-                <svg
-                  className=" w-96 h-auto"
-                  viewBox="0 0 314 238"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M277.849 189.899C277.849 189.899 280.379 185.964 280.941 181.748C281.503 177.532 277.567 173.598 274.194 171.068C270.82 168.539 262.667 161.794 267.727 158.702C272.788 155.61 299.778 147.46 306.244 142.401C312.71 137.342 312.71 128.067 311.023 124.133C309.336 119.917 291.062 103.897 256.482 103.897C221.901 103.897 180.292 120.76 174.107 121.041C167.922 121.322 168.203 109.799 168.203 109.799L167.36 103.897H144.306L140.651 109.799C140.651 109.799 142.057 117.669 135.591 118.512C129.124 119.074 97.0743 101.93 74.0207 92.9361C59.9636 87.3151 38.0345 83.3804 31.2871 83.3804C20.8849 83.3804 5.42207 91.5308 2.04837 104.459C-1.32533 117.388 10.2015 143.525 13.0129 149.989C15.8243 156.454 17.7923 159.826 16.3866 163.199C14.9809 166.571 11.6072 178.938 10.7637 182.31C10.2015 185.683 10.2015 191.866 10.7637 192.428C11.326 192.99 20.8849 201.422 21.7283 201.703C22.5717 201.984 27.3511 202.827 25.3831 198.33C27.6322 200.86 28.7568 204.794 30.7248 201.703C32.6928 198.33 30.7248 183.716 30.7248 176.408C30.7248 169.101 42.8139 159.826 43.9385 159.264C45.0631 158.702 54.903 159.264 57.4333 159.264C59.9636 159.264 63.3373 155.891 57.4333 153.362C51.5293 150.833 46.1876 152.238 41.6893 151.957C37.1911 151.676 29.8814 150.27 32.974 140.715C34.3797 136.499 34.9419 130.316 35.2231 124.414H35.5042C48.1556 137.061 78.5189 149.989 78.5189 149.989L98.1988 163.199L158.644 178.376L203.627 170.225L216.278 158.702C216.278 158.702 215.716 149.708 228.368 149.708C234.834 149.708 244.111 148.584 245.798 147.46"
-                    fill="white"
-                  />
-                  <path
-                    d="M29.6002 204.513C28.4756 204.513 27.3511 203.67 26.7888 202.546C25.1019 203.67 22.8528 203.389 21.7283 203.108C21.166 202.827 20.8848 202.827 12.4506 195.52C11.326 194.396 10.2014 193.552 10.2014 193.552C7.95228 191.866 9.63914 181.748 9.63914 181.748C10.2014 178.376 13.8563 165.728 15.262 162.075C16.1054 159.826 15.262 157.578 13.0128 153.081C12.7317 152.238 12.1694 151.395 11.8883 150.271L11.6071 149.708C2.0483 127.786 -1.60652 112.048 0.642612 103.616C4.29746 90.6878 19.7603 81.4131 31.5682 81.4131C31.5682 81.4131 31.5682 81.4131 31.8493 81.4131C39.159 81.4131 61.0881 85.6288 74.8641 91.2499C84.1417 94.9035 94.544 99.6814 104.665 104.178C118.16 110.361 132.217 116.825 135.591 116.544C136.715 116.544 137.559 115.982 138.402 115.139C139.527 113.453 139.527 110.923 139.246 110.08C139.246 109.518 139.246 109.237 139.527 108.956L143.181 103.054C143.463 102.492 144.025 102.211 144.587 102.211H167.641C168.484 102.211 169.328 102.773 169.328 103.897L170.171 109.799C170.171 111.767 170.452 117.107 172.42 119.074C172.983 119.636 173.545 119.917 174.107 119.636C175.513 119.636 180.292 118.231 185.915 116.263C202.784 110.923 231.179 102.492 256.482 102.492C291.906 102.492 311.023 119.355 312.71 123.852C314.678 128.911 314.397 138.747 307.368 144.369C303.151 147.46 292.187 151.676 282.347 155.329C276.162 157.578 270.539 159.826 268.571 160.95C267.727 161.513 267.727 161.794 267.727 162.075C267.727 163.761 270.539 167.134 275.037 170.506C277.567 172.474 283.471 177.251 282.347 182.872C281.503 187.369 279.254 191.585 278.973 191.585C278.411 192.428 277.286 192.709 276.443 192.147C275.599 191.585 275.318 190.461 275.88 189.618C275.88 189.618 278.13 185.964 278.692 182.029C279.254 178.095 274.194 174.16 272.788 173.036C269.414 170.506 263.791 165.728 264.072 161.513C264.072 160.388 264.635 158.702 266.603 157.578C268.852 156.173 274.475 154.205 280.941 151.676C289.938 148.303 301.183 144.087 304.838 141.277C310.742 136.78 310.461 128.349 309.055 124.976C307.368 121.041 289.375 105.865 255.919 105.865C231.179 105.865 203.065 114.577 186.196 119.636C179.73 121.603 175.232 123.009 173.545 123.009C171.858 123.009 170.452 122.447 169.047 121.322C165.673 117.95 165.673 110.642 165.673 109.799L165.111 105.865H144.587L141.776 110.361C142.057 111.767 142.057 115.139 140.089 117.669C138.964 119.355 136.996 120.198 135.028 120.479C130.811 120.76 119.847 115.982 102.135 107.832C92.0137 103.335 81.8926 98.5572 72.615 94.9035C58.2767 89.2825 36.3476 85.3478 30.7248 85.3478C21.4471 85.3478 6.54657 92.9362 3.17287 105.021C1.76716 110.361 2.32945 122.447 13.8563 148.865L14.1374 149.427C14.4185 150.271 14.9808 151.395 15.262 152.238C17.5111 157.297 18.9168 160.388 17.5111 164.042C16.1054 167.415 12.7317 179.781 12.1694 182.872C11.6071 185.964 11.6071 190.18 11.8883 191.585C12.4506 191.866 13.0128 192.709 14.1374 193.552C16.3865 195.52 20.8848 199.454 22.0094 200.298C22.8528 200.579 23.4151 200.298 23.6962 200.298C23.6962 200.298 23.6962 200.017 23.4151 199.454C23.1339 198.611 23.4151 197.768 23.9774 197.206C24.8208 196.644 25.6642 196.925 26.2265 197.487C27.0699 198.33 27.6322 199.173 28.1945 200.017C28.4756 200.298 28.7568 200.86 29.0379 201.141C30.1625 199.454 29.6002 191.023 29.3191 185.402C29.0379 182.029 28.7568 179.219 28.7568 176.689C28.7568 167.977 42.8139 158.14 42.8139 157.859C43.6573 157.297 45.6253 157.297 53.7784 157.578C55.1841 157.578 56.5898 157.578 57.1521 157.578C57.9955 157.578 58.5578 157.016 58.839 156.735C58.839 156.454 58.5578 155.892 56.5898 155.048C52.935 153.362 49.2801 153.643 45.9064 153.643C44.2196 153.643 42.8139 153.643 41.4082 153.643C38.3156 153.362 34.0985 152.8 31.8493 149.427C30.1625 147.179 30.1625 143.806 31.2871 140.153C32.4116 136.78 33.2551 131.44 33.5362 124.414C33.5362 123.852 33.8173 123.571 34.0985 123.29C34.3796 123.009 34.9419 122.728 35.5042 122.728H35.7853C36.3476 122.728 36.6288 123.009 36.9099 123.29C49.2801 135.656 79.0812 148.303 79.3623 148.584L99.0423 161.794L158.925 176.689L203.065 168.539L214.873 157.859C214.873 156.454 215.435 153.924 217.403 151.676C219.933 149.146 223.588 147.741 228.649 147.741C235.677 147.741 243.83 146.617 244.955 145.774C245.798 145.212 246.923 145.493 247.485 146.055C248.047 146.898 248.047 147.741 247.204 148.584C244.674 150.552 232.585 151.114 228.649 151.114C224.713 151.114 221.901 151.957 220.214 153.924C218.528 155.892 218.528 158.14 218.528 158.14C218.528 158.702 218.246 159.264 217.965 159.545L205.314 171.068C205.033 171.349 204.752 171.349 204.47 171.63L159.488 179.781C159.207 179.781 158.925 179.781 158.644 179.781L98.1988 164.604C97.9177 164.604 97.9177 164.604 97.6366 164.323L77.9566 151.114C77.1132 150.833 50.6858 139.591 36.9099 127.505C36.3476 133.126 35.7853 137.623 34.6608 140.715C33.8173 143.525 33.8173 145.774 34.6608 147.179C36.0665 149.146 39.4402 149.708 41.6893 149.99C42.8139 149.99 44.2196 149.99 45.6253 149.99C49.2802 149.99 53.4973 149.708 57.9955 151.676C62.4938 153.643 62.4938 156.173 62.2127 157.297C61.6504 159.545 59.4012 160.95 57.1521 160.95C56.3087 160.95 55.1841 160.95 53.4973 160.95C50.967 160.95 45.3442 160.669 44.2196 160.95C42.2516 162.075 32.1305 170.787 32.1305 176.408C32.1305 178.657 32.4116 181.748 32.4116 184.84C32.9739 193.833 33.255 200.017 31.8493 202.546C32.1305 203.108 31.287 204.513 29.6002 204.513Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M187.602 48.8111C187.602 48.8111 194.068 38.9743 207.282 41.2227C220.495 43.4711 199.972 56.6805 190.694 55.8374L184.509 71.5762L173.826 83.3803L156.676 79.7267L137.84 79.4456L129.687 71.5762L125.751 54.1511C125.751 54.1511 103.822 47.9679 104.946 39.8174C106.071 31.667 123.783 42.909 123.783 42.909C123.783 42.909 127.156 34.7586 129.687 33.9154C132.217 33.0723 131.936 22.9544 131.936 22.9544L178.043 19.3008L187.883 32.2291V48.8111H187.602Z"
-                    fill="white"
-                  />
-                  <path
-                    d="M174.107 85.0668H173.826L156.676 81.4131L138.121 81.1321C137.558 81.1321 137.277 80.851 136.996 80.5699L128.843 72.7006C128.562 72.4195 128.281 72.1384 128.281 71.8574L124.626 55.5564C119.847 54.1512 102.416 48.2491 103.54 39.5365C103.821 37.0071 105.227 36.1639 106.352 35.6018C110.85 33.6344 119.284 37.8502 123.501 40.3797C124.907 37.2881 127.156 33.0724 129.686 32.2292C130.249 31.6671 130.811 27.1703 130.53 22.9545C130.53 22.1114 131.092 21.2682 132.217 20.9872L178.324 17.3335C178.886 17.3335 179.449 17.6146 180.011 17.8956L189.851 30.8239C190.132 31.105 190.132 31.3861 190.132 31.9482V44.0333C193.506 41.2228 199.691 37.5692 208.406 39.2555C213.748 40.0986 214.31 42.9092 214.029 44.5955C213.186 50.2165 200.253 57.2427 192.662 57.5238L186.758 72.1384C186.758 72.4195 186.477 72.4195 186.477 72.7006L175.794 84.5047C174.95 84.7857 174.388 85.0668 174.107 85.0668ZM138.683 77.1973L156.957 77.4784L173.545 81.1321L183.385 70.1711L189.57 54.7133C189.851 53.8701 190.694 53.5891 191.257 53.5891C197.442 54.1512 209.531 47.1249 210.093 43.7523C210.093 43.1902 208.687 42.6281 207.282 42.347C195.474 40.3797 189.57 49.0923 189.289 49.3733C188.726 49.9354 188.164 50.2165 187.321 50.2165C186.477 49.9354 185.915 49.3733 185.915 48.5302V32.5103L176.918 20.7061L133.622 24.3598C133.622 28.5755 133.06 34.4776 130.249 35.3208C129.405 35.6018 126.875 39.5365 125.469 43.4712C125.188 44.0333 124.907 44.3144 124.345 44.5955C123.783 44.8765 123.22 44.5954 122.939 44.3144C118.16 41.2228 110.288 37.5692 107.476 38.6934C107.195 38.6934 106.914 38.9744 106.633 39.8176C106.071 44.8765 119.565 50.4975 126.313 52.1838C126.875 52.4649 127.437 52.7459 127.437 53.5891L131.373 70.4521L138.683 77.1973Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M253.108 232.9C242.143 231.494 230.898 230.37 219.933 229.246C216.278 228.965 212.624 228.684 208.969 228.403C204.471 228.122 199.972 227.841 195.193 227.56C189.851 227.279 184.791 226.997 179.73 226.997C156.676 226.435 133.06 226.997 109.726 228.965C106.071 229.246 102.416 229.527 98.7611 229.808C94.8251 230.089 90.608 230.651 86.6721 230.932C72.8961 232.337 59.4012 234.024 46.4687 235.991C46.4687 235.991 25.1019 228.122 25.6642 192.147C26.2265 156.173 65.3053 149.708 79.3624 149.99C89.7646 149.99 136.153 161.794 163.424 162.356C190.695 162.918 222.182 157.578 238.208 158.14C254.233 158.702 274.194 175.565 274.194 196.925C274.194 217.723 255.919 233.181 253.108 232.9Z"
-                    fill="#D49DFF"
-                  />
-                  <path
-                    d="M46.4689 237.677C46.1878 237.677 45.9066 237.677 45.9066 237.677C45.0632 237.396 23.4153 228.684 23.9776 192.147C24.5398 157.297 60.2449 148.022 79.3625 148.022C83.5797 148.022 93.1384 149.708 105.228 152.238C123.783 155.891 147.118 160.107 163.424 160.388C178.324 160.669 194.631 159.264 208.969 157.859C220.777 156.735 230.898 155.891 238.208 156.172C255.357 156.735 276.162 175.003 276.162 196.644C276.162 211.258 267.728 223.906 259.856 230.932C257.888 232.899 254.795 234.867 252.827 234.586C241.581 233.18 230.336 231.775 219.933 230.932C216.279 230.651 212.624 230.37 208.969 230.089C204.471 229.808 199.972 229.527 195.474 229.246C190.414 228.965 185.072 228.684 180.011 228.684C158.082 228.122 134.466 228.684 110.007 230.651C106.352 230.932 102.697 231.213 99.0425 231.494C95.1065 231.775 90.8893 232.337 86.9533 232.618C73.4585 234.024 59.9637 235.71 46.4689 237.677ZM79.0814 151.395C61.3695 151.395 27.9136 159.826 27.3513 191.866C26.789 223.625 43.6575 232.618 46.4689 234.024C59.6826 232.056 73.1774 230.37 86.3911 228.965C90.3271 228.684 94.5442 228.121 98.4802 227.84C102.135 227.559 105.79 227.278 109.445 226.997C133.904 225.311 157.52 224.468 179.73 225.03C184.791 225.03 190.132 225.311 195.193 225.592C199.691 225.873 204.19 226.154 208.969 226.435C212.624 226.716 216.279 226.997 219.933 227.278C230.617 228.122 241.581 229.527 253.108 230.932C255.92 230.37 272.226 216.036 272.226 196.363C272.226 176.408 253.389 160.107 237.927 159.545C230.898 159.264 220.777 160.107 209.25 161.231C194.912 162.637 178.606 164.042 163.424 163.761C146.555 163.48 123.221 158.983 104.384 155.329C92.8573 153.362 83.0174 151.395 79.0814 151.395Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M243.549 210.696C217.684 210.696 179.449 207.324 140.37 200.298C78.8002 189.055 27.0701 202.827 26.5078 203.108C25.6644 203.389 24.5398 202.827 24.2587 201.984C23.9775 201.141 24.5398 200.016 25.3832 199.735C25.9455 199.454 78.5191 185.683 140.651 196.925C203.627 208.448 259.574 209.01 271.945 204.513C272.788 204.232 273.913 204.794 274.194 205.637C274.475 206.481 274.194 207.605 273.069 207.886C268.29 209.853 257.606 210.696 243.549 210.696Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M24.5397 198.049H24.2585C23.9774 198.049 17.23 195.801 16.3866 190.461C15.5432 185.683 16.3866 178.657 16.3866 178.094C16.3866 177.251 16.9489 176.97 17.7923 176.97C18.6357 176.97 19.198 177.813 18.9169 178.375C18.9169 178.375 18.3546 185.683 18.9169 189.899C19.4791 193.552 25.1019 195.52 25.1019 195.52C25.6642 195.801 26.2265 196.363 25.9454 197.206C25.6642 197.487 25.1019 198.049 24.5397 198.049Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M276.443 193.552C276.162 193.552 275.599 193.271 275.318 192.99C274.756 192.428 275.037 191.585 275.599 191.023C276.724 190.18 277.005 184.84 276.443 180.343C276.443 179.5 277.005 178.938 277.567 178.938C278.411 178.938 278.973 179.5 278.973 180.062C279.254 182.591 279.816 190.742 277.005 192.99C277.005 193.552 276.724 193.552 276.443 193.552Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M156.957 74.3867C156.114 74.3867 155.27 73.5436 155.27 72.7004C154.989 64.2689 154.146 50.7785 153.865 47.1248C152.74 47.1248 150.772 46.8438 149.648 47.1248C148.804 49.9353 147.117 61.4584 145.993 71.5762C145.993 72.4194 145.149 73.2625 144.025 72.9815C143.181 72.9815 142.338 71.8573 142.619 71.0141C145.712 45.1574 146.836 44.5953 147.398 44.0332C149.085 42.628 155.27 43.4712 156.114 43.7522C157.238 44.3143 157.52 44.5953 158.925 72.4194C158.925 73.5436 158.082 74.3867 156.957 74.3867Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M141.776 60.3341C142.057 62.0205 138.683 61.7394 134.747 62.3015C130.811 62.8636 127.719 64.2689 127.438 62.8636C127.157 61.1773 129.687 57.2426 133.623 56.6805C137.559 55.8373 141.495 58.9289 141.776 60.3341Z"
-                    fill="#FF9292"
-                  />
-                  <path
-                    d="M135.029 58.367C127.719 58.367 121.815 52.4649 121.815 45.1576C121.815 37.8503 127.719 31.9482 135.029 31.9482C142.338 31.9482 148.242 37.8503 148.242 45.1576C148.242 52.4649 142.338 58.367 135.029 58.367ZM135.029 35.6019C129.687 35.6019 125.189 39.8176 125.189 45.4386C125.189 50.7786 129.406 55.2754 135.029 55.2754C140.37 55.2754 144.869 51.0597 144.869 45.4386C144.869 39.8176 140.37 35.6019 135.029 35.6019Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M159.488 62.3012C159.207 63.9875 162.862 63.9876 167.079 64.8307C171.296 65.6739 174.669 67.6412 174.951 65.6739C175.232 63.9876 172.701 59.4907 168.484 58.3665C164.267 57.5234 160.05 60.6149 159.488 62.3012Z"
-                    fill="#FF9292"
-                  />
-                  <path
-                    d="M168.203 60.0531C167.922 60.0531 167.641 60.0531 167.36 60.0531C163.705 59.7721 160.613 58.3668 158.082 55.5563C155.833 53.0268 154.427 49.6543 154.708 46.0006C154.99 38.6933 161.175 33.0723 168.766 33.3534C176.075 33.6344 181.698 40.0986 181.417 47.4059C181.136 51.0595 179.73 54.151 176.919 56.6805C174.67 58.9289 171.577 60.0531 168.203 60.0531ZM158.644 46.2816C158.644 48.8111 159.488 51.3405 161.175 53.3079C162.862 55.2752 165.392 56.3994 167.922 56.3994C170.452 56.3994 172.983 55.5563 174.951 53.87C176.919 52.1837 178.043 49.6542 178.043 47.1248C178.324 41.7848 174.107 37.288 168.766 37.007C163.424 37.007 158.926 40.9417 158.644 46.2816Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M135.028 7.77766C135.028 7.77766 127.719 4.12399 121.815 9.18291C115.911 13.9608 112.818 25.4839 118.722 29.4186C124.626 33.3533 125.751 33.9154 129.405 33.9154C133.341 34.1965 132.498 30.5428 136.996 28.0133C141.495 25.4839 146.274 25.7649 147.68 28.5754C149.085 31.3859 149.367 34.7586 153.021 33.9154C156.676 33.0723 155.271 26.8892 159.207 26.3271C163.143 25.765 163.986 28.5754 168.203 28.8565C172.42 29.1375 171.577 27.1702 174.951 30.2618C178.324 33.3533 180.573 31.386 181.417 33.9154C182.26 36.4449 184.509 40.0985 186.196 42.9091C187.883 45.7196 187.883 48.8112 187.883 48.8112C187.883 48.8112 194.349 42.3469 198.566 41.2227C198.566 41.2227 196.036 37.288 198.566 33.9154C201.097 30.5428 204.47 26.327 200.534 23.2355C196.598 20.425 193.787 23.7976 192.662 20.706C191.538 17.6145 189.851 0.470308 178.043 0.470308C166.235 0.470308 165.954 8.90186 160.612 7.77766C155.271 6.3724 154.708 -2.05915 149.085 0.470308C143.463 2.99977 147.961 12.2745 143.463 11.9934C138.402 11.4313 140.37 8.90186 135.028 7.77766Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M187.602 67.6414C187.321 65.112 191.819 58.9289 190.695 57.8047C189.57 56.6805 185.634 59.772 183.947 61.7394C182.26 63.4257 180.011 68.7656 175.232 69.6088C170.453 70.4519 165.673 71.2951 162.862 71.5761C160.05 72.1382 156.958 72.7004 156.958 72.7004C156.958 72.7004 154.709 76.073 149.929 76.073C145.15 76.073 144.306 73.5435 144.306 72.4193C144.306 71.2951 144.306 71.2951 144.306 71.2951C144.306 71.2951 137.84 70.733 133.904 67.0793C129.968 63.4257 125.751 59.2099 126.032 56.3994C126.032 56.3994 123.502 63.1446 123.783 68.2035C124.064 73.2624 124.064 77.1971 123.783 80.0076C123.502 82.8181 122.096 88.7202 123.783 90.9686C125.47 92.936 125.751 95.7465 126.032 98.838C126.313 101.93 136.153 107.551 143.744 109.237C151.616 111.204 150.773 112.047 155.271 112.328C160.05 112.609 161.456 110.361 164.83 109.237C168.203 108.113 172.702 106.707 176.919 103.335C181.136 99.9622 184.791 93.217 183.947 87.315C183.104 81.4129 187.602 79.1645 187.602 75.5109C187.602 72.4193 187.883 70.4519 187.602 67.6414ZM151.054 89.2823C149.648 89.2823 148.524 87.8771 148.524 85.9097C148.524 83.9424 149.648 82.5371 151.054 82.5371C152.459 82.5371 153.584 83.9424 153.584 85.9097C153.584 87.8771 152.459 89.2823 151.054 89.2823Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M149.086 77.7592C147.118 77.7592 145.431 77.1971 144.306 75.7918C142.338 73.8245 142.619 71.295 142.619 71.014C142.619 69.8898 143.463 69.3276 144.587 69.3276C145.431 69.3276 146.274 70.1708 146.274 71.014C146.274 71.014 146.274 72.4192 147.118 73.2624C147.68 73.8245 148.523 74.1055 149.648 74.1055C153.584 74.1055 155.552 72.7003 155.552 72.4192C155.552 71.5761 156.395 70.7329 157.239 70.7329C158.363 70.7329 158.926 71.5761 159.207 72.4192C159.207 72.9813 159.207 74.1055 158.082 74.9486C156.114 76.916 153.022 77.7592 149.086 77.7592C149.086 77.7592 149.367 77.7592 149.086 77.7592Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M219.933 229.245C216.279 228.964 212.624 228.683 208.969 228.402C204.471 228.121 199.972 227.84 195.193 227.559C195.193 227.559 205.595 215.474 202.503 190.179C199.41 164.885 192.663 161.231 190.976 161.231C189.289 161.231 187.883 161.231 187.883 161.231C187.883 161.231 188.164 156.453 192.944 155.891C197.723 155.329 199.691 157.015 203.908 155.891C208.125 154.767 221.62 154.486 229.211 183.434C236.521 212.101 219.933 229.245 219.933 229.245Z"
-                    fill="white"
-                  />
-                  <path
-                    d="M219.933 230.932C215.997 230.651 212.343 230.37 208.969 230.089C204.471 229.808 199.972 229.527 195.474 229.246C194.912 229.246 194.349 228.683 194.068 228.121C193.787 227.559 193.787 226.716 194.349 226.154C194.349 226.154 204.189 214.069 201.097 189.898C198.004 164.323 191.538 162.637 191.257 162.637C189.289 162.637 187.883 162.637 187.883 162.637C187.04 162.637 186.196 161.793 186.196 160.669C186.477 158.421 187.883 154.205 192.944 153.643C195.474 153.362 197.442 153.643 198.848 153.643C200.535 153.924 201.659 153.924 203.627 153.643C208.125 152.519 222.745 151.394 230.898 182.31C238.489 211.82 222.182 229.246 221.339 230.089C220.777 230.932 220.496 230.932 219.933 230.932ZM198.567 225.873C201.94 226.154 205.595 226.435 208.969 226.435C212.343 226.716 215.716 226.997 219.09 227.278C221.901 223.906 233.709 208.167 227.243 183.434C219.652 155.048 206.72 156.453 204.189 157.297C201.659 157.859 199.972 157.578 198.004 157.297C196.599 157.016 195.193 157.016 192.944 157.297C191.257 157.578 190.413 158.421 189.851 159.264C190.132 159.264 190.413 159.264 190.413 159.264C191.538 159.264 200.253 159.545 203.908 189.617C206.72 209.01 201.378 220.814 198.567 225.873Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M109.726 228.684C106.071 228.965 102.416 229.246 98.7611 229.527C94.8251 229.808 90.608 230.37 86.672 230.651C86.672 230.651 73.4584 217.723 72.6149 192.709C71.4904 167.696 81.6115 153.081 100.448 149.709C100.448 149.709 104.665 148.584 107.195 149.709C110.007 150.833 113.099 151.957 116.192 152.238C119.284 152.519 118.722 156.454 118.722 156.454C118.722 156.454 95.6685 180.624 108.601 225.311L109.726 228.684Z"
-                    fill="white"
-                  />
-                  <path
-                    d="M86.6722 232.618C86.1099 232.618 85.8287 232.337 85.5476 232.056C84.9853 231.494 72.0528 218.285 70.9282 192.99C69.8037 167.415 79.9248 151.957 100.167 148.022C100.448 148.022 104.946 146.617 108.039 148.022C111.132 149.427 113.943 150.27 116.473 150.551C117.879 150.833 118.722 151.395 119.566 152.238C120.971 153.924 120.69 156.454 120.409 156.735C120.409 157.016 120.128 157.297 119.847 157.578C119.566 157.859 97.6367 181.467 110.288 224.468L111.413 228.121C111.694 228.684 111.413 229.246 111.132 229.527C110.85 230.089 110.288 230.37 109.726 230.37C106.071 230.651 102.416 230.932 98.7613 231.213C94.8253 231.775 90.8893 232.056 86.6722 232.618ZM104.384 150.833C102.978 150.833 101.573 151.114 101.01 151.395C82.455 155.048 73.4585 168.82 74.583 192.709C75.4265 213.788 85.2665 226.154 87.5156 228.965C91.1704 228.684 95.1064 228.121 98.7613 227.84C101.573 227.559 104.665 227.278 107.477 226.997L106.914 225.592C94.5441 183.434 113.662 159.264 117.036 155.61C117.036 155.048 117.036 154.486 116.754 154.205C116.754 154.205 116.473 153.924 116.192 153.924C113.381 153.643 110.007 152.8 106.633 151.114C105.79 151.114 105.228 150.833 104.384 150.833Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M22.0097 176.408C22.0097 176.408 22.2908 178.094 22.0097 181.467C21.7285 184.84 23.4154 195.801 25.6645 198.33C27.9137 200.859 29.0382 204.794 31.0062 201.703C32.9742 198.33 31.0062 183.715 31.0062 176.408C31.0062 169.101 43.0953 159.826 44.2199 159.264C45.3445 158.702 55.1844 159.264 57.7147 159.264C60.245 159.264 63.6187 155.891 57.7147 153.362C51.8107 150.832 46.469 152.238 41.9708 151.957C37.4725 151.676 30.1628 150.27 33.2553 140.715C34.6611 136.499 35.2233 130.316 35.5045 124.414C36.0668 116.825 35.7856 110.08 35.7856 110.08"
-                    fill="white"
-                  />
-                  <path
-                    d="M29.6004 204.513C27.9135 204.513 26.789 203.108 25.9455 201.422C25.3833 200.86 25.1021 200.016 24.5398 199.454C21.7284 196.363 20.0415 184.84 20.6038 181.186C20.885 178.094 20.6038 176.689 20.6038 176.689C20.3227 175.846 20.885 174.722 22.0095 174.722C22.853 174.441 23.9775 175.003 24.2587 176.127C24.2587 176.408 24.821 178.094 24.2587 181.748C23.9775 185.402 25.6644 195.52 27.3513 197.206C28.1947 198.049 28.757 198.892 29.3192 199.735C29.6004 200.016 29.8815 200.579 30.1627 200.86C31.2872 199.173 30.7249 190.742 30.4438 185.121C30.1626 181.748 29.8815 178.938 29.8815 176.408C29.8815 167.696 43.9386 157.859 43.9386 157.578C44.782 157.016 46.75 157.016 54.9031 157.297C56.3088 157.297 57.7146 157.297 58.2768 157.297C59.1203 157.297 59.6825 156.735 59.9637 156.454C59.9637 156.172 59.6825 155.61 57.7145 154.767C54.0597 153.081 50.4049 153.362 47.0312 153.362C45.3443 153.362 43.9386 153.362 42.5329 153.362C39.4403 153.081 35.2232 152.519 32.9741 149.146C31.2872 146.898 31.2872 143.525 32.4118 139.872C33.5363 136.499 34.3798 131.159 34.6609 124.133C35.2232 116.544 34.9421 109.799 34.9421 109.799C34.9421 108.956 35.7855 108.113 36.6289 108.113C37.7535 108.113 38.3158 108.956 38.3158 109.799C38.3158 109.799 38.3157 116.825 38.0346 124.414C37.4723 131.721 36.6289 137.342 35.5043 140.996C34.6609 143.806 34.6609 146.055 35.5043 147.46C36.9101 149.427 40.2838 149.989 42.5329 150.27C43.6575 150.27 45.0631 150.27 46.4689 150.27C50.1237 150.27 54.3408 149.989 58.8391 151.957C63.3374 153.924 63.3373 156.454 63.0562 157.578C62.4939 159.826 60.2448 161.231 57.9957 161.231C57.1523 161.231 56.0277 161.231 54.3408 161.231C51.8106 161.231 46.1877 160.95 45.0631 161.231C43.0952 162.356 32.9741 171.068 32.9741 176.689C32.9741 178.938 33.2552 182.029 33.2552 185.121C33.8175 194.114 34.0986 200.297 32.6929 202.827C32.1306 203.108 31.2872 204.513 29.6004 204.513Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M271.382 201.141C271.101 201.141 271.101 201.141 270.82 201.141C268.571 200.578 268.009 197.487 267.728 194.395C267.446 190.18 264.916 183.434 261.261 179.219C260.699 178.657 260.137 177.813 259.293 176.97C255.357 171.63 249.172 163.761 235.959 162.356C220.777 160.669 220.777 160.388 220.777 158.702C220.777 158.14 221.339 157.578 221.901 157.016C223.026 156.172 230.336 150.833 237.083 149.989C241.581 149.427 245.236 146.336 248.891 143.244C250.578 141.839 251.984 140.715 253.671 139.309C255.639 137.904 257.606 135.094 259.856 132.283C263.792 126.943 268.29 121.041 274.756 119.355C275.6 119.074 276.724 119.636 277.005 120.76C277.286 121.603 276.724 122.727 275.6 123.008C270.258 124.414 266.322 129.754 262.667 134.532C260.418 137.623 258.169 140.715 255.638 142.401C253.952 143.525 252.546 144.93 250.859 146.055C246.923 149.427 242.706 152.8 237.364 153.643C233.709 154.205 229.773 156.172 226.962 157.859C228.93 158.14 231.741 158.421 236.24 158.983C250.859 160.669 257.888 169.663 262.105 175.003C262.667 175.846 263.229 176.689 263.792 177.251C268.009 182.31 270.82 189.618 271.101 194.395C271.101 195.801 271.382 196.644 271.664 197.206C271.945 196.925 272.226 196.363 272.507 195.801C274.756 191.866 272.226 183.997 271.101 181.186C270.82 180.343 271.101 179.219 271.945 178.938C272.788 178.657 273.913 178.938 274.194 179.781C274.756 180.905 278.973 191.304 275.318 197.487C274.756 199.173 273.35 201.141 271.382 201.141Z"
-                    fill="#3B4B75"
-                  />
-                  <path
-                    d="M272.788 180.624C272.788 180.624 277.286 191.304 274.194 196.644C270.82 202.265 269.977 198.611 269.414 194.396C269.133 190.18 266.603 182.873 262.667 178.095C258.45 173.317 252.265 162.356 236.24 160.67C219.933 158.983 222.745 158.702 222.745 158.702C222.745 158.702 230.336 152.8 237.083 151.676C243.831 150.552 245.236 147.46 251.14 143.525"
-                    fill="white"
-                  />
-                  <path
-                    d="M271.382 201.141C271.101 201.141 271.101 201.141 270.82 201.141C268.571 200.579 268.009 197.487 267.728 194.396C267.446 190.18 264.916 183.435 261.261 179.219C260.699 178.657 260.137 177.814 259.293 176.97C255.357 171.63 249.172 163.761 235.958 162.356C220.777 160.669 220.777 160.388 220.777 158.702C220.777 158.14 221.339 157.578 221.901 157.016C223.026 156.173 230.336 150.833 237.083 149.99C241.3 149.427 243.268 147.741 246.08 145.493C247.204 144.369 248.61 143.244 250.578 142.12C251.421 141.558 252.546 141.839 253.108 142.682C253.67 143.525 253.389 144.65 252.546 145.212C250.859 146.336 249.453 147.46 248.329 148.584C245.236 151.114 242.987 153.081 237.645 153.924C233.991 154.486 230.055 156.454 227.243 158.14C229.211 158.421 232.023 158.702 236.521 159.264C251.14 160.95 258.169 169.944 262.386 175.284C262.948 176.127 263.51 176.97 264.073 177.532C268.29 182.591 271.101 189.899 271.382 194.677C271.382 196.082 271.664 196.925 271.945 197.487C272.226 197.206 272.507 196.644 272.788 196.082C275.037 192.147 272.507 184.278 271.382 181.467C271.101 180.624 271.382 179.5 272.226 179.219C273.069 178.938 274.194 179.219 274.475 180.062C275.037 181.186 279.254 191.585 275.6 197.768C274.756 199.173 273.35 201.141 271.382 201.141Z"
-                    fill="#3B4B75"
-                  />
-                </svg>
+              <img src={BG} className=" opacity-80 h-auto mb-10" />
+
                 <h1 className="mt-6 text-base font-bold tracking-tight text-gray-900">
                   {t(
                     'Nhấp hoặc kéo tệp vào khu vực này để tải tệp Excel hoặc CSV lên.',
@@ -677,13 +515,7 @@ export default function ImportForm({
                 >
                   {t('Nhập')}
                 </Button>
-               {/*  <Button
-                  size="large"
-                  onClick={handleCheck}
-                  className="w-full mt-5 border-gray-300 text-black   text-sm hover:bg-gray-600"
-                >
-                  {t('Kiểm tra')}
-                </Button> */}
+             
               <div>
                 <h3 className="text-base font-semibold">{t('Tệp đã nhập')}</h3>
                 <div className="mt-4 mb-3">

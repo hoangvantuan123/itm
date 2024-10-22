@@ -27,20 +27,20 @@ export default function TimeTracking({ isMobile }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const now = dayjs().tz('Asia/Ho_Chi_Minh'); 
-  const [selectedDate, setSelectedDate] = useState(now); 
-  const [highlightedDate, setHighlightedDate] = useState(now); 
-  const [checkInOutHistory, setCheckInOutHistory] = useState([]); 
-  const [data, setData] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [drawerVisible, setDrawerVisible] = useState(false); 
-  const [tableData, setTableData] = useState([]); 
+  const now = dayjs().tz('Asia/Ho_Chi_Minh');
+  const [selectedDate, setSelectedDate] = useState(now);
+  const [highlightedDate, setHighlightedDate] = useState(now);
+  const [checkInOutHistory, setCheckInOutHistory] = useState([]);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [tableData, setTableData] = useState([]);
 
   const fetchData = async () => {
     setLoading(true);
     try {
       const monthYear = `${String(selectedDate.month() + 1).padStart(2, '0')}-${selectedDate.year()}`;
-      const response = await GetTimekeepingUser( monthYear);
+      const response = await GetTimekeepingUser(monthYear);
 
       if (response.success) {
         setData(response.data.data);
@@ -212,28 +212,28 @@ export default function TimeTracking({ isMobile }) {
         <Button icon={<RightOutlined />} onClick={handleNextMonth} />
       </div>
       <div className="flex gap-4 p-2 ">
-  
-    {/* Trạng thái Xanh Lá */}
-    <div className="flex items-center gap-3">
-      <div className="w-4 h-4 bg-green-200 rounded-md"></div>
-      <span className="text-green-800 text-xs">{t('hr_payroll.status_1')}</span>
-    </div>
 
-    {/* Trạng thái Vàng */}
-    <div className="flex items-center gap-3">
-      <div className="w-4 h-4 bg-yellow-200 rounded-md"></div>
-      <span className="text-yellow-800 text-xs">{t('hr_payroll.status_2')}</span>
-    </div>
+        {/* Trạng thái Xanh Lá */}
+        <div className="flex items-center gap-3">
+          <div className="w-4 h-4 bg-green-200 rounded-md"></div>
+          <span className="text-green-800 text-xs">{t('hr_payroll.status_1')}</span>
+        </div>
 
-    {/* Trạng thái Đỏ */}
-    <div className="flex items-center gap-3">
-      <div className="w-4 h-4 bg-red-200 rounded-md"></div>
-      <span className="text-red-800 text-xs">{t('hr_payroll.status_3')}</span>
-    </div>
-   
-  </div>
+        {/* Trạng thái Vàng */}
+        <div className="flex items-center gap-3">
+          <div className="w-4 h-4 bg-yellow-200 rounded-md"></div>
+          <span className="text-yellow-800 text-xs">{t('hr_payroll.status_2')}</span>
+        </div>
+
+        {/* Trạng thái Đỏ */}
+        <div className="flex items-center gap-3">
+          <div className="w-4 h-4 bg-red-200 rounded-md"></div>
+          <span className="text-red-800 text-xs">{t('hr_payroll.status_3')}</span>
+        </div>
+
+      </div>
       {/* Calendar Grid */}
-      <div className="flex-1 grid grid-cols-7  gap-4 p-4">
+      <div className="flex-1 grid grid-cols-7 h-screen overflow-auto  gap-4 p-4">
         {monthDates.map((date, index) => (
           <div
             key={index}
@@ -255,6 +255,7 @@ export default function TimeTracking({ isMobile }) {
         onClose={() => setDrawerVisible(false)}
         open={drawerVisible}
         width={700}
+       
       >
         <Table
           dataSource={tableData}

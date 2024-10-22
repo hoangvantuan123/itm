@@ -116,11 +116,11 @@ export class ResUserGroupsService {
         'userGroups.create_date',
         'userGroups.user_id',
         'user.login',
-        'user.nameUser',
+        'user.name_user',
         'user.language',
         'user.active',
       ])
-      .orderBy('userGroups.create_date', 'DESC')
+      .orderBy('userGroups.id', 'DESC')
       .skip(skip)
       .take(take)
       .getMany();
@@ -132,7 +132,7 @@ export class ResUserGroupsService {
         id: userGroup.id,
         user_id: userGroup.user_id,
         login: userGroup.user.login,
-        name: userGroup.user.nameUser,
+        name: userGroup.user.name_user,
         language: userGroup.user.language,
         create_date: userGroup.create_date,
         active: userGroup.user.active,
@@ -213,8 +213,8 @@ export class ResUserGroupsService {
         karma: user.karma,
         rankId: user.rankId,
         nextRankId: user.nextRankId,
-        employeeCode: user.employeeCode,
-        name: user.nameUser,
+        employee_code: user.employee_code,
+        name: user.name_user,
         language: user.language,
       })
     );
@@ -287,8 +287,8 @@ export class ResUserGroupsService {
         'u.karma AS karma',
         'u.rankId AS rankId',
         'u.nextRankId AS nextRankId',
-        'u.employeeCode AS employeeCode',
-        'u.nameUser AS name',
+        'u.employee_code AS employeeCode',
+        'u.name_user AS name',
         'u.language AS language',
       ])
       .getRawMany();

@@ -9,7 +9,17 @@ export const getEmployeeCode = () => {
   
   if (userInfo) {
     const parsedUserInfo = JSON.parse(userInfo);
-    return parsedUserInfo.employeeCode || null;
+    return parsedUserInfo.employee_code || null;
+  }
+  
+  return null; 
+};
+export const getId = () => {
+  const userInfo = localStorage.getItem('userInfo');
+  
+  if (userInfo) {
+    const parsedUserInfo = JSON.parse(userInfo);
+    return parsedUserInfo.id || null;
   }
   
   return null; 

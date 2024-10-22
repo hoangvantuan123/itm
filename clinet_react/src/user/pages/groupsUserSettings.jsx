@@ -166,11 +166,7 @@ export default function GroupsUsersSettings({ permissions }) {
         return nameA.localeCompare(nameB)
       },
       ...(visibleColumns.name ? {} : { render: () => null }),
-    },
-    {
-      title: 'Số người dùng',
-      key: 'usersCount',
-    },
+    }  
   ]
 
   const renderTable = () => (
@@ -225,15 +221,8 @@ export default function GroupsUsersSettings({ permissions }) {
           <Col span={24} key={item.id} className="mb-2">
             <Card
               title={item.name}
-              extra={
-                <Button onClick={() => handleViewDetails(item)}>
-                  {t('View')}
-                </Button>
-              }
+              onClick={() => handleViewDetails(item)}
             >
-              <p>
-                {t('Comment')}: {item.comment}
-              </p>
             </Card>
           </Col>
         ))}
@@ -312,41 +301,8 @@ export default function GroupsUsersSettings({ permissions }) {
             {!isMobile && (
               <div className="p-2 mb flex items-center justify-between">
                 <span className="inline-flex overflow-hidden">
-                  <div className="flex items-center gap-2">
-                    <Select
-                      defaultValue="Tùy chọn"
-                      className="w-28"
-                      size="large"
-                    >
-                      <Option value="1">{t('Table')}</Option>
-                      <Option value="2">{t('Grid')}</Option>
-                      <Option value="3">{t('List')}</Option>
-                    </Select>
-                    {canCreate && <ImportAction />}
-
-                    {selectedRowKeys != null && selectedRowKeys.length > 0 && (
-                      <>
-                        <ShowAction
-                          handleOnClickAction={handleOnClickAction}
-                          selectedRowKeys={selectedRowKeys}
-                          setActionUsers={setActionUsers}
-                          setSelectedRowKeys={setSelectedRowKeys}
-                          fetchData={fetchData}
-                          actionUsers={actionUsers}
-                          canDelete={canDelete}
-                        />
-                      </>
-                    )}
-                  </div>
+                  
                 </span>
-                <button
-                  className="border-[1.3px] border-[#d9d9d9] rounded-lg p-[0.6rem] w-52 flex items-center space-x-2 bg-white hover:bg-gray-100"
-                  onClick={openModal}
-                >
-                  <SearchOutlined />
-                  <span className="text-gray-500">{t('Tìm kiếm')}</span>
-                </button>
-                <Search isOpen={isModalOpen} onClose={closeModal} />
               </div>
             )}
             {isMobile && (

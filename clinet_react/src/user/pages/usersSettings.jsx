@@ -37,6 +37,8 @@ import { GetUserGroupsPageLimitID } from '../../features/resUsers/getUserGroupsP
 import '../../static/css/scroll_container.css'
 import '../../static/css/drawer_cusstom.css'
 import { checkActionPermission } from '../../permissions'
+import FieldActionUsers from '../components/action/fieldUsers'
+import { GetFilterUsers } from '../../features/resUsers/getFilterUsers'
 
 const { Option } = Select
 const { Title } = Typography
@@ -65,7 +67,14 @@ export default function UsersSettings({ permissions }) {
   const canEdit = checkActionPermission(permissions, 'setting-1-2', 'edit')
   const canDelete = checkActionPermission(permissions, 'setting-1-2', 'delete')
   const canView = checkActionPermission(permissions, 'setting-1-2', 'view')
-
+  const [isDrawerVisibleFilter, setIsDrawerVisibleFilter] = useState(false)
+  const [actionImport, setActionImport] = useState(null)
+  const [nameTags, setNameTags] = useState([])
+  const [dateRange, setDateRange] = useState([null, null])
+  const handleOnClickActionImport = () => {
+    setActionImport('users')
+  }
+  const [cid, setCid] = useState([])
   const handleOnClickAction = () => {
     setActionUsers('actionUsers')
   }
@@ -84,7 +93,8 @@ export default function UsersSettings({ permissions }) {
     setIsModalOpenAddUser(false)
   }
   const [visibleColumns, setVisibleColumns] = useState({
-    name: true,
+    employee_code: true,
+    name_user: true,
     login: true,
     language: true,
     active: true,
@@ -98,11 +108,14 @@ export default function UsersSettings({ permissions }) {
 
   const fetchData = async () => {
     setLoading(true)
-
+    const [startDate, endDate] = dateRange.map((date) =>
+      date ? date.format('YYYY-MM-DD') : null,
+    )
     try {
       // Gọi các API đồng thời
       const [response, responseAllResGroups] = await Promise.all([
-        GetAllResUsers(page, limit),
+        GetFilterUsers(page, limit, startDate,
+          endDate, nameTags, cid),
         GetAllResGroups(),
       ])
 
@@ -124,6 +137,11 @@ export default function UsersSettings({ permissions }) {
     } finally {
       setLoading(false)
     }
+  }
+  const handleApplyFilter = async () => {
+    setIsDrawerVisibleFilter(false)
+
+    await fetchData()
   }
   const fetchDataResAllUser = async () => {
     setLoading(true)
@@ -237,7 +255,7 @@ export default function UsersSettings({ permissions }) {
     const result = await registerUser({
       login: login,
       password: password,
-      nameUser: login,
+      name_user: login,
       language: language,
       token,
     })
@@ -246,15 +264,26 @@ export default function UsersSettings({ permissions }) {
   const renderTable = () => {
     const columns = [
       {
-        title: 'Tên',
-        dataIndex: 'name',
-        key: 'name',
+        title: 'CID',
+        dataIndex: 'employee_code',
+        key: 'employee_code',
         sorter: (a, b) => {
-          const nameA = a.name || ''
-          const nameB = b.name || ''
+          const nameA = a.employee_code || ''
+          const nameB = b.employee_code || ''
           return nameA.localeCompare(nameB)
         },
-        ...(visibleColumns.name ? {} : { render: () => null }),
+        ...(visibleColumns.employee_code ? {} : { render: () => null }),
+      },
+      {
+        title: 'Tên',
+        dataIndex: 'name_user',
+        key: 'name_user',
+        sorter: (a, b) => {
+          const nameA = a.name_user || ''
+          const nameB = b.name_user || ''
+          return nameA.localeCompare(nameB)
+        },
+        ...(visibleColumns.name_user ? {} : { render: () => null }),
       },
       {
         title: 'Đăng nhập',
@@ -370,7 +399,7 @@ export default function UsersSettings({ permissions }) {
       <Row gutter={16} className="bg-slate-50 pb-60">
         {userData.map((user) => (
           <Col span={24} key={user.login} style={{ marginBottom: 16 }}>
-            <Card title={user.name} onClick={() => showUserForm(user)}>
+            <Card title={user.name_user} onClick={() => showUserForm(user)}>
               <p>
                 <strong>{t('Đăng nhập')}:</strong> {user.login}
               </p>
@@ -468,17 +497,20 @@ export default function UsersSettings({ permissions }) {
               <div className="p-2 mb flex items-center justify-between">
                 <span className="inline-flex overflow-hidden  ">
                   <div className="flex items-center gap-2">
-                    <Select
-                      defaultValue="Tùy chọn"
-                      className=" w-28"
-                      size="large"
-                    >
-                      <Option value="1">{t('Table')}</Option>
-                      <Option value="2">{t('Grid')}</Option>
-                      <Option value="3">{t('List')}</Option>
-                    </Select>
-                    {canCreate && <ImportAction />}
 
+                    {canCreate && <ImportAction   fetchData={fetchData}    handleOnClickActionImport={handleOnClickActionImport}
+                setActionImport={setActionImport}
+                actionImport={actionImport} />}
+                    <FieldActionUsers
+                      handleApplyFilter={handleApplyFilter}
+                      setIsDrawerVisible={setIsDrawerVisibleFilter}
+                      isDrawerVisible={isDrawerVisibleFilter}
+                      nameTags={nameTags}
+                      setNameTags={setNameTags}
+                      setCid={setCid}
+                      cid={cid}
+
+                    />
                     {selectedRowKeys != null && selectedRowKeys.length > 0 && (
                       <>
                         <ShowAction
@@ -500,21 +532,7 @@ export default function UsersSettings({ permissions }) {
           </div>
 
           <Layout className="h-screen lg:pb-[70px] ">
-            {!isMobile && (
-              <Sider width={200} className="bg-slate-50 border-t h-screen">
-                <Menu
-                  mode="inline"
-                  defaultSelectedKeys={['all']}
-                  className=" pb-32 scroll-container h-full overflow-auto"
-                  onClick={(e) => handleOnClickGroupID(e)}
-                >
-                  <Menu.Item key="all">{t('All')}</Menu.Item>
-                  {groupsData.map((group) => (
-                    <Menu.Item key={group.id}>{group.name}</Menu.Item>
-                  ))}
-                </Menu>
-              </Sider>
-            )}
+
 
             <Layout
               style={{

@@ -46,7 +46,7 @@ export class ResGroupsService {
       skip: (page - 1) * limit, // Pagination offset
       take: limit, // Limit the number of results
       order: {
-        create_date: 'DESC', // Order by creation date
+        id: 'DESC', // Order by creation date
       },
     });
   
@@ -69,7 +69,7 @@ export class ResGroupsService {
 
     const [data, total] = await this.resGroupsRepository.findAndCount({
       order: {
-        create_date: 'DESC',
+        id: 'DESC',
       },
     });
 

@@ -28,6 +28,7 @@ import {
 } from '@ant-design/icons';
 import { changePassword } from '../../features/auth/API/changePasswordAPI'
 import Cookies from 'js-cookie'
+import { PutUserTokenId } from '../../features/resUsers/putUserIdToken'
 const { Title, Text } = Typography
 
 const { TabPane } = Tabs
@@ -39,7 +40,7 @@ const ArrowRightIcon = () => {
   return (
     <svg className="w-4 h-4 opacity-55" viewBox="0 0 24 24" fill="none"
       xmlns="http://www.w3.org/2000/svg">
-      <path d="M8.91003 19.9201L15.43 13.4001C16.2 12.6301 16.2 11.3701 15.43 10.6001L8.91003 4.08008" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M8.91003 19.9201L15.43 13.4001C16.2 12.6301 16.2 11.3701 15.43 10.6001L8.91003 4.08008" stroke="#292D32" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
@@ -47,8 +48,8 @@ const ArrowRightIcon = () => {
 export default function Home({ permissions }) {
   const userFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'))
   const userId = userFromLocalStorage.id
-  const employeeCode = userFromLocalStorage.employeeCode
-  const { t } = useTranslation()
+  const employeeCode = userFromLocalStorage.login
+  const { i18n, t } = useTranslation();
   const navigate = useNavigate()
   const [visible, setVisible] = useState(false);
   const visibleMenus = permissions.filter(
@@ -57,6 +58,7 @@ export default function Home({ permissions }) {
   const [form] = Form.useForm()
 
   const [selectedLanguageLabel, setSelectedLanguageLabel] = useState('');
+  const [selectedLanguageKey, setSelectedLanguageKey] = useState('');
   const [selectedThemeLabel, setSelectedThemeLabel] = useState('');
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [logoutDrawerVisible, setLogoutDrawerVisible] = useState(false);
@@ -111,14 +113,13 @@ export default function Home({ permissions }) {
 
 
 
-
   useEffect(() => {
-    const storedLanguageKey = localStorage.getItem('language') || 'en'; // 'en' là mặc định
+    const storedLanguageKey = localStorage.getItem('language') || 'vi';
     const languageLabel = languages.find((lang) => lang.key === storedLanguageKey)?.label || 'English';
     setSelectedLanguageLabel(languageLabel);
 
 
-    const storedThemeKey = localStorage.getItem('appTheme') || 'light'; // 'light' là mặc định
+    const storedThemeKey = localStorage.getItem('appTheme') || 'light';
     const themeLabel = themes.find((theme) => theme.key === storedThemeKey)?.label || 'Sáng';
     setSelectedThemeLabel(themeLabel);
   }, []);
@@ -126,6 +127,7 @@ export default function Home({ permissions }) {
   const handleLanguageChange = ({ key }) => {
     const languageLabel = languages.find((lang) => lang.key === key)?.label;
     setSelectedLanguageLabel(languageLabel);
+    setSelectedLanguageKey(key);
     localStorage.setItem('language', key);
 
     setDrawerVisible(true);
@@ -147,13 +149,36 @@ export default function Home({ permissions }) {
     <Menu onClick={handleThemeChange} items={themes} />
   );
 
-  const handleReload = () => {
+  const onFinishLanguage = async () => {
+    const data = {
+      language: selectedLanguageKey,
+    };
+
+    try {
+      const result = await PutUserTokenId(data);
+      if (result.success) {
+        message.success(t('Cập nhật thành công'));
+        return true;
+      } else {
+        message.error(result.message || t('Lỗi khi cập nhật!'));
+        return false;
+      }
+    } catch (error) {
+      message.error(error.message || t('Lỗi khi cập nhật!'));
+      return false;
+    }
+  };
+
+  const handleReload = async () => {
     setDrawerVisible(false);
-    window.location.reload(); //
+    await onFinishLanguage(); 
   };
 
 
   
+
+
+
   const handleOk = async () => {
     try {
       const values = await form.validateFields()
@@ -305,7 +330,12 @@ export default function Home({ permissions }) {
           </Row>
 
 
-          <Drawer placement="bottom" onClose={onClose} visible={visible} height="97%" headerStyle={{ display: 'none' }} closable={true} bodyStyle={{ display: 'flex', flexDirection: 'column', padding: '10px' }}
+          <Drawer placement="bottom"  styles={{
+            wrapper: {
+              borderRadius: '16px 16px 0 0', 
+               overflow: 'hidden' 
+            }
+          }} onClose={onClose} visible={visible} height="97%" headerStyle={{ display: 'none' }} closable={true} bodyStyle={{ display: 'flex', flexDirection: 'column', padding: '10px' }}
           >
             <div className="flex items-end justify-end">
               <Button className="bg-slate-100 border-none rounded-full" onClick={onClose} icon={<CloseOutlined />}
@@ -397,7 +427,7 @@ export default function Home({ permissions }) {
                     <BellOutlined className="mr-2 text-base" />
                     <span className="text-sm font-medium">{t('page_home.notification_status')}</span>
                   </div>
-                  <Switch defaultChecked  onChange={(checked) => console.log('Trạng thái thông báo:', checked)} />
+                  <Switch defaultChecked onChange={(checked) => console.log('Trạng thái thông báo:', checked)} />
                 </Link>
               </li>
 
@@ -447,14 +477,25 @@ export default function Home({ permissions }) {
               </li>
             </ul>
           </Drawer>
-          <Drawer title="Thông báo" placement="bottom" onClose={() => setDrawerVisible(false)} visible={drawerVisible} height="25%" headerStyle={{ display: 'none' }} bodyStyle={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+          <Drawer title="Thông báo" placement="bottom" onClose={() => setDrawerVisible(false)} open={drawerVisible} height="25%" headerStyle={{ display: 'none' }} bodyStyle={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}
+           styles={{
+            wrapper: {
+              borderRadius: '16px 16px 0 0', 
+               overflow: 'hidden' 
+            }
+          }}
           >
             <p className="text-center text-gray-600">{t('page_home.note_language')}</p>
-            <Button type="primary" icon={<ReloadOutlined />} onClick={handleReload} className="mt-4">
+            <Button type="primary"  onClick={handleReload} className="mt-4">
               {t('page_home.load')}
             </Button>
           </Drawer>
-          <Drawer placement="bottom" onClose={cancelLogout} open={logoutDrawerVisible} height="30%" headerStyle={{ display: 'none' }} bodyStyle={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+          <Drawer placement="bottom"  styles={{
+            wrapper: {
+              borderRadius: '16px 16px 0 0', 
+               overflow: 'hidden' 
+            }
+          }} onClose={cancelLogout} open={logoutDrawerVisible} height="30%" headerStyle={{ display: 'none' }} bodyStyle={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
           >
             <p className="text-center text-gray-600">{t('page_home.confirm')}</p>
             <div className="flex  w-full flex-col justify-between mt-4 gap-4">
@@ -466,94 +507,99 @@ export default function Home({ permissions }) {
               </Button>
             </div>
           </Drawer>
-          <Drawer  placement="bottom" onClose={() => setChangePasswordView(false)} open={changePasswordView} headerStyle={{ display: 'none', padding: '2px' }}
+          <Drawer placement="bottom"  styles={{
+            wrapper: {
+              borderRadius: '16px 16px 0 0', 
+               overflow: 'hidden' 
+            }
+          }} onClose={() => setChangePasswordView(false)} open={changePasswordView} headerStyle={{ display: 'none', padding: '2px' }}
           >
-             <Form form={form} layout="vertical" name="change_password">
-          <Form.Item
-            label={t('personal_settings_key_menu_03.label_old_pass')}
-            name="old_password"
-            rules={[
-              {
-                required: true,
-                message: t(
-                  'personal_settings_key_menu_03.please_input_old_password',
-                ),
-              },
-            ]}
-          >
-            <Input.Password
-              size="large"
-              placeholder={t('personal_settings_key_menu_03.label_old_pass')}
-            />
-          </Form.Item>
-          <Form.Item
-            label={t('personal_settings_key_menu_03.label_new_pass')}
-            name="new_password"
-            rules={[
-              {
-                required: true,
-                message: t(
-                  'personal_settings_key_menu_03.please_input_new_password',
-                ),
-              },
-            ]}
-          >
-            <Input.Password
-              size="large"
-              placeholder={t('personal_settings_key_menu_03.label_new_pass')}
-            />
-          </Form.Item>
-
-          <Form.Item
-            label={t('personal_settings_key_menu_03.label_succ_pass')}
-            name="confirm_password"
-            dependencies={['new_password']}
-            rules={[
-              {
-                required: true,
-                message: t(
-                  'personal_settings_key_menu_03.please_confirm_new_password',
-                ),
-              },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue('new_password') === value) {
-                    return Promise.resolve()
-                  }
-                  return Promise.reject(
-                    new Error(
-                      t('personal_settings_key_menu_03.passwords_do_not_match'),
+            <Form form={form} layout="vertical" name="change_password">
+              <Form.Item
+                label={t('personal_settings_key_menu_03.label_old_pass')}
+                name="old_password"
+                rules={[
+                  {
+                    required: true,
+                    message: t(
+                      'personal_settings_key_menu_03.please_input_old_password',
                     ),
-                  )
-                },
-              }),
-            ]}
-          >
-            <Input.Password
+                  },
+                ]}
+              >
+                <Input.Password
+                  size="large"
+                  placeholder={t('personal_settings_key_menu_03.label_old_pass')}
+                />
+              </Form.Item>
+              <Form.Item
+                label={t('personal_settings_key_menu_03.label_new_pass')}
+                name="new_password"
+                rules={[
+                  {
+                    required: true,
+                    message: t(
+                      'personal_settings_key_menu_03.please_input_new_password',
+                    ),
+                  },
+                ]}
+              >
+                <Input.Password
+                  size="large"
+                  placeholder={t('personal_settings_key_menu_03.label_new_pass')}
+                />
+              </Form.Item>
+
+              <Form.Item
+                label={t('personal_settings_key_menu_03.label_succ_pass')}
+                name="confirm_password"
+                dependencies={['new_password']}
+                rules={[
+                  {
+                    required: true,
+                    message: t(
+                      'personal_settings_key_menu_03.please_confirm_new_password',
+                    ),
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('new_password') === value) {
+                        return Promise.resolve()
+                      }
+                      return Promise.reject(
+                        new Error(
+                          t('personal_settings_key_menu_03.passwords_do_not_match'),
+                        ),
+                      )
+                    },
+                  }),
+                ]}
+              >
+                <Input.Password
+                  size="large"
+                  placeholder={t('personal_settings_key_menu_03.label_succ_pass')}
+                />
+              </Form.Item>
+            </Form>
+            <div className="w-full flex gap-2"> <Button
+              key="cancel"
+              onClick={() => setChangePasswordView(false)}
               size="large"
-              placeholder={t('personal_settings_key_menu_03.label_succ_pass')}
-            />
-          </Form.Item>
-        </Form>
-        <div className="w-full flex gap-2"> <Button
-            key="cancel"
-            onClick={() => setChangePasswordView(false)} 
-             size="large"
-            style={{ backgroundColor: '#f5f5f5', borderColor: '#d9d9d9' }}
-            className="w-full"
-          >
-            {t('personal_settings_key_menu_03.cancel')}
-          </Button>,
-          <Button
-            key="submit"
-            type="primary"
-            onClick={handleOk}
-            style={{ backgroundColor: '#1890ff', borderColor: '#1890ff' }}
-            size="large"
+              style={{ backgroundColor: '#f5f5f5', borderColor: '#d9d9d9' }}
               className="w-full"
-          >
-            {t('personal_settings_key_menu_03.save')}
-          </Button></div>
+            >
+              {t('personal_settings_key_menu_03.cancel')}
+            </Button>
+              <Button
+                key="submit"
+                type="primary"
+                onClick={handleOk}
+                style={{ backgroundColor: '#1890ff', borderColor: '#1890ff' }}
+                size="large"
+                className="w-full"
+              >
+                {t('personal_settings_key_menu_03.save')}
+              </Button></div>
           </Drawer>
         </div>
       </div>

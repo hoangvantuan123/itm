@@ -285,42 +285,10 @@ export default function TechniqueMenu({ permissions }) {
           fetchTableData={fetchData}
         />
       </div>
-      <div>
-        {' '}
-        {!isMobile && (
-          <div className="p-2 mb flex items-center justify-between">
-            <span className="inline-flex overflow-hidden">
-              <div className="flex items-center gap-2">
-             
-                {canCreate && <ImportAction />}
-
-                {selectedRowKeys != null && selectedRowKeys.length > 0 && (
-                  <>
-                    <ShowAction
-                      handleOnClickAction={handleOnClickAction}
-                      actionUsers={actionUsers}
-                      setActionUsers={setActionUsers}
-                      setSelectedRowKeys={setSelectedRowKeys}
-                      selectedRowKeys={selectedRowKeys}
-                      fetchData={fetchData}
-                      canDelete={canDelete}
-                    />
-                  </>
-                )}
-              </div>
-            </span>
-            <button className="border-[1.3px] border-[#d9d9d9] rounded-lg p-[0.6rem] w-52 flex items-center space-x-2 bg-white hover:bg-gray-100">
-              <SearchOutlined />
-              <span className="text-gray-500">Tìm kiếm</span>
-            </button>
-          </div>
-        )}
-      </div>
       <Layout className="h-screen lg:pb-[70px]">
         <Layout
           style={{
             padding: isMobile ? '0 8px' : '0',
-            borderTopWidth: isMobile ? '0' : '1px',
           }}
           className="h-full p-2 overflow-auto scrollable-content"
         >

@@ -463,10 +463,10 @@
     "help": "Trợ giúp",
     "terms_of_use": "Điều khoản sử dụng",
     "log_out": "Đăng xuất",
-    "note_language": "Bạn cần tải lại trang để cập nhật ngôn ngữ",
+    "note_language": "Vui lòng thoát ra vào lại hoặc load lại trang để cập nhật  lại ngôn ngữ.",
     "confirm": "Bạn có chắc chắn muốn đăng xuất không",
     "cancel": "Hủy",
-    "load": "Tải lại trang"
+    "load": "Đồng ý"
   }, 
   "api_status" : {
     "success": "Thành công",
