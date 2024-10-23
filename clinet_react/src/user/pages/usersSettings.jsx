@@ -467,24 +467,7 @@ export default function UsersSettings({ permissions }) {
                 {t(' Người dùng')}
               </h1>
 
-              {!isMobile && (
-                <span className="inline-flex overflow-hidden  ">
-                  <div className="flex items-center gap-2">
-                    {canCreate && (
-                      <Button
-                        onClick={openModalAddUser}
-                        type="primary"
-                        icon={<PlusOutlined />}
-                        className="w-full rounded-lg h-full border-gray-200 bg-indigo-600 text-white shadow-sm text-sm"
-                        size="large"
-                      >
-                        {t('Thêm')}
-                      </Button>
-                    )}
-                  </div>
-                </span>
-              )}
-
+           
               {canCreate && (
                 <AddUser
                   isOpen={isModalOpenAddUser}
@@ -497,6 +480,17 @@ export default function UsersSettings({ permissions }) {
               <div className="p-2 mb flex items-center justify-between">
                 <span className="inline-flex overflow-hidden  ">
                   <div className="flex items-center gap-2">
+                  {canCreate && (
+                      <Button
+                        onClick={openModalAddUser}
+                        type="primary"
+                        icon={<PlusOutlined />}
+                              className=" rounded-lg h-full border-gray-200 bg-indigo-600 hover:bg-none text-white shadow-sm text-sm"
+                        size="large"
+                      >
+                        {t('Thêm')}
+                      </Button>
+                    )}
 
                     {canCreate && <ImportAction   fetchData={fetchData}    handleOnClickActionImport={handleOnClickActionImport}
                 setActionImport={setActionImport}

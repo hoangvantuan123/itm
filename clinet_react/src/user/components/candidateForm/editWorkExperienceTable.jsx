@@ -1,9 +1,9 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Table, Input, Button, Form, InputNumber } from 'antd'
-
+import { useTranslation } from 'react-i18next'
 const EditWorkExperienceTable = ({ form, dataSource }) => {
   const [localDataSource, setLocalDataSource] = useState(dataSource || [])
-
+  const { t } = useTranslation()
   useEffect(() => {
     setLocalDataSource(dataSource)
   }, [dataSource])
@@ -28,7 +28,7 @@ const EditWorkExperienceTable = ({ form, dataSource }) => {
 
   const experienceColumns = [
     {
-      title: 'Công ty',
+      title: t('hr_recruitment_1_1.company_name'),
       dataIndex: 'company_name',
       render: (text, record) => (
         <Input
@@ -46,7 +46,7 @@ const EditWorkExperienceTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Chức vụ',
+      title: t('hr_recruitment_1_1.position'),
       dataIndex: 'position',
       render: (text, record) => (
         <Input
@@ -60,7 +60,7 @@ const EditWorkExperienceTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Năm bắt đầu',
+      title:  t('hr_recruitment_1_1.start_date'),
       dataIndex: 'start_date',
       render: (text, record) => (
         <Input
@@ -74,7 +74,7 @@ const EditWorkExperienceTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Năm kết thúc',
+      title: t('hr_recruitment_1_1.end_date'),
       dataIndex: 'end_date',
       render: (text, record) => (
         <Input
@@ -88,7 +88,7 @@ const EditWorkExperienceTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Công việc',
+      title: t('hr_recruitment_1_1.tasks'),
       dataIndex: 'tasks',
       render: (text, record) => (
         <Input
@@ -102,7 +102,7 @@ const EditWorkExperienceTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Mức lương',
+      title: t('hr_recruitment_1_1.salary'),
       dataIndex: 'salary',
       render: (text, record) => (
         <Input

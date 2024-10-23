@@ -1,4 +1,4 @@
-import { Layout, Menu } from 'antd'
+import { Layout, Menu, Tooltip } from 'antd'
 import { Link } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react' // Import useEffect để xử lý responsive
@@ -271,24 +271,24 @@ const HrRecruitmentIcon = () => {
       <path
         d="M21.67 14.3L21.27 19.3C21.12 20.83 21 22 18.29 22H5.71001C3.00001 22 2.88001 20.83 2.73001 19.3L2.33001 14.3C2.25001 13.47 2.51001 12.7 2.98001 12.11C2.99001 12.1 2.99001 12.1 3.00001 12.09C3.55001 11.42 4.38001 11 5.31001 11H18.69C19.62 11 20.44 11.42 20.98 12.07C20.99 12.08 21 12.09 21 12.1C21.49 12.69 21.76 13.46 21.67 14.3Z"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
       />
       <path
         d="M3.5 11.43V6.28003C3.5 2.88003 4.35 2.03003 7.75 2.03003H9.02C10.29 2.03003 10.58 2.41003 11.06 3.05003L12.33 4.75003C12.65 5.17003 12.84 5.43003 13.69 5.43003H16.24C19.64 5.43003 20.49 6.28003 20.49 9.68003V11.47"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M9.42993 17H14.5699"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )
@@ -297,7 +297,7 @@ const HrRecruitmentIcon = () => {
 
 const SalaryIcon = () => {
   return (
-    <svg   className="w-5 h-5 opacity-65 " viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className="w-5 h-5 opacity-65 " viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M6 9C5.59 9 5.25 8.66 5.25 8.25V6.25C5.25 5.84 5.59 5.5 6 5.5C6.41 5.5 6.75 5.84 6.75 6.25V8.25C6.75 8.66 6.41 9 6 9Z" fill="#292D32" />
       <path d="M12 22.75H9C3.57 22.75 1.25 20.43 1.25 15V9C1.25 3.57 3.57 1.25 9 1.25H15C20.43 1.25 22.75 3.57 22.75 9V12C22.75 12.41 22.41 12.75 22 12.75C21.59 12.75 21.25 12.41 21.25 12V9C21.25 4.39 19.61 2.75 15 2.75H9C4.39 2.75 2.75 4.39 2.75 9V15C2.75 19.61 4.39 21.25 9 21.25H12C12.41 21.25 12.75 21.59 12.75 22C12.75 22.41 12.41 22.75 12 22.75Z" fill="#292D32" />
       <path d="M10 9C9.59 9 9.25 8.66 9.25 8.25V6.25C9.25 5.84 9.59 5.5 10 5.5C10.41 5.5 10.75 5.84 10.75 6.25V8.25C10.75 8.66 10.41 9 10 9Z" fill="#292D32" />
@@ -383,12 +383,16 @@ const Sidebar = ({ permissions }) => {
             {checkMenuPermission(permissions, 'home', 'view') && (
               <Menu.Item key="home">
                 <Link to="/u/home" className="flex items-center justify-start">
+                
                   <span
                     className={`icon-wrapper ${collapsed ? ' justify-center mt-2' : ''}`}
                   >
-                    <HomeIcon />
+                    
+                    <HomeIcon />  
                   </span>
-                  {!collapsed && (
+                  
+                  {!collapsed && 
+                  (
                     <span className="ml-3">{t('side_bar.home')}</span>
                   )}
                 </Link>
@@ -569,7 +573,7 @@ const Sidebar = ({ permissions }) => {
                       </span>
                     }
                   >
-             
+
 
                     {checkMenuPermission(
                       permissions,
@@ -585,10 +589,24 @@ const Sidebar = ({ permissions }) => {
                           </Link>
                         </Menu.Item>
                       )}
+                    {checkMenuPermission(
+                      permissions,
+                      'setting-2-1-3',
+                      'view',
+                    ) && (
+                        <Menu.Item key="setting-2-1-3">
+                          <Link
+                            to="/u/action=21/key-import"
+                            className="flex items-center justify-start"
+                          >
+                            {t('side_bar.import')}
+                          </Link>
+                        </Menu.Item>
+                      )}
                   </SubMenu>
                 )}
 
-           
+
               </SubMenu>
             )}
           </Menu>

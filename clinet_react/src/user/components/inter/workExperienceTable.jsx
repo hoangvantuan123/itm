@@ -1,12 +1,12 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Form, Table, Input, Drawer, Button, Row, Col, Card, InputNumber } from 'antd';
-
+import { useTranslation } from 'react-i18next'
 const WorkExperienceTable = ({ form, dataSource }) => {
   const [localDataSource, setLocalDataSource] = useState([])
   const [isMobile, setIsMobile] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [drawerContent, setDrawerContent] = useState(null);
-
+  const { t } = useTranslation()
   useEffect(() => {
     if (dataSource && dataSource.length > 0) {
       setLocalDataSource(dataSource)
@@ -93,7 +93,7 @@ const WorkExperienceTable = ({ form, dataSource }) => {
 
   const experienceColumns = [
     {
-      title: 'Công ty',
+      title: t('hr_recruitment_1_1.company_name'),
       dataIndex: 'company_name',
       render: (text, record) => (
         <Input
@@ -111,7 +111,7 @@ const WorkExperienceTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Chức vụ',
+      title: t('hr_recruitment_1_1.position'),
       dataIndex: 'position',
       render: (text, record) => (
         <Input
@@ -125,7 +125,7 @@ const WorkExperienceTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Năm bắt đầu',
+      title:  t('hr_recruitment_1_1.start_date'),
       dataIndex: 'start_date',
       render: (text, record) => (
         <Input
@@ -139,7 +139,7 @@ const WorkExperienceTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Năm kết thúc',
+      title: t('hr_recruitment_1_1.end_date'),
       dataIndex: 'end_date',
       render: (text, record) => (
         <Input
@@ -153,7 +153,7 @@ const WorkExperienceTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Công việc',
+      title: t('hr_recruitment_1_1.tasks'),
       dataIndex: 'tasks',
       render: (text, record) => (
         <Input
@@ -167,7 +167,7 @@ const WorkExperienceTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Mức lương',
+      title: t('hr_recruitment_1_1.salary'),
       dataIndex: 'salary',
       render: (text, record) => (
         <Input
@@ -186,9 +186,9 @@ const WorkExperienceTable = ({ form, dataSource }) => {
       {localDataSource.map((user) => (
         <Col span={24} key={user.id} style={{ marginBottom: 16 }}>
           <Card onClick={() => handleCardClick('experiences', user)}>
-            <p><strong>Công ty:</strong> {user.company_name}</p>
-            <p><strong>Chức vụ:</strong> {user.position}</p>
-            <p><strong>Mức lương:</strong> {user.salary}</p>
+            <p><strong>{t('hr_recruitment_1_1.company_name')}:</strong> {user.company_name}</p>
+            <p><strong>{t('hr_recruitment_1_1.position')}:</strong> {user.position}</p>
+            <p><strong>{t('hr_recruitment_1_1.salary')}:</strong> {user.salary}</p>
           </Card>
         </Col>
       ))}
@@ -234,7 +234,7 @@ const WorkExperienceTable = ({ form, dataSource }) => {
         }
         >
           <div className="mb-4">
-            <label>Công ty</label>
+            <label>{t('hr_recruitment_1_1.company_name')}</label>
             <Input
               size="large"
               value={drawerContent?.record?.company_name || ''}
@@ -242,7 +242,7 @@ const WorkExperienceTable = ({ form, dataSource }) => {
             />
           </div>
           <div className="mb-4">
-            <label>Chức vụ</label>
+            <label>{t('hr_recruitment_1_1.position')}</label>
             <Input
               size="large"
               value={drawerContent?.record?.position}
@@ -250,7 +250,7 @@ const WorkExperienceTable = ({ form, dataSource }) => {
             />
           </div>
           <div className="mb-4">
-            <label>Năm bắt đầu</label>
+            <label>{t('experience_columns.start_date')}</label>
             <Input
               size="large"
               value={drawerContent?.record?.start_date}
@@ -259,7 +259,7 @@ const WorkExperienceTable = ({ form, dataSource }) => {
             />
           </div>
           <div className="mb-4">
-            <label>Năm kết thúc</label>
+            <label>{t('experience_columns.end_date')}</label>
             <Input
               size="large"
               value={drawerContent?.record?.end_date || ''}
@@ -267,7 +267,7 @@ const WorkExperienceTable = ({ form, dataSource }) => {
             />
           </div>
           <div className="mb-4">
-            <label>Công việc</label>
+            <label>{t('experience_columns.tasks')}</label>
             <Input
               size="large"
               value={drawerContent?.record?.tasks || ''}
@@ -275,7 +275,7 @@ const WorkExperienceTable = ({ form, dataSource }) => {
             />
           </div>
           <div className="mb-4">
-            <label>Mức lương</label>
+            <label>{t('experience_columns.salary')}</label>
             <Input
               size="large"
               value={drawerContent?.record?.salary || ''}

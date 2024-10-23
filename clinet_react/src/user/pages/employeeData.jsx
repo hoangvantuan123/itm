@@ -34,19 +34,19 @@ const { RangePicker } = DatePicker
 const { Content } = Layout
 const { Option } = Select
 const columnConfig = [
-  { key: 'employee_code', label: 'CID' },
-  { key: 'full_name', label: 'Họ và tên' },
-  { key: 'gender', label: 'Giới tính' },
-  { key: 'birth_date', label: 'Ngày sinh' },
-  { key: 'id_number', label: 'CCCD' },
-  { key: 'phone_number', label: 'Số điện thoại' },
-  { key: 'email', label: 'Email' },
-  { key: 'erp_department_registration', label: 'ERP' },
-  { key: 'team', label: 'Team' },
-  { key: 'part', label: 'Part' },
-  { key: 'position', label: 'Chức vụ' },
-  { key: 'synchronize', label: 'Đồng bộ ' },
-  { key: 'synchronize_erp', label: 'Đồng bộ ERP ' },
+  { key: 'employee_code', label: 'employee_code' },
+  { key: 'full_name', label: 'full_name' },
+  { key: 'gender', label: 'gender' },
+  { key: 'birth_date', label: 'birth_date' },
+  { key: 'id_number', label: 'id_number' },
+  { key: 'phone_number', label: 'phone_number' },
+  { key: 'email', label: 'email' },
+  { key: 'erp_department_registration', label: 'erp_department_registration' },
+  { key: 'team', label: 'team' },
+  { key: 'part', label: 'part' },
+  { key: 'position', label: 'position' },
+  { key: 'synchronize', label: 'synchronize' },
+  { key: 'synchronize_erp', label: 'synchronize_erp' },
 ]
 
 const CloumnIcon = () => {
@@ -275,7 +275,7 @@ export default function EmployeeDataiView({ permissions, isMobile }) {
       ),
     },
     ...columnConfig.map(({ key, label }) => ({
-      title: t(label),
+      title:t(`hr_recruitment_1_1.${label}`),
       dataIndex: key,
       key: key,
       render: (text, record) => {
@@ -462,7 +462,13 @@ export default function EmployeeDataiView({ permissions, isMobile }) {
         <h1 className="text-xl font-bold text-gray-900">
           {t('Danh sách dữ liệu')}
         </h1>
-        {canCreate && <Button
+        
+
+      </div>
+      <div className="p-2 mb flex items-center justify-between">
+        <span className="inline-flex overflow-hidden">
+          <div className="flex items-center gap-2">
+          {canCreate && <Button
           type="primary"
           onClick={openModalAddUser}
           icon={<PlusOutlined />}
@@ -471,12 +477,6 @@ export default function EmployeeDataiView({ permissions, isMobile }) {
         >
           {t('Thêm')}
         </Button>}
-
-      </div>
-      <div className="p-2 mb flex items-center justify-between">
-        <span className="inline-flex overflow-hidden">
-          <div className="flex items-center gap-2">
-       
             {canCreate && (
               <ImportAction
                 fetchData={fetchData}

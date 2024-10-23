@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Table, Input, Button, Form, DatePicker } from 'antd'
 import moment from 'moment'
+import { useTranslation } from 'react-i18next'
 import 'moment/locale/vi'
 
 const EditLanguageTable = ({ form, dataSource }) => {
   const [localDataSource, setLocalDataSource] = useState(dataSource)
-
+  const { t } = useTranslation()
   useEffect(() => {
     setLocalDataSource(dataSource)
   }, [dataSource])
@@ -30,7 +31,7 @@ const EditLanguageTable = ({ form, dataSource }) => {
 
   const languageColumns = [
     {
-      title: 'Ngôn ngữ',
+      title:  t('language_columns.language'),
       dataIndex: 'language',
       render: (text, record) => (
         <Input
@@ -44,7 +45,7 @@ const EditLanguageTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Loại chứng chỉ',
+      title:t('language_columns.certificate_type'),
       dataIndex: 'certificate_type',
       render: (text, record) => (
         <Input
@@ -58,7 +59,7 @@ const EditLanguageTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Điểm số',
+      title: t('language_columns.score'),
       dataIndex: 'score',
       render: (text, record) => (
         <Input
@@ -72,7 +73,7 @@ const EditLanguageTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Trình độ',
+      title:t('language_columns.level'),
       dataIndex: 'level',
       render: (text, record) => (
         <Input

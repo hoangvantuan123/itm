@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Table, Input, Button, Form, InputNumber } from 'antd'
-
+import { useTranslation } from 'react-i18next'
 const EditEducationTable = ({ form, dataSource }) => {
   const [localDataSource, setLocalDataSource] = useState(dataSource)
-
+  const { t } = useTranslation()
   useEffect(() => {
     setLocalDataSource(dataSource)
   }, [dataSource])
@@ -30,7 +30,7 @@ const EditEducationTable = ({ form, dataSource }) => {
   // Định nghĩa cột cho bảng
   const educationColumns = [
     {
-      title: 'Trình độ',
+      title:t('education_columns.highest_education_level'),
       dataIndex: 'highest_education_level',
       render: (text, record) => (
         <Input
@@ -48,7 +48,7 @@ const EditEducationTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Trường',
+      title: t('education_columns.school'),
       dataIndex: 'school',
       render: (text, record) => (
         <Input
@@ -62,7 +62,7 @@ const EditEducationTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Chuyên ngành',
+      title:  t('education_columns.major'),
       dataIndex: 'major',
       render: (text, record) => (
         <Input
@@ -76,7 +76,7 @@ const EditEducationTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Năm học',
+      title:t('education_columns.school_year'),
       dataIndex: 'school_year',
       render: (text, record) => (
         <Input
@@ -90,7 +90,7 @@ const EditEducationTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Năm bắt đầu',
+      title: t('education_columns.year_ended'),
       dataIndex: 'year_ended',
       render: (text, record) => (
         <Input
@@ -104,7 +104,7 @@ const EditEducationTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Năm tốt nghiệp',
+      title: t('education_columns.year_of_graduation'),
       dataIndex: 'year_of_graduation',
       render: (text, record) => (
         <Input
@@ -121,7 +121,7 @@ const EditEducationTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Xếp loại',
+      title:t('education_columns.classification'),
       dataIndex: 'classification',
       render: (text, record) => (
         <Input

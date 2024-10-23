@@ -537,17 +537,7 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
         /> </div>
 
 
-        {canCreate && (
-          <Button
-            type="primary"
-            onClick={openModalAddUser}
-            icon={<PlusOutlined />}
-            className=" rounded-lg h-full border-gray-200 bg-indigo-600 hover:bg-none text-white shadow-sm text-sm"
-            size="large"
-          >
-            {t('hr_recruitment_1_1.add')}
-          </Button>
-        )}
+      
       </div>   <Pagination
           simple={{
             readOnly: true,
@@ -564,7 +554,17 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
         /> </>) : (<> <div className="p-2  flex items-center justify-between">
           <span className="inline-flex overflow-hidden">
             <div className="flex items-center gap-2">
-              
+            {canCreate && (
+          <Button
+            type="primary"
+            onClick={openModalAddUser}
+            icon={<PlusOutlined />}
+            className=" rounded-lg h-full border-gray-200 bg-indigo-600 hover:bg-none text-white shadow-sm text-sm"
+            size="large"
+          >
+            {t('hr_recruitment_1_1.add')}
+          </Button>
+        )}
               {canCreate && (
                 <ImportAction
                   fetchData={fetchData}
@@ -631,17 +631,7 @@ export default function EmployeeRecruitment({ permissions, isMobile }) {
               )}
             </div>
           </span>
-          {canCreate && (
-            <Button
-              type="primary"
-              onClick={openModalAddUser}
-              icon={<PlusOutlined />}
-              className=" rounded-lg h-full border-gray-200 bg-indigo-600 hover:bg-none text-white shadow-sm text-sm"
-              size="large"
-            >
-              {t('hr_recruitment_1_1.add')}
-            </Button>
-          )}
+       
         </div></>)}
 
 

@@ -262,28 +262,42 @@ export default function TechniqueMenu({ permissions }) {
         <h1 className="text-xl font-bold text-gray-900 sm:text-xl ">
           {t('Mục Menu')}
         </h1>
-        {!isMobile && (
-          <span className="inline-flex overflow-hidden">
-            <div className="flex items-center gap-2">
-              {canCreate && (
-                <Button
-                  onClick={openModalAddMenu}
-                  type="primary"
-                  icon={<PlusOutlined />}
-                  className="w-full rounded-lg h-full border-gray-200 bg-indigo-600 text-white shadow-sm text-sm"
-                  size="large"
-                >
-                  Thêm
-                </Button>
-              )}
-            </div>
-          </span>
-        )}
+
+
         <AddMenu
           isOpen={isModalOpenMenu}
           onClose={closeModalAddMenu}
           fetchTableData={fetchData}
         />
+      </div>
+      
+      <div className="p-2 mb flex items-center justify-between">
+        <span className="inline-flex overflow-hidden">
+          <div className="flex items-center gap-2">
+            {canCreate && (
+              <Button
+                onClick={openModalAddMenu}
+                type="primary"
+                icon={<PlusOutlined />}
+                className=" rounded-lg h-full border-gray-200 bg-indigo-600 hover:bg-none text-white shadow-sm text-sm"
+                size="large"
+              >
+                Thêm
+              </Button>
+            )}
+              {selectedRowKeys != null && selectedRowKeys.length > 0 && (
+              <ShowAction
+                handleOnClickAction={handleOnClickAction}
+                actionUsers={actionUsers}
+                setActionUsers={setActionUsers}
+                setSelectedRowKeys={setSelectedRowKeys}
+                selectedRowKeys={selectedRowKeys}
+                fetchDataUser={fetchData}
+                canDelete={canDelete}
+              />
+            )}
+          </div>
+        </span>
       </div>
       <Layout className="h-screen lg:pb-[70px]">
         <Layout

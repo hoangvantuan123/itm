@@ -51,6 +51,7 @@ import HrSalary from '../pages/salary'
 import DetailSalaryUser from '../pages/detailSalaryUser'
 import Payroll from '../pages/payroll'
 import DetailPayrollUser from '../pages/detailSalaryPayroll'
+import KeyImport from '../pages/keyImport'
 const { Content } = Layout
 
 const UserRouter = () => {
@@ -433,6 +434,20 @@ const UserRouter = () => {
                           'view',
                         ) ? (
                           <DetailSalaryUser permissions={userPermissions} />
+                        ) : (
+                          <Unauthorized />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/u/action=21/key-import"
+                      element={
+                        checkActionPermission(
+                          userPermissions,
+                          'setting-2-1-3',
+                          'view',
+                        ) ? (
+                          <KeyImport permissions={userPermissions} />
                         ) : (
                           <Unauthorized />
                         )

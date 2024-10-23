@@ -12,6 +12,7 @@ import ChangePassSelect from '../profile/changePassSelect'
 import { DeleteHrInterviewCandidates } from '../../../features/hrInterviewCandidate/deleteHrInterviewCandidate'
 import { DeleteHrInterIds } from '../../../features/hrInter/deleteHrInfoIds'
 import { DeleteHrSalaryIds } from '../../../features/hrSalary/deleteHrInfoIds'
+import { DeleteKeyImports } from '../../../features/keyImport/deleteKeyImport'
 import ExportDataView from '../export'
 import ExportDataViewIds from '../export/exportIds'
 
@@ -82,7 +83,7 @@ export default function ShowAction({
       if (response.success) {
         setSelectedRowKeys([]);
         setActionUsers('');
-        fetchData();
+        fetchDataUser();
         message.success({ content: 'Xóa thành công các nhóm', key: 'delete', duration: 2 });
       } else {
         message.error({ content: 'Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại', key: 'delete', duration: 2 });
@@ -254,6 +255,37 @@ export default function ShowAction({
       });
     }
   };
+  const handleDeleteKeyImport = async () => {
+    try {
+      message.loading({ content: `${t('Đang xóa các nhóm...')}`, key: 'delete' });
+
+      const response = await DeleteKeyImports(selectedRowKeys);
+
+      if (response.success) {
+        fetchDataUser();
+        setSelectedRowKeys([]);
+        setActionUsers('');
+
+        message.success({
+          content: `${t('Xóa thành công các nhóm')}`,
+          key: 'delete',
+          duration: 2
+        });
+      } else {
+        message.error({
+          content: `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
+          key: 'delete',
+          duration: 2
+        });
+      }
+    } catch (error) {
+      message.error({
+        content: `${t('Có lỗi xảy ra, vui lòng thử lại')}`,
+        key: 'delete',
+        duration: 2
+      });
+    }
+  };
 
 
   const handleMenuClick = (e) => {
@@ -313,6 +345,9 @@ export default function ShowAction({
           break
         case 'actionHrSalary':
           Modal.confirm({ ...modalConfig, onOk: handleDeleteHrSalary })
+          break
+        case 'actionDefaultMappings':
+          Modal.confirm({ ...modalConfig, onOk: handleDeleteKeyImport })
           break
         case 'actionHrInterCandidateIds':
           Modal.confirm({

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Input, Modal, Typography, Dropdown, Menu, Button } from 'antd'
 import { GetTableName } from '../../../features/import/getTable'
+import { GetAllKeyImport } from '../../../features/keyImport/getAllKey'
 import ImportForm from '../import'
 
 const { Title } = Typography
@@ -136,23 +137,40 @@ export default function ImportAction({
   const [showDropdown, setShowDropdown] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [tableInfo, setTableInfo] = useState(null)
+  const [keyImport, setKeyImport] = useState([])
   const [load, setLoading] = useState(false)
   const [error, setError] = useState(null)
   useEffect(() => {
     if (isModalOpen) {
-      const fetchTableInfo = async () => {
-        const result = await GetTableName(actionImport)
-        if (result.success) {
-          setTableInfo(result.data)
-        } else {
-          setError(result.message)
-        }
-        setLoading(false)
-      }
+      const fetchData = async () => {
+        try {
+          setLoading(true);
+          const [tableResult, keyImportResult] = await Promise.all([
+            GetTableName(actionImport),
+            GetAllKeyImport(),
+          ]);
 
-      fetchTableInfo()
+          if (tableResult.success) {
+            setTableInfo(tableResult.data);
+          } else {
+            setError(tableResult.message);
+          }
+
+          if (keyImportResult.success) {
+            setKeyImport(keyImportResult.data);
+          } else {
+            setError(prev => `${prev} ${keyImportResult.message}`);
+          }
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchData();
     }
-  }, [isModalOpen, actionImport])
+  }, [isModalOpen, actionImport]);
   const handleOnClickOpenImport = () => {
     setShowDropdown(false)
     setIsModalOpen(true)
@@ -198,6 +216,7 @@ export default function ImportAction({
         tableInfo={tableInfo}
         actionImport={actionImport}
         onClose={handleOnClickCloseImport}
+        keyImport={keyImport}
       />
     </>
   )

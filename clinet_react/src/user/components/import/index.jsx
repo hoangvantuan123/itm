@@ -50,6 +50,7 @@ export default function ImportForm({
   onClose,
   tableInfo,
   actionImport,
+  keyImport
 }) {
   const { t } = useTranslation()
   const [fileList, setFileList] = useState([])
@@ -138,97 +139,7 @@ export default function ImportForm({
     setTables([]);
 
     const newConnectValues = {};
-    const defaultMappings = {
-        'CID': 'employee_code',
-        'Name': 'full_name',
-        'Đăng ký bp trên ERP': 'erp_department_registration',
-        'Team': 'team',
-        'Part': 'part',
-        'Production': 'production',
-        'Section': 'section',
-        'Job field': 'job_field',
-        'Position': 'position',
-        'Entering day': 'entering_day',
-        'Leaving day': 'leaving_day',
-        'PROBATION (day)': 'probation_days',
-        'Ngày ký HĐ lần 1': 'official_date_first',
-        'Ngày ký HĐ lần 2': 'official_date_second',
-        'CCCD': 'id_number',
-        'Ngày cấp': 'id_issue_date',
-        'Nơi cấp': 'id_issue_place',
-        'Date of birth': 'birth_date',
-        'Tuổi': 'age',
-        'Đếm tháng': 'month_count',
-        'Phone Number': 'phone_number',
-        'Gender': 'gender',
-        'Email': 'email',
-        'Partner name': 'partner_name',
-        'Partner phone number': 'partner_phone_number',
-        'Số con': 'number_of_children',
-        'Children name 1': 'children_name_1',
-        'Children birth date 1': 'children_birth_date_1',
-        'Children gender 1': 'children_gender_1',
-        'Children name 2': 'children_name_2',
-        'Children birth date 2': 'children_birth_date_2',
-        'Children gender 2': 'children_gender_2',
-        'Children name 3': 'children_name_3',
-        'Children birth date 3': 'children_birth_date_3',
-        'Children gender 3': 'children_gender_3',
-        'Father name': 'father_name',
-        'Father phone number': 'father_phone_number',
-        'Mother name': 'mother_name',
-        'Mother phone number': 'mother_phone_number',
-        'Xã 1': 'birth_ward',
-        'Huyện 1': 'birth_district',
-        'Tỉnh 1': 'birth_province',
-        'Thôn xóm 2': 'current_address',
-        'Xã 2': 'current_ward',
-        'Huyện 2': 'current_district',
-        'Tỉnh 2': 'current_province',
-        'Địa chỉ quê quán': 'birth_address',
-        'Địa chỉ đăng ký hộ khẩu': 'current_address',
-        'Khoảng cách từ nơi đăng ký hộ khẩu đến công ty':
-            'distance_from_household_to_company',
-        'Highest level of education': 'highest_education_level',
-        'School name': 'school_name',
-        'Major': 'major',
-        'Company name 1': 'company_name_1',
-        'Entrance day 1': 'entrance_day_1',
-        'Leaving day 1': 'leaving_day_1',
-        'Working department 1': 'work_department_1',
-        'Work responsibility 1': 'work_responsibility_1',
-        'Company name 2': 'company_name_2',
-        'Entrance day 2': 'entrance_day_2',
-        'Leaving day 2': 'leaving_day_2',
-        'Working department 2': 'work_department_2',
-        'Work responsibility 2': 'work_responsibility_2',
-        'Dân tộc': 'ethnicity',
-        'ĐÓNG BHXH': 'social_insurance',
-        'Interview date': 'interview_date',
-        'Start date': 'start_date',
-        'School year': 'school_year',
-        'Year ended': 'year_ended',
-        'Year of graduation': 'year_of_graduation',
-        'Classification': 'classification',
-        'Salary 2': 'salary_2',
-        'Salary 1': 'salary_1',
-
-        'Language 1': 'language_1',
-        'Certificate Type 1': 'certificate_type_1',
-        'Score 1': 'score_1',
-        'Level 1': 'level_1',
-
-        'Language 2': 'language_2',
-        'Certificate Type 2': 'certificate_type_2',
-        'Score 2': 'score_2',
-        'Level 2': 'level_2',
-
-        'Language 3': 'language_3',
-        'Certificate Type 3': 'certificate_type_3',
-        'Score 3': 'score_3',
-        'Level 3': 'level_3',
-    };
-
+    
     const dateFields = [
         'Interview date',
         'Start date',
@@ -253,9 +164,9 @@ export default function ImportForm({
 
     const formatDateToString = (date) => {
         const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng 0-11
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
         const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`; // Trả về định dạng YYYY-MM-DD
+        return `${year}-${month}-${day}`;
     };
 
     if (file.type === 'text/csv') {
@@ -281,7 +192,7 @@ export default function ImportForm({
 
                     tableInfo?.forEach((table) => {
                         table.columns.forEach((column) => {
-                            for (const [key, mappedName] of Object.entries(defaultMappings)) {
+                            for (const [key, mappedName] of Object.entries(keyImport)) {
                                 if (column.name === mappedName) {
                                     newConnectValues[key] = column.name;
                                 }
@@ -332,7 +243,7 @@ export default function ImportForm({
 
             tableInfo?.forEach((table) => {
                 table.columns.forEach((column) => {
-                    for (const [key, mappedName] of Object.entries(defaultMappings)) {
+                    for (const [key, mappedName] of Object.entries(keyImport)) {
                         if (column.name === mappedName) {
                             newConnectValues[key] = column.name;
                         }

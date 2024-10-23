@@ -53,6 +53,7 @@ export default function GroupsUsersSettings({ permissions }) {
   const [phoneSettingUser, setPhoneSettingUser] = useState(null)
   const [showSttingActionDropdown, setShowSettingActionDropdown] =
     useState(false)
+    const [table] = useState('res_groups')
   const [actionUsers, setActionUsers] = useState(null)
   const handleOnClickAction = () => {
     setActionUsers('actionGroups')
@@ -272,7 +273,7 @@ export default function GroupsUsersSettings({ permissions }) {
               <h1 className="text-xl font-bold text-gray-900 sm:text-xl ">
                 {t('Nhóm người dùng')}
               </h1>
-
+             
               {!isMobile && (
                 <span className="inline-flex overflow-hidden">
                   <div className="flex items-center gap-2">
@@ -301,7 +302,18 @@ export default function GroupsUsersSettings({ permissions }) {
             {!isMobile && (
               <div className="p-2 mb flex items-center justify-between">
                 <span className="inline-flex overflow-hidden">
-                  
+                {selectedRowKeys != null && selectedRowKeys.length > 0 && (
+                <ShowAction
+                  handleOnClickAction={handleOnClickAction}
+                  actionUsers={actionUsers}
+                  setActionUsers={setActionUsers}
+                  setSelectedRowKeys={setSelectedRowKeys}
+                  selectedRowKeys={selectedRowKeys}
+                  fetchDataUser={fetchData}
+                  canDelete={canDelete}
+                  table={table}
+                />
+              )}
                 </span>
               </div>
             )}

@@ -335,7 +335,7 @@ export default function Home({ permissions }) {
               borderRadius: '16px 16px 0 0', 
                overflow: 'hidden' 
             }
-          }} onClose={onClose} visible={visible} height="97%" headerStyle={{ display: 'none' }} closable={true} bodyStyle={{ display: 'flex', flexDirection: 'column', padding: '10px' }}
+          }} onClose={onClose} open={visible} height="97%" headerStyle={{ display: 'none' }} closable={true} bodyStyle={{ display: 'flex', flexDirection: 'column', padding: '10px' }}
           >
             <div className="flex items-end justify-end">
               <Button className="bg-slate-100 border-none rounded-full" onClick={onClose} icon={<CloseOutlined />}

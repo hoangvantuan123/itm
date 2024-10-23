@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Form, Radio, Table, Input, Drawer, Button, Row, Col, Card, Select } from 'antd';
-
+import { useTranslation } from 'react-i18next'
 const { Option } = Select;
 
 const SkillTable = ({ form, dataSource }) => {
@@ -8,7 +8,7 @@ const SkillTable = ({ form, dataSource }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [drawerContent, setDrawerContent] = useState(null);
-
+  const { t } = useTranslation()
   useEffect(() => {
     if (dataSource && dataSource.length > 0) {
       setLocalDataSource(dataSource);
@@ -52,7 +52,7 @@ const SkillTable = ({ form, dataSource }) => {
 
   const columns = [
     {
-      title: 'Loại kỹ năng',
+      title: t('hr_recruitment_1_1.skill'),
       dataIndex: 'skill',
       render: (text, record) => (
         <>
@@ -69,9 +69,9 @@ const SkillTable = ({ form, dataSource }) => {
           value={text}
           onChange={(e) => handleSkill(record.id, 'level', e.target.value)}
         >
-          <Radio value="Tốt">Tốt</Radio>
-          <Radio value="TB">Trung Bình</Radio>
-          <Radio value="Kém">Kém</Radio>
+            <Radio value="Tốt">{ t('hr_recruitment_1_1.tot')}</Radio>
+          <Radio value="TB">{ t('hr_recruitment_1_1.tb')}</Radio>
+          <Radio value="Kém">{ t('hr_recruitment_1_1.kem')}</Radio>
         </Radio.Group>
       ),
     }
@@ -111,8 +111,8 @@ const SkillTable = ({ form, dataSource }) => {
       {localDataSource.map((skill) => (
         <Col span={12} key={skill.id} style={{ marginBottom: 16 }}>
           <Card onClick={() => handleCardClick('skill', skill)}>
-            <p><strong>Kỹ năng:</strong> {skill.skill}</p>
-            <p><strong>Level:</strong> {skill.level}</p>
+          <p><strong>{ t('hr_recruitment_1_1.skill')}:</strong> {skill.skill}</p>
+          <p><strong>{ t('hr_recruitment_1_1.level')}:</strong> {skill.level}</p>
           </Card>
         </Col>
       ))}
@@ -145,17 +145,17 @@ const SkillTable = ({ form, dataSource }) => {
         closable={false}
         footer={
           <div style={{ textAlign: 'right' }}>
-            <Button onClick={handleDrawerClose} style={{ marginRight: 8 }}>
-              Hủy
+             <Button onClick={handleDrawerClose} style={{ marginRight: 8 }}>
+            { t('hr_recruitment_1_1.huy')}
             </Button>
             <Button className="border-gray-200 bg-indigo-600 text-white shadow-sm text-sm" onClick={handleDrawerSave}>
-              Lưu
+            { t('hr_recruitment_1_1.save')}
             </Button>
           </div>
         }
       >
         <div className="mb-4">
-          <label>Kỹ năng</label>
+        <label>{ t('hr_recruitment_1_1.skill')}</label>
 
           <Input
             size="large"
@@ -172,9 +172,9 @@ const SkillTable = ({ form, dataSource }) => {
             onChange={(value) => handleFieldChange('level', value)}
             className="w-full"
           >
-            <Option value="Tốt">Tốt</Option>
-            <Option value="TB">Trung Bình</Option>
-            <Option value="Kém">Kém</Option>
+         <Option value="Tốt">{ t('hr_recruitment_1_1.tot')}</Option>
+            <Option value="TB">{ t('hr_recruitment_1_1.tb')}</Option>
+            <Option value="Kém">{ t('hr_recruitment_1_1.kem')}</Option>
           </Select>
         </div>
       </Drawer>

@@ -8,6 +8,7 @@ import { HrInterviewCandidateDTO } from '../dto/hr_interview_candidates.dto';
 import { CreateHrInterDto } from '../dto/hr_inter.dto';
 import { HrTimekeepingDto } from '../dto/hr_timekeeping.dto';
 import { CreateUserDto } from '../dto/users.dto';
+import { DefaultMappingDto } from '../dto/default_mapping.dto';
 import * as bcrypt from 'bcrypt';
 @Injectable()
 export class ImportServices {
@@ -37,6 +38,9 @@ export class ImportServices {
                 break;
             case 'users':
                 await this.processUsers(importData, 'users');
+                break;
+            case 'default_mappings':
+                await this.processDefaultMappingData(importData, 'default_mappings');
                 break;
             default:
                 throw new NotFoundException(`Model ${model} không được hỗ trợ`);
@@ -597,10 +601,10 @@ export class ImportServices {
     private async processUsers(importData: any[], tableName: string): Promise<void> {
         const batchSize = 1000;
         const totalBatches = Math.ceil(importData.length / batchSize);
-    
+
         for (let i = 0; i < totalBatches; i++) {
             const batch = importData.slice(i * batchSize, (i + 1) * batchSize);
-    
+
             const validBatch: CreateUserDto[] = batch.map(record => {
                 return {
                     companyId: record.companyId,
@@ -613,14 +617,14 @@ export class ImportServices {
                     language: record.language
                 } as CreateUserDto;
             }).filter(record => record.login !== undefined);
-    
+
             if (validBatch.length === 0) {
                 continue;
             }
-    
+
             const loginCodes = validBatch.map(record => `'${record.login}'`).join(", ");
             const employeeCodes = validBatch.map(record => `'${record.employee_code}'`).join(", ");
-    
+
             // Kiểm tra bản ghi đã tồn tại
             const existingRecords = await this.entityManager.query(
                 `SELECT login FROM ${tableName} WHERE login IN (${loginCodes})`
@@ -628,7 +632,7 @@ export class ImportServices {
             const existingEmployeeCodeRecords = await this.entityManager.query(
                 `SELECT employee_code FROM ${tableName} WHERE employee_code IN (${employeeCodes})`
             );
-    
+
             if (existingRecords.length > 0) {
                 const duplicateLogins = existingRecords.map((record: any) => record.login).join(", ");
                 this.logger.error(`Duplicate login codes found: ${duplicateLogins}`);
@@ -639,7 +643,7 @@ export class ImportServices {
                 this.logger.error(`Duplicate employee codes found: ${duplicateEmployeeCodes}`);
                 throw new Error(`Duplicate employee codes detected: ${duplicateEmployeeCodes}`);
             }
-    
+
             const hashedBatch = await Promise.all(validBatch.map(async record => {
                 const hashedPassword = await this.hashPassword(record.password);
                 return {
@@ -647,11 +651,11 @@ export class ImportServices {
                     password: hashedPassword // Cập nhật password thành hashed password
                 };
             }));
-    
+
             await this.saveBatchUser(hashedBatch, tableName);
         }
     }
-    
+
 
     private async saveBatchUser(batch: Record<string, any>[], tableName: string): Promise<number[]> {
         const values: string[] = batch.map((record) => {
@@ -692,6 +696,80 @@ export class ImportServices {
         try {
             await this.entityManager.query(finalQuery);
 
+        } catch (error) {
+            this.logger.error(`Error inserting data into table ${tableName}`, error);
+            throw new NotFoundException(`Unable to insert data into table ${tableName}`);
+        }
+    }
+
+
+
+
+
+
+
+    private async processDefaultMappingData(importData: any[], tableName: string): Promise<void> {
+        const batchSize = 1000;
+        const totalBatches = Math.ceil(importData.length / batchSize);
+
+        for (let i = 0; i < totalBatches; i++) {
+            const batch = importData.slice(i * batchSize, (i + 1) * batchSize);
+
+            const validBatch: DefaultMappingDto[] = batch.map(record => {
+                return {
+                    original_name: record.original_name,
+                    mapped_name: record.mapped_name,
+
+                } as DefaultMappingDto;
+            }).filter(record => record.mapped_name !== undefined);
+
+            if (validBatch.length === 0) {
+                continue;
+            }
+            await this.saveDefaultMapping(validBatch, tableName);
+        }
+    }
+
+    private async saveDefaultMapping(batch: Record<string, any>[], tableName: string): Promise<number[]> {
+        const values: string[] = batch.map((record) => {
+            const filteredColumnsAndValues = Object.keys(record).reduce((acc, col) => {
+                const value = record[col];
+                if (value !== undefined) {
+                    acc.columns.push(col);
+
+                    if (value === '') {
+                        acc.values.push('NULL');
+                    } else {
+                        acc.values.push(`'${value}'`);
+                    }
+                }
+                return acc;
+            }, { columns: [], values: [] } as { columns: string[], values: string[] });
+
+            if (filteredColumnsAndValues.columns.length === 0) return '';
+
+            return `(${filteredColumnsAndValues.values.join(', ')})`;
+        }).filter(value => value.trim() !== '');
+
+        if (values.length === 0) {
+            this.logger.warn(`No valid records to insert into ${tableName}`);
+            return [];
+        }
+
+        const finalColumns = Object.keys(batch[0]).reduce((acc, col) => {
+            const value = batch[0][col];
+            if (value !== undefined) {
+                acc.push(col);
+            }
+            return acc;
+        }, [] as string[]);
+
+        const finalQuery = `INSERT INTO ${tableName} (${finalColumns.join(', ')}) VALUES ` + values.join(', ') + ' RETURNING id';
+
+        try {
+            const result = await this.entityManager.query(finalQuery);
+            const personnelIds = result.map((row: { id: number }) => row.id);
+            return personnelIds;
         } catch (error) {
             this.logger.error(`Error inserting data into table ${tableName}`, error);
             throw new NotFoundException(`Unable to insert data into table ${tableName}`);

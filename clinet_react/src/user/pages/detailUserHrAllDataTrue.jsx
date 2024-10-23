@@ -251,24 +251,24 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
     try {
       const response = await PutHrInfoId(id, formattedData)
       if (response.success) {
-        message.success('Cập nhật thành công!')
+       message.success(`${t('api_status.success')}`)
       } else {
-        message.error(`Cập nhật thất bại: ${response.message}`)
+         message.error(`${t('api_status.update_error')}: ${response.message}`)
       }
     } catch (error) {
-      message.error('Đã xảy ra lỗi trong quá trình cập nhật.')
+       message.error(`${t('api_status.error')}`)
     }
   }
   const handleFinishFormMore = async (values) => {
     try {
       const response = await PutHrInfoId(id, values)
       if (response.success) {
-        message.success('Cập nhật thành công!')
+       message.success(`${t('api_status.success')}`)
       } else {
-        message.error(`Cập nhật thất bại: ${response.message}`)
+         message.error(`${t('api_status.update_error')}: ${response.message}`)
       }
     } catch (error) {
-      message.error('Đã xảy ra lỗi trong quá trình cập nhật.')
+       message.error(`${t('api_status.error')}`)
     }
   }
   const handleSave = () => {
@@ -285,7 +285,7 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
         ? Promise.resolve(message.success(`${t('Xóa thành công')}`))
         : Promise.reject(
           new Error(
-            `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
+            `${t('api_status.delete_error')}`,
           ),
         )
 
@@ -295,7 +295,7 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
         handleNavigateToBack()
       }
     } catch (error) {
-      message.error(`${t('Có lỗi xảy ra, vui lòng thử lại')}`)
+      message.error(`${t('api_status.error')}`)
     }
   }
   const handleChangeSatusFormTrue = async (value) => {
@@ -306,12 +306,13 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
       const response = await PutHrInfoId(id, submissionData)
       if (response.success) {
         fetchDataUserId()
-        message.success('Form nhập đã được mở!')
+        message.success(`${t('api_status.form_success_2')}`)
+
       } else {
-        message.error(`Cập nhật thất bại: ${response.message}`)
+         message.error(`${t('api_status.update_error')}: ${response.message}`)
       }
     } catch (error) {
-      message.error('Đã xảy ra lỗi trong quá trình cập nhật.')
+       message.error(`${t('api_status.error')}`)
     }
   }
   const handleChangeSatusFormFalse = async (value) => {
@@ -322,24 +323,24 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
       const response = await PutHrInfoId(id, submissionData)
       if (response.success) {
         fetchDataUserId()
-        message.success('Form nhập đã được đóng!')
+        message.success(`${t('api_status.form_success')}`)
       } else {
-        message.error(`Cập nhật thất bại: ${response.message}`)
+         message.error(`${t('api_status.update_error')}: ${response.message}`)
       }
     } catch (error) {
-      message.error('Đã xảy ra lỗi trong quá trình cập nhật.')
+       message.error(`${t('api_status.error')}`)
     }
   }
   const handleMenuClick = (e) => {
     switch (e.key) {
       case 'export-pdf':
-        message.warning('Chức năng đang được phát triển!')
+        message.warning(t('develop.warning'))
         break;
       case 'export-excel':
-        message.warning('Chức năng đang được phát triển!')
+        message.warning(t('develop.warning'))
         break;
       case 'export-word':
-        message.warning('Chức năng đang được phát triển!')
+        message.warning(t('develop.warning'))
         break;
       case 'open-form':
         handleChangeSatusFormTrue();
@@ -375,12 +376,12 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
         const response = await PutHrInfoId(id, submissionData)
         if (response.success) {
           fetchDataUserId()
-          message.success('Cập nhật thành công!')
+          message.success(`${t('hr_recruitment_1_1.update_success')}`)
         } else {
-          message.error(`Cập nhật thất bại: ${response.message}`)
+          message.error(`${t('hr_recruitment_1_1.update_error')}: ${response.message}`)
         }
       } catch (error) {
-        message.error('Đã xảy ra lỗi trong quá trình cập nhật.')
+        message.error(`${t('hr_recruitment_1_1.error')}`)
       }
     }
 
@@ -388,16 +389,15 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
   }
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.SubMenu key="export" title="Xuất" icon={<DownloadOutlined />}>
-        <Menu.Item key="export-pdf" icon={<FilePdfOutlined />}>Xuất PDF</Menu.Item>
-        <Menu.Item key="export-excel" icon={<FileExcelOutlined />}>Xuất Excel</Menu.Item>
-        <Menu.Item key="export-word" icon={<FileWordOutlined />}>Xuất Word</Menu.Item>
+     <Menu.SubMenu key="export" title={t('hr_recruitment_1_1.export')} icon={<DownloadOutlined />}>
+        <Menu.Item key="export-pdf" icon={<FilePdfOutlined />}>{t('hr_recruitment_1_1.export_pdf')} </Menu.Item>
+        <Menu.Item key="export-excel" icon={<FileExcelOutlined />}>{t('hr_recruitment_1_1.export_excel')}</Menu.Item>
+        <Menu.Item key="export-word" icon={<FileWordOutlined />}>{t('hr_recruitment_1_1.export_word')}</Menu.Item>
       </Menu.SubMenu>
-      {canEdit && <>       <Menu.Item key="open-form" icon={<FormOutlined />}>Mở Form</Menu.Item>
-        <Menu.Item key="close-form" icon={<FormOutlined />}>Đóng Form</Menu.Item></>}
-
+      {canEdit && <>       <Menu.Item key="open-form" icon={<FormOutlined />}>{t('hr_recruitment_1_1.open_form')}</Menu.Item>
+        <Menu.Item key="close-form" icon={<FormOutlined />}>{t('hr_recruitment_1_1.close_form')}</Menu.Item></>}
       {canDelete && <Menu.Item key="delete" style={{ color: 'red' }} icon={<DeleteOutlined />}>
-        Xóa
+        {t('hr_recruitment_1_1.delete')}
       </Menu.Item>}
 
     </Menu>
@@ -415,7 +415,7 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
         <ol className="flex items-center gap-1 text-sm text-gray-700">
           <li onClick={handleNavigateToBack} className="cursor-pointer">
             <span className=" text-black hover:text-indigo-950 opacity-80">
-              Trở lại
+            {t('hr_recruitment_1_1.cancel')}
             </span>
           </li>
           <li className="rtl:rotate-180">
@@ -454,13 +454,13 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
           </Dropdown>
           {canEdit && <>
 
-            <Button className="bg-white" onClick={handleChangeSynchronize}>Xác nhận đồng bộ</Button>
+            <Button className="bg-white" onClick={handleChangeSynchronize}>  {t('hr_recruitment_1_1.confirm_synchronization')}</Button>
 
             <Button className="bg-white" onClick={toggleEdit}>
-              {isEditing ? <> Thoát</> : <> Chỉnh sửa</>}
+              {isEditing ? <>  {t('hr_recruitment_1_1.exit')}</> : <>  {t('hr_recruitment_1_1.edit')}</>}
             </Button>
             <Button className="bg-white" onClick={handleSave}>
-              Lưu
+            {t('hr_recruitment_1_1.save')}
             </Button>
           </>}
 
@@ -505,13 +505,13 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
                        <h3 className="   text-xl font-bold items-center flex  justify-center mb-2 mt-">{t('hr_recruitment_1_1.position_applied_for')}</h3>
                       <Row gutter={16}>
                         <Col span={12}>
-                          <Form.Item label="Mã nhân viên" name="employee_code">
+                          <Form.Item label={t('hr_recruitment_1_1.employee_code')} name="employee_code">
                             <Input size="large" placeholder="CID" />
                           </Form.Item>
                         </Col>
                         <Col span={12}>
                           <Form.Item
-                            label="Đăng ký trên ERP"
+                            label={t('hr_recruitment_1_1.erp_department_registration')}
                             name="erp_department_registration"
                           >
                             <Input size="large" placeholder="ERP" />
@@ -557,26 +557,26 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
                       <Row gutter={16}>
                         <Col span={12}>
                           <Form.Item
-                            label="Ngày ký HĐ lần 1"
+                            label={t('hr_recruitment_1_1.official_date_first')}
                             name="official_date_first"
                           >
                             <DatePicker
                               size="large"
                               style={{ width: '100%' }}
-                              placeholder="Chọn ngày vào"
+                                placeholder={t('hr_recruitment_1_1.select_date')}
                               format="YYYY-MM-DD"
                             />
                           </Form.Item>
                         </Col>
                         <Col span={12}>
                           <Form.Item
-                            label="Ngày ký HĐ lần 2"
+                            label={t('hr_recruitment_1_1.official_date_second')}
                             name="official_date_second"
                           >
                             <DatePicker
                               size="large"
                               style={{ width: '100%' }}
-                              placeholder="Chọn ngày vào"
+                                placeholder={t('hr_recruitment_1_1.select_date')}
                               format="YYYY-MM-DD"
                             />
                           </Form.Item>
@@ -588,22 +588,22 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
                         <Col span={12}>
                           <div className="mt-3">
                             <Form.Item
-                              label={t('Người phỏng vấn')}
+                               label={t('hr_recruitment_1_1.interviewer_user')}
                               name="interviewer_user"
                             >
-                              <Input size="large" placeholder="Nhập thông tin" />
+                              <Input size="large" placeholder={t('hr_recruitment_1_1.enter_information')} />
                             </Form.Item>
                           </div>
                         </Col>
                         <Col span={12}>
                           <div className="mt-3">
                             <Form.Item
-                              label={t('Kết quả phỏng vấn')}
+                              label={t('hr_recruitment_1_1.interview_results')}
                               name="interview_results"
                             >
                               <Radio.Group>
-                                <Radio value="Đạt">ĐẠT</Radio>
-                                <Radio value="Không Đạt">KHÔNG ĐẠT</Radio>
+                              <Radio value="Đạt">{t('hr_recruitment_1_1.obtain')}</Radio>
+                              <Radio value="Không Đạt">{t('hr_recruitment_1_1.not_achieved')}</Radio>
                               </Radio.Group>
                             </Form.Item>
                           </div>
@@ -611,7 +611,7 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
 
                         <Col span={24}>
                           <Form.Item
-                            label={t('Ghi chú')}
+                                label={t('hr_recruitment_1_1.note')}
                             name="note"
                           >
                             <TextArea rows={6} allowClear />
@@ -622,17 +622,17 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
                   </>
                 ) : (
                   <>
-                    <h3 className=" text-xl font-bold items-center flex  justify-center mb-2 mt-5">Vị trí ứng tuyển</h3>
+                    <h3 className=" text-xl font-bold items-center flex  justify-center mb-2 mt-5">{t('hr_recruitment_1_1.position_applied_for')}</h3>
                     <Row gutter={16}>
                       <Col span={12}>
                         <div className="mt-3">
-                          <strong>Mã nhân viên:</strong>
+                        <strong>{t('hr_recruitment_1_1.employee_code')}</strong>
                           <Text className="ml-2">{formData.employee_code}</Text>
                         </div>
                       </Col>
                       <Col span={12}>
                         <div className="mt-3">
-                          <strong>Đăng ký trên ERP:</strong>
+                        <strong>{t('hr_recruitment_1_1.erp_department_registration')}:</strong>
                           <Text className="ml-2">
                             {formData.erp_department_registration}
                           </Text>
@@ -640,7 +640,7 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
                       </Col>
                       <Col span={24}>
                         <div className="mt-3">
-                          <strong>Team:</strong>
+                        <strong>{t('hr_recruitment_1_1.team')}:</strong>
                           <Text className="ml-2">{formData.team}</Text>
                         </div>
                       </Col>
@@ -684,7 +684,7 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
                     <Row gutter={16}>
                       <Col span={12}>
                         <div className="mt-3">
-                          <strong>Ngày ký HĐ lần 1:</strong>
+                        <strong>{t('hr_recruitment_1_1.official_date_first')}:</strong>
                           <Text className="ml-2">
                             {formData.official_date_firstF}
                           </Text>
@@ -692,7 +692,7 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
                       </Col>
                       <Col span={12}>
                         <div className="mt-3">
-                          <strong>Ngày ký HĐ lần 2:</strong>
+                        <strong>{t('hr_recruitment_1_1.official_date_second')}:</strong>
                           <Text className="ml-2">
                             {formData.official_date_second}
                           </Text>
@@ -700,25 +700,25 @@ export default function DetailUserHrAllDataTrue({ permissions }) {
                       </Col>
                     </Row>
 
-                    <h3 className="  text-xl font-bold items-center flex  justify-center mb-2 mt-5">{t('Kết quả phỏng vấn')}</h3>
+                    <h3 className="  text-xl font-bold items-center flex  justify-center mb-2 mt-5">{t('hr_recruitment_1_1.interview_results')}</h3>
 
                     <Row gutter={16}>
                       <Col span={12}>
                         <div className="mt-3">
-                          <strong>{t('Người phỏng vấn')}:</strong>
+                        <strong>{t('hr_recruitment_1_1.interviewer_user')}:</strong>
                           <Text className="ml-2">{formData?.interviewer_user}</Text>
                         </div>
                       </Col>
                       <Col span={12}>
                         <div className="mt-3">
-                          <strong>{t('Kết quả phỏng vấn')}:</strong>
+                        <strong>{t('hr_recruitment_1_1.interview_results')}:</strong>
                           <Text className="ml-2">{formData?.interview_results}</Text>
                         </div>
                       </Col>
 
                       <Col span={24}>
                         <div className="mt-3">
-                          <strong>{t('Ghi chú')}:</strong>
+                        <strong>{t('hr_recruitment_1_1.note')}:</strong>
                           <Text className="ml-2">{formData?.note}</Text>
                         </div>
                       </Col>

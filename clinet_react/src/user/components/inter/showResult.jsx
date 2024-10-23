@@ -23,7 +23,7 @@ export default function ShowResult({
         if (note && note.trim().length > 0) {
             onClose();
         } else {
-            message.warning(t('Vui lòng nhập ghi chú trước khi đóng!'));
+            message.warning(`${t('api_status.show_result')}`)
         }
     };
 
@@ -52,15 +52,15 @@ export default function ShowResult({
         try {
             const response = await PutUserInter(id, submissionData)
             if (response.success) {
-                message.success('Cập nhật thành công!')
+                message.success(`${t('api_status.update_success')}`)
                 setStateNote(note)
                 handleClose()
                 fetchDataUserId()
             } else {
-                message.error(`Cập nhật thất bại: ${response.message}`)
+                message.error(`${t('api_status.update_error')}: ${response.message}`)
             }
         } catch (error) {
-            message.error('Đã xảy ra lỗi trong quá trình cập nhật.')
+            message.error(`${t('api_status.error')}`)
         }
     }
     return (
@@ -81,21 +81,21 @@ export default function ShowResult({
         >
             <Row gutter={16}>
                 <Col span={12}>
-                    <Title level={5}>{t('Người phỏng vấn')}</Title>
+                    <Title level={5}>{t('hr_recruitment_1_1.interviewers')}</Title>
                     <Input size="large" value={interviewers} rows={6} onChange={handleInterviewers} allowClear />
                 </Col>
                 <Col span={12}>
-                    <Title level={5}>{t('Kết quả phỏng vấn')}</Title>
+                    <Title level={5}>{t('hr_recruitment_1_1.result_interviewers')}</Title>
                     <Radio.Group value={result} onChange={handleResult}>
-                        <Radio value="Đạt">ĐẠT</Radio>
-                        <Radio value="Không Đạt">KHÔNG ĐẠT</Radio>
+                    <Radio value="Đạt">{t('hr_recruitment_1_1.obtain')}</Radio>
+                    <Radio value="Không Đạt">{t('hr_recruitment_1_1.not_achieved')}</Radio>
                     </Radio.Group>
                 </Col>
             </Row>
 
             <Row className="mt-3">
                 <Col span={24}>
-                    <Title level={5}>{t('Ghi chú')}</Title>
+                    <Title level={5}>{t('hr_recruitment_1_1.note')}</Title>
                     <TextArea value={note} rows={6} onChange={handleNote} allowClear />
                 </Col>
             </Row>

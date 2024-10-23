@@ -29,11 +29,6 @@ import { DeleteHrInterIds } from '../../features/hrInter/deleteHrInfoIds'
 import {
   UserAddOutlined,
   HourglassOutlined,
-  CheckCircleOutlined,
-  CheckOutlined,
-  CloseCircleOutlined,
-  UserOutlined,
-  ToolOutlined,
 } from '@ant-design/icons'
 import { PostSyncData } from '../../features/hrInter/postSyncData'
 import { DownloadOutlined, FilePdfOutlined, FileExcelOutlined, FileWordOutlined, DeleteOutlined, FormOutlined } from '@ant-design/icons';
@@ -108,15 +103,15 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
             setInterviewData({})
           }
         } else {
-          setError('Không có dữ liệu cho ID này.')
+          setError(`${t('api_status.data_error_2')}`)
           setFormData({})
         }
       } else {
-        setError('Dữ liệu không khả dụng.')
+        setError(`${t('api_status.data_error')}`)
         setFormData({})
       }
     } catch (error) {
-      setError(error.message || 'Đã xảy ra lỗi')
+      setError(error.message || `${t('api_status.none_error')}`)
       setFormData({})
     } finally {
       setLoading(false)
@@ -293,26 +288,26 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
     try {
       const response = await PutUserInter(id, submissionData)
       if (response.success) {
-        message.success('Cập nhật thành công!')
+         message.success(`${t('api_status.success')}`)
         setIsEditing(false)
         fetchDataUserId()
       } else {
-        message.error(`Cập nhật thất bại: ${response.message}`)
+          message.error(`${t('api_status.update_error')}: ${response.message}`)
       }
     } catch (error) {
-      message.error('Đã xảy ra lỗi trong quá trình cập nhật.')
+       message.error(`${t('api_status.error')}`)
     }
   }
   const handleFinishFormMore = async (values) => {
     try {
       const response = await PutUserInter(id, values)
       if (response.success) {
-        message.success('Cập nhật thành công!')
+         message.success(`${t('api_status.success')}`)
       } else {
-        message.error(`Cập nhật thất bại: ${response.message}`)
+          message.error(`${t('api_status.update_error')}: ${response.message}`)
       }
     } catch (error) {
-      message.error('Đã xảy ra lỗi trong quá trình cập nhật.')
+       message.error(`${t('api_status.error')}`)
     }
   }
   const handleSave = () => {
@@ -328,12 +323,12 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
       const response = await PutUserInter(id, submissionData)
       if (response.success) {
         setStatus(value)
-        message.success('Cập nhật thành công!')
+        message.success(`${t('api_status.success')}`)
       } else {
-        message.error(`Cập nhật thất bại: ${response.message}`)
+        message.error(`${t('api_status.update_error')}: ${response.message}`)
       }
     } catch (error) {
-      message.error('Đã xảy ra lỗi trong quá trình cập nhật.')
+      message.error(`${t('api_status.error')}`)
     }
   }
   const handleChangeSatusFormTrue = async (value) => {
@@ -345,12 +340,12 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
       if (response.success) {
         setStatus(value)
         fetchDataUserId()
-        message.success('Form nhập đã được mở!')
+        message.success(`${t('api_status.form_success_2')}`)
       } else {
-        message.error(`Cập nhật thất bại: ${response.message}`)
+        message.error(`${t('api_status.update_error')}: ${response.message}`)
       }
     } catch (error) {
-      message.error('Đã xảy ra lỗi trong quá trình cập nhật.')
+      message.error(`${t('api_status.error')}`)
     }
   }
   const handleChangeSatusFormFalse = async (value) => {
@@ -363,12 +358,12 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
         setStatus(value)
 
         fetchDataUserId()
-        message.success('Form nhập đã được đóng!')
+        message.success(`${t('api_status.form_success')}`)
       } else {
-        message.error(`Cập nhật thất bại: ${response.message}`)
+        message.error(`${t('api_status.update_error')}: ${response.message}`)
       }
     } catch (error) {
-      message.error('Đã xảy ra lỗi trong quá trình cập nhật.')
+      message.error(`${t('api_status.error')}`)
     }
   }
 
@@ -377,10 +372,10 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
       const response = await DeleteHrInterIds([id])
 
       const messagePromise = response.success
-        ? Promise.resolve(message.success(`${t('Xóa thành công')}`))
+        ? Promise.resolve(message.success(`${t('api_status.delete_success')}`))
         : Promise.reject(
           new Error(
-            `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
+            `${t('api_status.delete_error')}`,
           ),
         )
 
@@ -390,7 +385,7 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
         handleNavigateToBack()
       }
     } catch (error) {
-      message.error(`${t('Có lỗi xảy ra, vui lòng thử lại')}`)
+      message.error(`${t('api_status.error')}`)
     }
   }
   const handleSync = async () => {
@@ -418,13 +413,13 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
   const handleMenuClick = (e) => {
     switch (e.key) {
       case 'export-pdf':
-        message.warning('Chức năng đang được phát triển!')
+        message.warning(t('develop.warning'))
         break;
       case 'export-excel':
-        message.warning('Chức năng đang được phát triển!')
+        message.warning(t('develop.warning'))
         break;
       case 'export-word':
-        message.warning('Chức năng đang được phát triển!')
+        message.warning(t('develop.warning'))
         break;
       case 'open-form':
         handleChangeSatusFormTrue();
@@ -477,7 +472,7 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
         break;
     }
   };
-  
+
 
   const menu = (
     <Menu onClick={handleMenuClick}>
@@ -553,7 +548,7 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
           <Dropdown
             overlay={
               <Menu
-                onClick={({ key }) => handleMenuClickPhone(key)} 
+                onClick={({ key }) => handleMenuClickPhone(key)}
               >
                 <Menu.SubMenu
                   key="export"
@@ -759,7 +754,7 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
                           <DatePicker
                             size="large"
                             style={{ width: '100%' }}
-                            placeholder="Chọn ngày vào"
+                            placeholder={t('hr_recruitment_1_1.select_date')}
                             format="YYYY-MM-DD"
                           />
                         </Form.Item>
@@ -772,7 +767,7 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
                           <DatePicker
                             size="large"
                             style={{ width: '100%' }}
-                            placeholder="Chọn ngày vào"
+                            placeholder={t('hr_recruitment_1_1.select_date')}
                             format="YYYY-MM-DD"
                           />
                         </Form.Item>
@@ -786,7 +781,7 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
                           label={t('hr_recruitment_1_1.desired_base_salary')}
                           name="desired_base_salary"
                         >
-                          <Input size="large" placeholder="Nhập thông tin" />
+                          <Input size="large" placeholder={t('hr_recruitment_1_1.enter_information')} />
                         </Form.Item>
                       </Col>
                       <Col xs={24} sm={12} md={12}>
@@ -794,7 +789,7 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
                           label={t('hr_recruitment_1_1.desired_total_salary')}
                           name="desired_total_salary"
                         >
-                          <Input size="large" placeholder="Nhập thông tin" />
+                          <Input size="large" placeholder={t('hr_recruitment_1_1.enter_information')} />
                         </Form.Item>
                       </Col>
                     </Row>
@@ -802,28 +797,28 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
 
 
 
-                    <h3 className="  text-xl font-bold items-center flex  justify-center mb-2 mt-5">{t('Kết quả phỏng vấn')}</h3>
+                    <h3 className="  text-xl font-bold items-center flex  justify-center mb-2 mt-5">{t('hr_recruitment_1_1.interview_results')}</h3>
 
                     <Row gutter={16} className="mb-10">
                       <Col span={12}>
                         <div className="mt-3">
                           <Form.Item
-                            label={t('Người phỏng vấn')}
+                            label={t('hr_recruitment_1_1.interviewer_user')}
                             name="interviewer_user"
                           >
-                            <Input size="large" placeholder="Nhập thông tin" />
+                            <Input size="large" placeholder={t('hr_recruitment_1_1.enter_information')} />
                           </Form.Item>
                         </div>
                       </Col>
                       <Col span={12}>
                         <div className="mt-3">
                           <Form.Item
-                            label={t('Kết quả phỏng vấn')}
+                            label={t('hr_recruitment_1_1.interview_results')}
                             name="interview_results"
                           >
                             <Radio.Group>
-                              <Radio value="Đạt">ĐẠT</Radio>
-                              <Radio value="Không Đạt">KHÔNG ĐẠT</Radio>
+                              <Radio value="Đạt">{t('hr_recruitment_1_1.obtain')}</Radio>
+                              <Radio value="Không Đạt">{t('hr_recruitment_1_1.not_achieved')}</Radio>
                             </Radio.Group>
                           </Form.Item>
                         </div>
@@ -831,7 +826,7 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
 
                       <Col span={24}>
                         <Form.Item
-                          label={t('Ghi chú')}
+                          label={t('hr_recruitment_1_1.note')}
                           name="note"
                         >
                           <TextArea rows={6} allowClear />
@@ -942,25 +937,25 @@ export default function DetailUserHrRecruitment({ permissions, isMobile }) {
                   </Row>
 
                   {/*  */}
-                  <h3 className="  text-xl font-bold items-center flex  justify-center mb-2 mt-5">{t('Kết quả phỏng vấn')}</h3>
+                  <h3 className="  text-xl font-bold items-center flex  justify-center mb-2 mt-5">{t('hr_recruitment_1_1.interview_results')}</h3>
 
                   <Row gutter={16}>
                     <Col span={12}>
                       <div className="mt-3">
-                        <strong>{t('Người phỏng vấn')}:</strong>
+                        <strong>{t('hr_recruitment_1_1.interviewer_user')}:</strong>
                         <Text className="ml-2">{formData?.interviewer_user}</Text>
                       </div>
                     </Col>
                     <Col span={12}>
                       <div className="mt-3">
-                        <strong>{t('Kết quả phỏng vấn')}:</strong>
+                        <strong>{t('hr_recruitment_1_1.interview_results')}:</strong>
                         <Text className="ml-2">{formData?.interview_results}</Text>
                       </div>
                     </Col>
 
                     <Col span={24}>
                       <div className="mt-3">
-                        <strong>{t('Ghi chú')}:</strong>
+                        <strong>{t('hr_recruitment_1_1.note')}:</strong>
                         <Text className="ml-2">{formData?.note}</Text>
                       </div>
                     </Col>
