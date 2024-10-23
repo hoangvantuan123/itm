@@ -407,8 +407,7 @@
     "note_tax_number" : "Nhập mã số thuế" , 
     "note_insurance_number" : "Nhập số bảo hiểu nếu có", 
     "note_id_issue_place" : "Nhập nơi cấp", 
-    "note_ethnicity" : "Dân tộc", 
-    "note_id_issue_date" : "Nhập ngày cấp"
+    "note_ethnicity" : "Dân tộc"
 
 
 
