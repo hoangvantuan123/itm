@@ -78,22 +78,6 @@ export default function BgCarousel() {
         ))}
       </div>
 
-     {/*  <button
-        className="absolute left-5 top-1/2 transform -translate-y-1/2  text-white p-2 rounded-full"
-        onClick={() =>
-          setCurrentIndex((prevIndex) =>
-            prevIndex === 0 ? totalSlides - 1 : prevIndex - 1
-          )
-        }
-      >
-        ❮
-      </button>
-      <button
-        className="absolute right-5 top-1/2 transform -translate-y-1/2  text-white p-2 rounded-full"
-        onClick={nextSlide}
-      >
-        ❯
-      </button> */}
 
       <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {images.map((_, index) => (

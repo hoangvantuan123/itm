@@ -20,7 +20,6 @@ import {
 } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 import { PostResGroups } from '../../../features/resGroups/postResGroups'
-import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 const { Title } = Typography
 const { Option } = Select
 const { TextArea } = Input
@@ -41,22 +40,22 @@ export default function AddUserGroups({ isOpen, onClose, fetchData }) {
 
       if (result.success) {
         fetchData()
-        message.success('Nhóm được tạo thành công')
+        message.success(t('api_status.success_group'))
         form.resetFields()
         onClose()
       } else {
-        message.error(result.message || 'Lỗi khi tạo nhóm!')
+        message.error(result.message || t('api_status.error_group'))
       }
     } catch (error) {
-      message.error('Lỗi khi tạo nhóm!')
+      message.error(t('api_status.error_group'))
     }
   }
 
   return (
     <Drawer
       title={
-        <Title level={4} style={{ textAlign: 'center' }}>
-          {t('Thêm nhóm dùng mới')}
+        <Title level={4}>
+          {t('add_page.add_group')}
         </Title>
       }
       open={isOpen}
@@ -64,7 +63,7 @@ export default function AddUserGroups({ isOpen, onClose, fetchData }) {
       width={900}
       extra={[
         <Button key="cancel" onClick={onClose}>
-          {t('Hủy')}
+          {t('add_page.cancel')}
         </Button>,
         <Button
           key="submit"
@@ -72,7 +71,7 @@ export default function AddUserGroups({ isOpen, onClose, fetchData }) {
           className=" ml-2 border-gray-200  bg-indigo-600 text-white  shadow-sm text-sm"
           onClick={() => form.submit()}
         >
-          {t('Lưu')}
+          {t('add_page.save')}
         </Button>,
       ]}
     >
@@ -88,26 +87,23 @@ export default function AddUserGroups({ isOpen, onClose, fetchData }) {
         }}
         style={{ textAlign: 'left' }}
       >
-        <Title level={5}>{t('Thông tin nhóm')}</Title>
+        <Title level={5}>{t('add_page.title_note_2')}</Title>
 
-        {/* Thông tin cơ bản */}
-        <Card style={{ marginBottom: '20px' }}>
-          <Form.Item
-            label={t('Tên nhóm')}
-            name="name"
-            rules={[{ required: true, message: t('Vui lòng nhập tên nhóm') }]}
-            style={{ textAlign: 'left' }}
-          >
-            <Input size="large" placeholder={t('Tên nhóm')} />
-          </Form.Item>
-          <Form.Item
-            label={t('Ghi chú')}
-            name="comment"
-            style={{ textAlign: 'left' }}
-          >
-            <TextArea rows={4} size="large" placeholder={t('Ghi chú')} />
-          </Form.Item>
-        </Card>
+        <Form.Item
+          label={t('add_page.name_group')}
+          name="name"
+          rules={[{ required: true, message: t('add_page.rules_group') }]}
+          style={{ textAlign: 'left' }}
+        >
+          <Input size="large" placeholder={t('add_page.name_group')} />
+        </Form.Item>
+        <Form.Item
+          label={t('add_page.comment')}
+          name="comment"
+          style={{ textAlign: 'left' }}
+        >
+          <TextArea rows={4} size="large" placeholder={t('add_page.comment')} />
+        </Form.Item>
       </Form>
     </Drawer>
   )

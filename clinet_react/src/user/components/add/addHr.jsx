@@ -60,15 +60,15 @@ export default function AddHR({ isOpen, onClose, fetchData }) {
     try {
       const response = await PostHrNew(data)
       if (response.data.success) {
-        message.success(t('Đăng ký tài khoản thành công'))
+        message.success(t('api_status.success_acc'))
         form.resetFields()
         fetchData()
         onClose()
       } else {
-        message.error(t('Lỗi khi tạo tài khoản!'))
+        message.error(t('api_status.error_acc'))
       }
     } catch (error) {
-      message.error(t('Lỗi khi tạo tài khoản!'))
+      message.error(t('api_status.error_acc'))
     }
   }
 
@@ -76,7 +76,7 @@ export default function AddHR({ isOpen, onClose, fetchData }) {
     <Drawer
       title={
         <Title level={4}>
-          <span className="text-base"> {t('Thêm người dùng mới')}</span>
+          <span className="text-base"> {t('add_page.add_user')}</span>
         </Title>
       }
       open={isOpen}
@@ -84,7 +84,7 @@ export default function AddHR({ isOpen, onClose, fetchData }) {
       width={600}
       extra={[
         <Button key="cancel" onClick={onClose}>
-          {t('Hủy')}
+          {t('add_page.cancel')}
         </Button>,
         <Button
           key="submit"
@@ -92,7 +92,7 @@ export default function AddHR({ isOpen, onClose, fetchData }) {
           className=" ml-2 border-gray-200  bg-indigo-600 text-white  shadow-sm text-sm"
           onClick={() => form.submit()}
         >
-          {t('Lưu')}
+          {t('add_page.save')}
         </Button>,
       ]}
     >
@@ -105,56 +105,56 @@ export default function AddHR({ isOpen, onClose, fetchData }) {
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
-              label={t('Mã nhân viên')}
+              label={t('add_page.employee_code')}
               name="employee_code"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Mã nhân viên')} />
+              <Input size="large" placeholder={t('add_page.employee_code')} />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={18}>
             <Form.Item
-              label={t('Họ và tên')}
+              label={t('add_page.full_name')}
               name="full_name"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Nhập họ và tên')} />
+              <Input size="large" placeholder={t('add_page.full_name')} />
             </Form.Item>
           </Col>
           <Col span={6}>
             <Form.Item
-              label={t('Giới tính')}
+              label={t('add_page.gender')}
               name="gender"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Giới tính')} />
+              <Input size="large" placeholder={t('add_page.gender')} />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label={t('Ngày sinh')}
+              label={t('add_page.birth_date')}
               name="birth_date"
               style={{ textAlign: 'left' }}
             >
               <DatePicker
                 size="large"
                 style={{ width: '100%' }}
-                placeholder="Chọn ngày sinh"
+                placeholder={t('add_page.note_date')}
                 format="YYYY-MM-DD"
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={t('Căn cước công dân')}
+              label={t('add_page.id_number')}
               name="id_number"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('CCCD')} />
+              <Input size="large" placeholder={t('add_page.id_number')} />
             </Form.Item>
           </Col>
         </Row>
@@ -162,27 +162,27 @@ export default function AddHR({ isOpen, onClose, fetchData }) {
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
-              label={t('Số điện thoại')}
+              label={t('add_page.phone_number')}
               name="phone_number"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Số điện thoại')} />
+              <Input size="large" placeholder={t('add_page.phone_number')} />
             </Form.Item>
           </Col>
           <Col span={24}>
             <Form.Item
-              label={t('Email')}
+              label={t('add_page.email')}
               name="email"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Emal')} />
+              <Input size="large" placeholder={t('add_page.email')} />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
-              label={t('Đăng ký BP ERP')}
+              label={t('add_page.erp_department_registration')}
               name="erp_department_registration"
               style={{ textAlign: 'left' }}
             >
@@ -191,18 +191,18 @@ export default function AddHR({ isOpen, onClose, fetchData }) {
           </Col>
           <Col span={24}>
             <Form.Item
-              label={t('Team')}
+              label={t('add_page.team')}
               name="team"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Team')} />
+              <Input size="large" placeholder={t('add_page.team')} />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
-              label={t('Part')}
+              label={t('add_page.part')}
               name="part"
               style={{ textAlign: 'left' }}
             >
@@ -211,7 +211,7 @@ export default function AddHR({ isOpen, onClose, fetchData }) {
           </Col>
           <Col span={24}>
             <Form.Item
-              label={t('Chức vụ')}
+              label={t('add_page.position')}
               name="position"
               style={{ textAlign: 'left' }}
             >

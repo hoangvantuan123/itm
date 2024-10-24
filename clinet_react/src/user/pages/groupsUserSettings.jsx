@@ -158,7 +158,7 @@ export default function GroupsUsersSettings({ permissions }) {
   }
   const columns = [
     {
-      title: 'Tên nhóm',
+      title: t('column_table.name_group'),
       dataIndex: 'name',
       key: 'name',
       sorter: (a, b) => {
@@ -189,7 +189,7 @@ export default function GroupsUsersSettings({ permissions }) {
         pageSize: limit,
         total: total,
         showSizeChanger: true,
-        showTotal: (total) => `Tổng ${total} mục`,
+        showTotal: (total) => `${t('column_table.total')} ${total} ${t('column_table.item')}`,
         onChange: (page, pageSize) =>
           handleTableChange({ current: page, pageSize }),
       }}
@@ -206,7 +206,7 @@ export default function GroupsUsersSettings({ permissions }) {
           className="mt-2 max-w-md cursor-pointer text-pretty text-base text-indigo-500"
           size="large"
         >
-          Thêm hàng mới
+          {t('column_table.add_row')}
         </span>
       )}
     />
@@ -271,7 +271,7 @@ export default function GroupsUsersSettings({ permissions }) {
 
             <div className="p-2 flex items-center justify-between">
               <h1 className="text-xl font-bold text-gray-900 sm:text-xl ">
-                {t('Nhóm người dùng')}
+                {t('page.user_group')}
               </h1>
              
               {!isMobile && (
@@ -285,7 +285,7 @@ export default function GroupsUsersSettings({ permissions }) {
                         className="w-full rounded-lg h-full border-gray-200 bg-indigo-600 text-white shadow-sm text-sm"
                         size="large"
                       >
-                        {t('Thêm')}
+                        {t('page.add')}
                       </Button>
                     )}
                   </div>
@@ -317,18 +317,7 @@ export default function GroupsUsersSettings({ permissions }) {
                 </span>
               </div>
             )}
-            {isMobile && (
-              <div className="p-2">
-                <button
-                  className="border-[1.3px] border-[#d9d9d9] rounded-lg p-[0.6rem] w-full flex items-center space-x-2 bg-white hover:bg-gray-100"
-                  onClick={openModal}
-                >
-                  <SearchOutlined />
-                  <span className="text-gray-500">{t('Tìm kiếm')}</span>
-                </button>
-                <Search isOpen={isModalOpen} onClose={closeModal} />
-              </div>
-            )}
+         
           </div>
 
           <Layout className="h-screen lg:pb-[70px]">

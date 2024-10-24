@@ -99,7 +99,7 @@ const DetailSalaryUser = React.memo(({ permissions }) => {
 
     const columns = useMemo(() => [
         {
-            title: 'Hạng mục',
+            title: t('hr_payroll.category'),
             dataIndex: 'key',
             key: 'key',
             fixed: 'left',

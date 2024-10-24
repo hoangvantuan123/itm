@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Form, Radio, Table, Input, Drawer, Button, Row, Col, Card, Select } from 'antd';
-import { useTranslation } from 'react-i18next'
 const { Option } = Select;
-
+import { useTranslation } from 'react-i18next';
 const SkillTable = ({ form, dataSource }) => {
+
   const [localDataSource, setLocalDataSource] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);

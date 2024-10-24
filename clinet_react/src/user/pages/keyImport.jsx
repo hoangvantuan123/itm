@@ -319,7 +319,7 @@ export default function KeyImport({ permissions, isMobile }) {
                 pageSize: limit,
                 total: total,
                 showSizeChanger: true,
-                showTotal: (total) => `Tổng ${total} mục`,
+                showTotal: (total) => `${t('column_table.total')} ${total} ${t('column_table.item')}`,
                 onChange: (page, pageSize) =>
                     handleTableChange({ current: page, pageSize }),
             }}
@@ -429,7 +429,7 @@ export default function KeyImport({ permissions, isMobile }) {
                             className=" rounded-lg h-full border-gray-200 bg-indigo-600 hover:bg-none text-white shadow-sm text-sm"
                             size="large"
                         >
-                            {t('Thêm')}
+                            {t('page.add')}
                         </Button>}
                         {canCreate && (
                             <ImportAction

@@ -43,15 +43,15 @@ export default function AddDefaultMapping({ isOpen, onClose, fetchData }) {
         try {
             const response = await PostKeyImportNew(data)
             if (response.data.success) {
-                message.success(t('Tạo thành công'))
+                message.success(t('api_status.success'))
                 form.resetFields()
                 fetchData()
                 onClose()
             } else {
-                message.error(t('Lỗi khi tạo key!'))
+                message.error(t('api_status.error_key'))
             }
         } catch (error) {
-            message.error(t('Lỗi khi tạo key!'))
+            message.error(t('api_status.error_key'))
         }
     }
 
@@ -67,7 +67,7 @@ export default function AddDefaultMapping({ isOpen, onClose, fetchData }) {
             width={600}
             extra={[
                 <Button key="cancel" onClick={onClose}>
-                    {t('Hủy')}
+                    {t('add_page.cancel')}
                 </Button>,
                 <Button
                     key="submit"
@@ -75,7 +75,7 @@ export default function AddDefaultMapping({ isOpen, onClose, fetchData }) {
                     className=" ml-2 border-gray-200  bg-indigo-600 text-white  shadow-sm text-sm"
                     onClick={() => form.submit()}
                 >
-                    {t('Lưu')}
+                    {t('add_page.save')}
                 </Button>,
             ]}
         >
@@ -88,7 +88,7 @@ export default function AddDefaultMapping({ isOpen, onClose, fetchData }) {
                 <Row gutter={16}>
                     <Col span={24}>
                         <Form.Item
-                            label={t('Original name')}
+                            label={t('add_page.original_name')}
                             name="original_name"
                             style={{ textAlign: 'left' }}
                         >
@@ -99,7 +99,7 @@ export default function AddDefaultMapping({ isOpen, onClose, fetchData }) {
                 <Row gutter={16}>
                     <Col span={24}>
                         <Form.Item
-                            label={t('Key')}
+                            label={t('add_page.mapped_name')}
                             name="mapped_name"
                             style={{ textAlign: 'left' }}
                         >

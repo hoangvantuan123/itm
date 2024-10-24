@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import moment from 'moment'
 import { AudioOutlined } from '@ant-design/icons'
-import { Input, Space, Form, Button, Switch, Typography, Dropdown, message, Menu, Tabs, Row, Col, Drawer } from 'antd'
+import { Input, Layout, Form, Button, Switch, Typography, Dropdown, message, Menu, Tabs, Row, Col, Drawer } from 'antd'
 const { Search } = Input
 import decodeJWT from '../../utils/decode-JWT'
 import {
@@ -30,7 +30,7 @@ import { changePassword } from '../../features/auth/API/changePasswordAPI'
 import Cookies from 'js-cookie'
 import { PutUserTokenId } from '../../features/resUsers/putUserIdToken'
 const { Title, Text } = Typography
-
+const { Content } = Layout
 const { TabPane } = Tabs
 import 'moment/locale/vi'
 import ShortcutDrawer from '../components/shortcuts'
@@ -100,11 +100,11 @@ export default function Home({ permissions }) {
   const languages = [
     { key: 'en', label: 'English' },
     { key: 'vi', label: 'Tiếng Việt' },
-    { key: 'fr', label: 'Français' },
+    { key: 'ko', label: '한국어' }
   ];
   const themes = [
-    { key: 'light', label: 'Sáng' },
-    { key: 'dark', label: 'Tối' },
+    { key: 'light', label: t('page.light')},
+    { key: 'dark', label: t('page.dark') },
   ];
   const onClose = () => {
     setVisible(false);
@@ -171,11 +171,11 @@ export default function Home({ permissions }) {
 
   const handleReload = async () => {
     setDrawerVisible(false);
-    await onFinishLanguage(); 
+    await onFinishLanguage();
   };
 
 
-  
+
 
 
 
@@ -205,10 +205,11 @@ export default function Home({ permissions }) {
     }
   }
   return (
-    <div className="w-full h-screen  bg-white">
+    <div className=" w-full  h-screen  bg-white">
       <Helmet>
         <title>Home</title>
       </Helmet>
+
       <div className="h-full pb-20 lg:pb-4">
         <div className="h-full p-3 overflow-auto scrollable-content">
           <Row gutter={[10, 10]} className="grid-container">
@@ -330,10 +331,10 @@ export default function Home({ permissions }) {
           </Row>
 
 
-          <Drawer placement="bottom"  styles={{
+          <Drawer placement="bottom" styles={{
             wrapper: {
-              borderRadius: '16px 16px 0 0', 
-               overflow: 'hidden' 
+              borderRadius: '16px 16px 0 0',
+              overflow: 'hidden'
             }
           }} onClose={onClose} open={visible} height="97%" headerStyle={{ display: 'none' }} closable={true} bodyStyle={{ display: 'flex', flexDirection: 'column', padding: '10px' }}
           >
@@ -477,23 +478,23 @@ export default function Home({ permissions }) {
               </li>
             </ul>
           </Drawer>
-          <Drawer title="Thông báo" placement="bottom" onClose={() => setDrawerVisible(false)} open={drawerVisible} height="25%" headerStyle={{ display: 'none' }} bodyStyle={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}
-           styles={{
-            wrapper: {
-              borderRadius: '16px 16px 0 0', 
-               overflow: 'hidden' 
-            }
-          }}
+          <Drawer title="Thông báo" placement="bottom" onClose={() => setDrawerVisible(false)} open={drawerVisible} height="25%" headerStyle={{ display: 'none' }} bodyStyle={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+            styles={{
+              wrapper: {
+                borderRadius: '16px 16px 0 0',
+                overflow: 'hidden'
+              }
+            }}
           >
             <p className="text-center text-gray-600">{t('page_home.note_language')}</p>
-            <Button type="primary"  onClick={handleReload} className="mt-4">
+            <Button type="primary" onClick={handleReload} className="mt-4">
               {t('page_home.load')}
             </Button>
           </Drawer>
-          <Drawer placement="bottom"  styles={{
+          <Drawer placement="bottom" styles={{
             wrapper: {
-              borderRadius: '16px 16px 0 0', 
-               overflow: 'hidden' 
+              borderRadius: '16px 16px 0 0',
+              overflow: 'hidden'
             }
           }} onClose={cancelLogout} open={logoutDrawerVisible} height="30%" headerStyle={{ display: 'none' }} bodyStyle={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
           >
@@ -507,10 +508,10 @@ export default function Home({ permissions }) {
               </Button>
             </div>
           </Drawer>
-          <Drawer placement="bottom"  styles={{
+          <Drawer placement="bottom" styles={{
             wrapper: {
-              borderRadius: '16px 16px 0 0', 
-               overflow: 'hidden' 
+              borderRadius: '16px 16px 0 0',
+              overflow: 'hidden'
             }
           }} onClose={() => setChangePasswordView(false)} open={changePasswordView} headerStyle={{ display: 'none', padding: '2px' }}
           >

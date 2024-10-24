@@ -341,7 +341,7 @@ export default function HrSalary({ permissions, isMobile }) {
         pageSize: limit,
         total: total,
         showSizeChanger: true,
-        showTotal: (total) => `Tổng ${total} mục`,
+        showTotal: (total) => `${t('column_table.total')} ${total} ${t('column_table.item')}`,
         onChange: (page, pageSize) =>
           handleTableChange({ current: page, pageSize }),
       }}

@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Input, Button, Drawer, Select, DatePicker, Radio } from 'antd'
-import { DownOutlined } from '@ant-design/icons'
-import { GetFilterHrInfoPageLimit } from '../../../features/hrRecruitment/getFilterHrInfoPageLimit'
 const { Option } = Select
 const { RangePicker } = DatePicker
 const FieldIcon = () => (
@@ -83,13 +81,13 @@ export default function FieldActionWorkerRecruitment({
   }
   return (
     <>
-    
-      <button    onClick={() => setIsDrawerVisible(true)}  className="border-[1.3px] border-[#d9d9d9] rounded-lg p-[0.6rem] w-auto flex items-center space-x-2 bg-white hover:bg-gray-100">
-          <FieldIcon />
-          <span className="text-gray-500">{t('Filter')}</span>
-        </button>
+
+      <button onClick={() => setIsDrawerVisible(true)} className="border-[1.3px] border-[#d9d9d9] rounded-lg p-[0.6rem] w-auto flex items-center space-x-2 bg-white hover:bg-gray-100">
+        <FieldIcon />
+        <span className="text-gray-500">{t('field_action.filter')}</span>
+      </button>
       <Drawer
-        title="Filter Options"
+        title={t('field_action.filter_options')}
         placement="right"
         onClose={() => setIsDrawerVisible(false)}
         visible={isDrawerVisible}
@@ -97,7 +95,7 @@ export default function FieldActionWorkerRecruitment({
         closable={false}
         extra={[
           <Button key="cancel" onClick={() => setIsDrawerVisible(false)}>
-            {t('Thoát')}
+            {t('field_action.cancel')}
           </Button>,
           <Button
             key="submit"
@@ -105,17 +103,17 @@ export default function FieldActionWorkerRecruitment({
             className="ml-2 border-gray-200 bg-indigo-600 text-white shadow-sm text-sm"
             onClick={handleApplyFilter}
           >
-            {t('Tìm kiếm')}
+            {t('field_action.save_search')}
           </Button>,
         ].filter(Boolean)}
       >
         <div className="mb-3">
-          <label className="block mb-1">Mã nhân viên:</label>
+          <label className="block mb-1">{t('field_action.cid')}:</label>
           <Select
             mode="tags"
             value={cid}
             onChange={handleCidChange}
-            placeholder="Enter names"
+            placeholder={t('field_action.note_cid')}
             size="large"
             className="w-full"
           >
@@ -127,12 +125,12 @@ export default function FieldActionWorkerRecruitment({
           </Select>
         </div>
         <div className="mb-3">
-          <label className="block mb-1">Name:</label>
+          <label className="block mb-1">{t('field_action.name')}:</label>
           <Select
             mode="tags"
             value={nameTags}
             onChange={handleNameChange}
-            placeholder="Enter names"
+            placeholder={t('field_action.note_name')}
             size="large"
             className="w-full"
           >
@@ -144,12 +142,12 @@ export default function FieldActionWorkerRecruitment({
           </Select>
         </div>
         <div className="mb-3">
-          <label className="block mb-1">Phone Number:</label>
+          <label className="block mb-1">{t('field_action.phone')}:</label>
           <Select
             mode="tags"
             value={phoneNumberTags}
             onChange={handlePhoneNumberChange}
-            placeholder="Enter phone numbers"
+            placeholder={t('field_action.note_phone')}
             size="large"
             className="w-full"
           >
@@ -162,12 +160,12 @@ export default function FieldActionWorkerRecruitment({
         </div>
 
         <div className="mb-3">
-          <label className="block mb-1">Căn cước công dân:</label>
+          <label className="block mb-1">{t('field_action.id_number')}:</label>
           <Select
             mode="tags"
             value={citizenshipIdTags}
             onChange={handleCitizenshipIdChange}
-            placeholder="Enter Citizenship IDs"
+            placeholder={t('field_action.note_id_number')}
             size="large"
             className="w-full"
           >
@@ -179,14 +177,14 @@ export default function FieldActionWorkerRecruitment({
           </Select>
         </div>
         <div className="mb-3">
-          <label className="block mb-1">Đồng bộ ERP:</label>
+          <label className="block mb-1">{t('field_action.syn_erp')}:</label>
           <Radio.Group value={syn} onChange={handleSynChange}>
-            <Radio value={true}>ĐÃ ĐỒNG BỘ</Radio>
-            <Radio value={false}>CHƯA ĐỒNG BỘ</Radio>
+            <Radio value={true}>{t('field_action.syn_true')}</Radio>
+            <Radio value={false}>{t('field_action.syn_false')}</Radio>
           </Radio.Group>
         </div>
         <div className="mb-3">
-          <label className="blick mb-1"> Thời gian</label>
+          <label className="blick mb-1"> {t('field_action.time')}</label>
 
           <RangePicker
             value={dateRange}

@@ -224,11 +224,11 @@ const WorkExperienceTable = ({ form, dataSource }) => {
           closable={false}
         footer={
           <div style={{ textAlign: 'right' }}>
-            <Button onClick={handleDrawerClose} style={{ marginRight: 8 }}>
-              Hủy
+           <Button onClick={handleDrawerClose} style={{ marginRight: 8 }}>
+            {t('hr_recruitment_1_1.exit')}
             </Button>
             <Button   className=" border-gray-200 bg-indigo-600 text-white shadow-sm text-sm" onClick={handleDrawerSave}>
-              Lưu
+            {t('hr_recruitment_1_1.save')}
             </Button>
           </div>
         }

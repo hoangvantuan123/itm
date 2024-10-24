@@ -63,11 +63,11 @@ export default function Default() {
 
 
                     <h1 className="mt-6 text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                        Form Đã Đóng
+                    {t('api_status.close_page')}
                     </h1>
 
                     <p className="mt-4 text-gray-500">
-                        Cảm ơn bạn đã gửi thông tin. Form này hiện đã đóng và không thể nhận thêm chỉnh sửa. Nếu cần cập nhật thông tin cá nhân, vui lòng liên hệ với người phụ trách. Xin cảm ơn.
+                    {t('api_status.thanks')}
                     </p>
 
                 </div>

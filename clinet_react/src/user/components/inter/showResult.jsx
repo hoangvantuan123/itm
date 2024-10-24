@@ -65,7 +65,7 @@ export default function ShowResult({
     }
     return (
         <Modal
-            title={t('Kết quả phỏng vấn')}
+            title={t('hr_recruitment_1_1.interview_results')}
             open={isOpen}
             width={900}
             footer={[

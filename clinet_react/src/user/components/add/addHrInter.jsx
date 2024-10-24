@@ -72,15 +72,15 @@ export default function AddHrInter({ isOpen, onClose, fetchData }) {
     try {
       const response = await PostHrInterNew(data)
       if (response.data.success) {
-        message.success(t('Đăng ký tài khoản thành công'))
+        message.success(t('api_status.success_acc'))
         form.resetFields()
         fetchData()
         onClose()
       } else {
-        message.error(t('Lỗi khi tạo tài khoản!'))
+        message.error(t('api_status.error_acc'))
       }
     } catch (error) {
-      message.error(t('Lỗi khi tạo tài khoản!'))
+      message.error(t('api_status.error_acc'))
     }
   }
 
@@ -88,7 +88,7 @@ export default function AddHrInter({ isOpen, onClose, fetchData }) {
     <Drawer
       title={
         <Title level={4}>
-          <span className="text-base"> {t('Thêm người dùng mới')}</span>
+          <span className="text-base"> {t('add_page.add_user')}</span>
         </Title>
       }
       open={isOpen}
@@ -96,7 +96,7 @@ export default function AddHrInter({ isOpen, onClose, fetchData }) {
       width={600}
       extra={[
         <Button key="cancel" onClick={onClose}>
-          {t('Hủy')}
+          {t('add_page.cancel')}
         </Button>,
         <Button
           key="submit"
@@ -104,7 +104,7 @@ export default function AddHrInter({ isOpen, onClose, fetchData }) {
           className=" ml-2 border-gray-200  bg-indigo-600 text-white  shadow-sm text-sm"
           onClick={() => form.submit()}
         >
-          {t('Lưu')}
+          {t('add_page.submit')}
         </Button>,
       ]}
     >
@@ -117,45 +117,45 @@ export default function AddHrInter({ isOpen, onClose, fetchData }) {
         <Row gutter={16}>
           <Col span={18}>
             <Form.Item
-              label={t('Họ và tên')}
+              label={t('add_page.full_name')}
               name="full_name"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Nhập họ và tên')} />
+              <Input size="large" placeholder={t('add_page.full_name')} />
             </Form.Item>
           </Col>
           <Col span={6}>
             <Form.Item
-              label={t('Giới tính')}
+              label={t('add_page.gender')}
               name="gender"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Giới tính')} />
+              <Input size="large" placeholder={t('add_page.gender')} />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label={t('Ngày sinh')}
+              label={t('add_page.birth_date')}
               name="birth_date"
               style={{ textAlign: 'left' }}
             >
               <DatePicker
                 size="large"
                 style={{ width: '100%' }}
-                placeholder="Chọn ngày sinh"
+                placeholder={t('add-page.note_date')}
                 format="YYYY-MM-DD"
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={t('Căn cước công dân')}
+              label={t('add_page.id_number')}
               name="id_number"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('CCCD')} />
+              <Input size="large" placeholder={t('add_page.id_number')} />
             </Form.Item>
           </Col>
         </Row>
@@ -163,106 +163,103 @@ export default function AddHrInter({ isOpen, onClose, fetchData }) {
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
-              label={t('Số điện thoại')}
+              label={t('add_page.phone_number')}
               name="phone_number"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Số điện thoại')} />
+              <Input size="large" placeholder={t('add_page.phone_number')} />
             </Form.Item>
           </Col>
           <Col span={24}>
             <Form.Item
-              label={t('Email')}
+              label={t('add_page.email')}
               name="email"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Emal')} />
+              <Input size="large" placeholder={t('add_page.email')} />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label={t('Team')}
+              label={t('add_page.team')}
               name="team"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Team')} />
+              <Input size="large" placeholder={t('add_page.team')} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={t('Part')}
+              label={t('add_page.part')}
               name="part"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Part')} />
+              <Input size="large" placeholder={t('add_page.part')} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={t('Production')}
+              label={t('add_page.production')}
               name="production"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Production')} />
+              <Input size="large" placeholder={t('add_page.production')} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={t('Section')}
+              label={t('add_page.section')}
               name="section"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Section')} />
+              <Input size="large" placeholder={t('add_page.section')} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={t('Job field')}
+              label={t('add_page.job_field')}
               name="job_field"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Job field')} />
+              <Input size="large" placeholder={t('add_page.job_field')} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={t('Position')}
+              label={t('add_page.position')}
               name="position"
               style={{ textAlign: 'left' }}
             >
-              <Input size="large" placeholder={t('Position')} />
+              <Input size="large" placeholder={t('add_page.position')} />
             </Form.Item>
           </Col>
           
           <Col span={24}>
             <Form.Item
-              label={t('Trạng thái ứng tuyển')}
+              label={t('add_page.applicant_status')}
               name="applicant_status"
               style={{ textAlign: 'left' }}
             >
-              <Select size="large" placeholder={t('Chọn trạng thái ứng viên')}>
+              <Select size="large" placeholder={t('add_page.note_applicant_status')}>
                 <Option value="waiting_interview">
-                  {t('Lên lịch phỏng vấn')}
+                  {t('add_page.waiting_interview')}
                 </Option>
-                <Option value="interviewed">{t('Đã phỏng vấn')}</Option>
-                <Option value="waiting_result">{t('Đang đợi kết quả')}</Option>
-                <Option value="accepted">{t('Đã nhận')}</Option>
-                <Option value="rejected">{t('Không đạt')}</Option>
+                <Option value="interviewed">{t('add_page.interviewed')}</Option>
               </Select>
             </Form.Item>
           </Col>
           <Col span={24}>
             <Form.Item
-              label={t('Ngày phỏng vấn')}
+              label={t('add_page.interview_date')}
               name="interview_date"
               style={{ textAlign: 'left' }}
             >
               <DatePicker
                 size="large"
                 style={{ width: '100%' }}
-                placeholder="Chọn ngày phỏng vấn"
+                placeholder={t('add_page.note_date')}
                 format="YYYY-MM-DD"
               />
             </Form.Item>

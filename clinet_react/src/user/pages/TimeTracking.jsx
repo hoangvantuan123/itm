@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { GetTimekeepingUser } from '../../features/timekeeping/getTimeKeeping';
+import moment from 'moment';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -157,7 +158,13 @@ export default function TimeTracking({ isMobile }) {
   };
 
   const getColorForDate = (date) => {
+    const today = moment().startOf('day'); 
     const dateStr = date.format('YYYY-MM-DD');
+
+    if (date.isSame(today, 'day') || date.isAfter(today)) {
+      return '';
+    }
+
     const dateData = data.find((item) => item.date === dateStr);
 
     if (dateData) {
@@ -165,15 +172,15 @@ export default function TimeTracking({ isMobile }) {
       const hasDeparture = dateData.records.some((rec) => rec.wk_item_seq === 43);
 
       if (hasArrival && hasDeparture) {
-        return 'bg-green-200 text-green-800';
+        return 'bg-green-200 text-green-800'; 
       } else if (hasArrival || hasDeparture) {
-        return 'bg-yellow-200 text-yellow-800';
-      } else {
-        return 'bg-red-200 text-red-800';
+        return 'bg-yellow-200 text-yellow-800'; 
       }
     }
-    return '';
+
+    return 'bg-red-200 text-red-800';
   };
+
 
   const monthDates = Array.from(
     { length: selectedDate.daysInMonth() },
@@ -255,7 +262,7 @@ export default function TimeTracking({ isMobile }) {
         onClose={() => setDrawerVisible(false)}
         open={drawerVisible}
         width={700}
-       
+
       >
         <Table
           dataSource={tableData}

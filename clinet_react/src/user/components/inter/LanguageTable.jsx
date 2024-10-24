@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Form, Table, Input, Drawer, Button, Row, Col, Card, InputNumber } from 'antd';
-
+import { useTranslation } from 'react-i18next';
 const LanguageTable = ({ form, dataSource }) => {
   const [localDataSource, setLocalDataSource] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [drawerContent, setDrawerContent] = useState(null);
-
+  const { t } = useTranslation();
   useEffect(() => {
     if (dataSource && dataSource.length > 0) {
       setLocalDataSource(dataSource);
@@ -45,7 +45,7 @@ const LanguageTable = ({ form, dataSource }) => {
 
   const languageColumns = [
     {
-      title: 'Ngôn ngữ',
+      title: t('language_columns.language'),
       dataIndex: 'language',
       render: (text, record) => (
         <Input
@@ -57,7 +57,7 @@ const LanguageTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Loại chứng chỉ',
+      title: t('language_columns.certificate_type'),
       dataIndex: 'certificate_type',
       render: (text, record) => (
         <Input
@@ -69,7 +69,7 @@ const LanguageTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Điểm số',
+      title: t('language_columns.score'),
       dataIndex: 'score',
       render: (text, record) => (
         <Input
@@ -81,7 +81,7 @@ const LanguageTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Trình độ',
+      title: t('language_columns.level'),
       dataIndex: 'level',
       render: (text, record) => (
         <Input
@@ -128,10 +128,10 @@ const LanguageTable = ({ form, dataSource }) => {
       {localDataSource.map((user) => (
         <Col span={24} key={user.id} style={{ marginBottom: 16 }}>
           <Card onClick={() => handleCardClick('languages', user)}>
-            <p><strong>Ngôn ngữ:</strong> {user.language}</p>
-            <p><strong>Chứng chỉ:</strong> {user.certificate_type}</p>
-            <p><strong>Điểm số:</strong> {user.score}</p>
-            <p><strong>Trình độ:</strong> {user.level}</p>
+            <p><strong>{ t('language_columns.language')}:</strong> {user.language}</p>
+            <p><strong>{ t('language_columns.certificate_type')}:</strong> {user.certificate_type}</p>
+            <p><strong>{ t('language_columns.score')}:</strong> {user.score}</p>
+            <p><strong>{ t('language_columns.level')}:</strong> {user.level}</p>
           </Card>
         </Col>
       ))}
@@ -165,16 +165,16 @@ const LanguageTable = ({ form, dataSource }) => {
         footer={
           <div style={{ textAlign: 'right' }}>
             <Button onClick={handleDrawerClose} style={{ marginRight: 8 }}>
-              Hủy
+              { t('hr_recruitment_1_1.exit')}
             </Button>
             <Button   className=" border-gray-200 bg-indigo-600 text-white shadow-sm text-sm" onClick={handleDrawerSave}>
-              Lưu
+            { t('hr_recruitment_1_1.save')}
             </Button>
           </div>
         }
       >
         <div className="mb-4">
-          <label>Ngôn ngữ</label>
+          <label> { t('language_columns.language')}</label>
           <Input
             size="large"
             value={drawerContent?.record?.language || ''}
@@ -182,7 +182,7 @@ const LanguageTable = ({ form, dataSource }) => {
           />
         </div>
         <div className="mb-4">
-          <label>Loại chứng chỉ</label>
+          <label> { t('language_columns.certificate_type')}</label>
           <Input
             size="large"
             value={drawerContent?.record?.certificate_type}
@@ -190,7 +190,7 @@ const LanguageTable = ({ form, dataSource }) => {
           />
         </div>
         <div className="mb-4">
-          <label>Điểm số</label>
+          <label> { t('language_columns.score')}</label>
           <Input
             size="large"
             value={drawerContent?.record?.score }
@@ -199,7 +199,7 @@ const LanguageTable = ({ form, dataSource }) => {
           />
         </div>
         <div className="mb-4">
-          <label>Trình độ</label>
+          <label> { t('language_columns.level')}</label>
           <Input
             size="large"
             value={drawerContent?.record?.level || ''}

@@ -32,7 +32,7 @@ const WorkerDeclarationPassForm = () => {
         const routerPath = `/public/apply/form/2/${data.router}`
         navigate(`${routerPath}`)
       } else {
-        message.error('Vui lòng thử lại sau.')
+        message.error('api_status.error')
       }
     } catch (error) {
       const routerPath = `/public/apply/form/2/new`
@@ -50,13 +50,15 @@ const WorkerDeclarationPassForm = () => {
       <Menu.Item key="English">{t('English')}</Menu.Item>
       <Menu.Item key="Français">{t('Français')}</Menu.Item>
       <Menu.Item key="日本語">{t('日本語')}</Menu.Item>
+      <Menu.Item key="한국어">{t('한국어')}</Menu.Item>
     </Menu>
+
   )
 
   return (
     <div className="flex flex-col h-screen bg-white p-6">
       <div className="flex items-center justify-between mb-4">
-      <div className="flex items-center justify-between ">
+        <div className="flex items-center justify-between ">
           <img src={Logo} alt="Logo" className="mr-2" style={{ maxHeight: '40px' }} />
         </div>
         <Dropdown overlay={menu} trigger={['click']}>
@@ -68,7 +70,7 @@ const WorkerDeclarationPassForm = () => {
 
       <div className="flex-grow flex flex-col items-center justify-center">
         <Title level={2} className="text-center">
-          {t('Biểu mẫu khai báo nhân sự trực tuyến!')}
+          {t('page_phone_pass.title_note_1')}
         </Title>
         <Text
           type="secondary"
@@ -78,7 +80,7 @@ const WorkerDeclarationPassForm = () => {
             textAlign: 'center',
           }}
         >
-          {t('Vui lòng nhập số điện thoại của bạn để bắt đầu.')}
+          {t('page_phone_pass.title_note_2')}
         </Text>
 
         {loading ? (
@@ -91,11 +93,11 @@ const WorkerDeclarationPassForm = () => {
             <Form.Item
               name="phoneNumber"
               rules={[
-                { required: true, message: t('Vui lòng nhập số điện thoại!') },
-                { len: 10, message: t('Số điện thoại phải có 10 chữ số!') },
+                { required: true, message: t('page_phone_pass.rules_phone_number') },
+                { len: 10, message: t('page_phone_pass.rules_phone_number_2') },
                 {
                   pattern: /^\d+$/,
-                  message: t('Số điện thoại chỉ bao gồm các chữ số!'),
+                  message: t('page_phone_pass.rules_phone_number_6'),
                 },
               ]}
             >
@@ -103,7 +105,7 @@ const WorkerDeclarationPassForm = () => {
                 value={phoneNumber}
                 className="bg-white hover:bg-white"
                 onChange={(e) => setPhoneNumber(e.target.value)}
-                placeholder={t('Nhập số điện thoại')}
+                placeholder={t('page_phone_pass.note_phone_number')}
                 type="tel"
                 size="large"
                 inputMode="numeric"
@@ -116,7 +118,7 @@ const WorkerDeclarationPassForm = () => {
                 className="w-full rounded-lg h-full border-none bg-indigo-600 text-white shadow-sm"
                 htmlType="submit"
               >
-                {t('Tiếp tục')}
+                {t('page_phone_pass.submit')}
               </Button>
             </Form.Item>
           </Form>

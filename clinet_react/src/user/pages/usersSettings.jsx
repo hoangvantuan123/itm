@@ -265,7 +265,7 @@ export default function UsersSettings({ permissions }) {
     const columns = [
       {
         title: 'CID',
-        dataIndex: 'employee_code',
+        dataIndex:  t('column_table.CID'),
         key: 'employee_code',
         sorter: (a, b) => {
           const nameA = a.employee_code || ''
@@ -275,7 +275,7 @@ export default function UsersSettings({ permissions }) {
         ...(visibleColumns.employee_code ? {} : { render: () => null }),
       },
       {
-        title: 'Tên',
+        title: t('column_table.name_user'),
         dataIndex: 'name_user',
         key: 'name_user',
         sorter: (a, b) => {
@@ -286,7 +286,7 @@ export default function UsersSettings({ permissions }) {
         ...(visibleColumns.name_user ? {} : { render: () => null }),
       },
       {
-        title: 'Đăng nhập',
+        title: t('column_table.login'),
         dataIndex: 'login',
         key: 'login',
         sorter: (a, b) => {
@@ -297,7 +297,7 @@ export default function UsersSettings({ permissions }) {
         ...(visibleColumns.login ? {} : { render: () => null }),
       },
       {
-        title: 'Ngôn ngữ',
+        title: t('column_table.language'),
         dataIndex: 'language',
         key: 'language',
         sorter: (a, b) => {
@@ -309,7 +309,7 @@ export default function UsersSettings({ permissions }) {
         ...(visibleColumns.language ? {} : { render: () => null }),
       },
       {
-        title: 'Trạng thái',
+        title: t('column_table.active'),
         dataIndex: 'active',
         key: 'active',
         sorter: (a, b) => {
@@ -324,13 +324,13 @@ export default function UsersSettings({ permissions }) {
 
           if (active === true) {
             color = 'success'
-            displayText = `${t('Đã kết nối')}`
+            displayText = `${t('column_table.success')}`
           } else if (active === false) {
             color = 'error'
-            displayText = `${t('Chưa kết nối')}`
+            displayText = `${t('column_table.error')}`
           } else {
             color = 'default'
-            displayText = `${t('Chưa xác định')}`
+            displayText = `${t('column_table.default')}`
           }
 
           return (
@@ -370,7 +370,7 @@ export default function UsersSettings({ permissions }) {
                 size="large"
                 onClick={handleAddRow}
               >
-                Thêm hàng mới
+                 {t('column_table.add_row')}
               </span>
             )
           }
@@ -380,7 +380,7 @@ export default function UsersSettings({ permissions }) {
             pageSize: limit,
             total: total,
             showSizeChanger: true,
-            showTotal: (total) => `Tổng ${total} mục`,
+            showTotal: (total) => `${t('column_table.total')} ${total} ${t('column_table.item')}`,
             onChange: (page, pageSize) =>
               handleTableChange({ current: page, pageSize }),
           }}
@@ -464,7 +464,7 @@ export default function UsersSettings({ permissions }) {
 
             <div className="p-2 flex items-center justify-between">
               <h1 className="text-xl font-bold text-gray-900 sm:text-xl ">
-                {t(' Người dùng')}
+                {t('page.users')}
               </h1>
 
            
@@ -488,7 +488,7 @@ export default function UsersSettings({ permissions }) {
                               className=" rounded-lg h-full border-gray-200 bg-indigo-600 hover:bg-none text-white shadow-sm text-sm"
                         size="large"
                       >
-                        {t('Thêm')}
+                        {t('page.add')}
                       </Button>
                     )}
 

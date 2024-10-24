@@ -185,7 +185,7 @@ export default function ImportAction({
         <span className=" flex items-center gap-2">
           {' '}
           <ImportIcon />
-          Import dữ liệu
+          {t('field_action.import')}
         </span>
       </Menu.Item>
     </Menu>

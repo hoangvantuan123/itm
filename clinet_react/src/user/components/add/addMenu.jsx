@@ -19,8 +19,6 @@ import {
   Alert,
   Spin,
 } from 'antd'
-import { DownOutlined } from '@ant-design/icons'
-import { registerUser } from '../../../features/auth/API/registerAPI'
 import { PostMenu } from '../../../features/menu/postMenu'
 import { GetAllMenu } from '../../../features/menu/getAllMenu'
 const { Title } = Typography

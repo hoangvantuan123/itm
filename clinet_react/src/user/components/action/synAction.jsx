@@ -55,13 +55,13 @@ export default function SynAction({ fetchData, isOpen, selectedRowKeys }) {
 
   return (
     <>
-     <button   onClick={showModal} className="border-[1.3px] border-[#d9d9d9] rounded-lg p-[0.6rem] w-auto flex items-center space-x-2 bg-white hover:bg-gray-100">
-          <SynIcon />
-          <span className="text-gray-500">{t('Đồng bộ')}</span>
-        </button>
+      <button onClick={showModal} className="border-[1.3px] border-[#d9d9d9] rounded-lg p-[0.6rem] w-auto flex items-center space-x-2 bg-white hover:bg-gray-100">
+        <SynIcon />
+        <span className="text-gray-500">{t('field_action.syn')}</span>
+      </button>
 
       <Modal
-        title={t('Đồng bộ dữ liệu')}
+        title={t('field_action.syn_title')}
         visible={isModalVisible}
         onOk={handleConfirm}
         confirmLoading={loading}
@@ -72,7 +72,7 @@ export default function SynAction({ fetchData, isOpen, selectedRowKeys }) {
             onClick={handleCancel}
             style={{ backgroundColor: '#f5f5f5', borderColor: '#d9d9d9' }}
           >
-            {t('Thoát')}
+            {t('field_action.cancel')}
           </Button>,
           <Button
             key="submit"
@@ -80,11 +80,11 @@ export default function SynAction({ fetchData, isOpen, selectedRowKeys }) {
             onClick={handleConfirm}
             style={{ backgroundColor: '#1890ff', borderColor: '#1890ff' }}
           >
-            {t('Lưu')}
+            {t('field_action.cancel')}
           </Button>,
         ]}
       >
-        <p>{t('Bạn có chắc chắn đồng bộ dữ liệu sang ERP không')}?</p>
+        <p>{t('field_action.syn_content')}?</p>
       </Modal>
     </>
   )

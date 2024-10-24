@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Form, Table, Input, Drawer, Button, Row, Col, Card, InputNumber } from 'antd';
-
+import { useTranslation } from 'react-i18next';
 const EducationLanguageTable = ({ form, dataSource }) => {
+  const { t } = useTranslation();
   const [localDataSource, setLocalDataSource] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -85,9 +86,9 @@ const EducationLanguageTable = ({ form, dataSource }) => {
       {localDataSource.map(user => (
         <Col span={24} key={user.id} style={{ marginBottom: 16 }}>
           <Card onClick={() => handleCardClick('family', user)}>
-            <p><strong>Trình độ:</strong> {user.highest_education_level}</p>
-            <p><strong>Trường:</strong> {user.school}</p>
-            <p><strong>Chuyên ngành:</strong> {user.major}</p>
+          <p><strong>{ t('education_columns.highest_education_level')}:</strong> {user.highest_education_level}</p>
+            <p><strong>{ t('education_columns.school')}:</strong> {user.school}</p>
+            <p><strong>{ t('education_columns.major')}:</strong> {user.major}</p>
           </Card>
         </Col>
       ))}
@@ -96,7 +97,7 @@ const EducationLanguageTable = ({ form, dataSource }) => {
 
   const educationColumns = [
     {
-      title: 'Trình độ',
+      title:  t('education_columns.highest_education_level'),
       dataIndex: 'highest_education_level',
       render: (text, record) => (
         <Input
@@ -110,7 +111,7 @@ const EducationLanguageTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Trường',
+      title:  t('education_columns.school'),
       dataIndex: 'school',
       render: (text, record) => (
         <Input
@@ -122,7 +123,7 @@ const EducationLanguageTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Chuyên ngành',
+      title:   t('education_columns.major'),
       dataIndex: 'major',
       render: (text, record) => (
         <Input
@@ -134,7 +135,7 @@ const EducationLanguageTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Năm học',
+      title:   t('education_columns.school_year'),
       dataIndex: 'school_year',
       render: (text, record) => (
         <Input
@@ -146,7 +147,7 @@ const EducationLanguageTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Năm bắt đầu',
+      title:   t('education_columns.year_ended'),
       dataIndex: 'year_ended',
       render: (text, record) => (
         <Input
@@ -158,7 +159,7 @@ const EducationLanguageTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Năm tốt nghiệp',
+      title:   t('education_columns.year_of_graduation'),
       dataIndex: 'year_of_graduation',
       render: (text, record) => (
         <Input
@@ -172,7 +173,7 @@ const EducationLanguageTable = ({ form, dataSource }) => {
       ),
     },
     {
-      title: 'Xếp loại',
+      title:  t('education_columns.classification'),
       dataIndex: 'classification',
       render: (text, record) => (
         <Input
@@ -213,18 +214,18 @@ const EducationLanguageTable = ({ form, dataSource }) => {
         closable={false}
         footer={
           <div style={{ textAlign: 'right' }}>
-            <Button onClick={handleDrawerClose} style={{ marginRight: 8 }}>
-              Hủy
-            </Button>
-            <Button   className=" border-gray-200 bg-indigo-600 text-white shadow-sm text-sm" onClick={handleDrawerSave}>
-              Lưu
-            </Button>
-          </div>
+          <Button onClick={handleDrawerClose} style={{ marginRight: 8 }}>
+          {  t('hr_recruitment_1_1.exit')}
+          </Button>
+          <Button   className=" border-gray-200 bg-indigo-600 text-white shadow-sm text-sm" onClick={handleDrawerSave}>
+          {  t('hr_recruitment_1_1.save')}
+          </Button>
+        </div>
         }
       >
         <>
-          <div className="mb-4">
-            <label>Trình độ</label>
+        <div className="mb-4">
+            <label>{  t('education_columns.highest_education_level')}</label>
             <Input
               size="large"
               value={drawerContent?.record?.highest_education_level}
@@ -234,7 +235,7 @@ const EducationLanguageTable = ({ form, dataSource }) => {
             />
           </div>
           <div className="mb-4">
-            <label>Trường học</label>
+            <label>{  t('education_columns.school')}</label>
             <Input
               size="large"
               value={drawerContent?.record?.school}
@@ -242,7 +243,7 @@ const EducationLanguageTable = ({ form, dataSource }) => {
             />
           </div>
           <div className="mb-4">
-            <label>Chuyên nghành</label>
+            <label>{  t('education_columns.major')}</label>
             <Input
               size="large"
               value={drawerContent?.record?.major}
@@ -250,7 +251,7 @@ const EducationLanguageTable = ({ form, dataSource }) => {
             />
           </div>
           <div className="mb-4">
-            <label>Năm học</label>
+            <label>{  t('education_columns.school_year')}</label>
             <Input
               size="large"  className="w-full"
               value={drawerContent?.record?.school_year }
@@ -258,7 +259,7 @@ const EducationLanguageTable = ({ form, dataSource }) => {
             />
           </div>
           <div className="mb-4">
-            <label>Năm bắt đầu</label>
+            <label>{  t('education_columns.year_ended')}</label>
             <Input
               size="large"
               value={drawerContent?.record?.year_ended }
@@ -267,7 +268,7 @@ const EducationLanguageTable = ({ form, dataSource }) => {
             />
           </div>
           <div className="mb-4">
-            <label>Năm tốt nghiệp</label>
+            <label>{  t('education_columns.year_of_graduation')}</label>
             <Input
               size="large"  className="w-full"
               value={drawerContent?.record?.year_of_graduation}
@@ -277,7 +278,7 @@ const EducationLanguageTable = ({ form, dataSource }) => {
             />
           </div>
           <div className="mb-4">
-            <label>Xếp loại</label>
+            <label>{  t('education_columns.classification')}</label>
             <Input 
               size="large"
               value={drawerContent?.record?.classification}

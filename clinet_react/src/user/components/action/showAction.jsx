@@ -76,7 +76,7 @@ export default function ShowAction({
   }
   const handleDeleteGroups = async () => {
     try {
-      message.loading({ content: 'Đang xóa các nhóm...', key: 'delete', duration: 0 });
+      message.loading({ content: 'api_status.loading', key: 'delete', duration: 0 });
 
       const response = await DeleteResGroups(selectedRowKeys);
 
@@ -84,19 +84,18 @@ export default function ShowAction({
         setSelectedRowKeys([]);
         setActionUsers('');
         fetchDataUser();
-        message.success({ content: 'Xóa thành công các nhóm', key: 'delete', duration: 2 });
+        message.success({ content: 'api_satus.delete_succes_action_1', key: 'delete', duration: 2 });
       } else {
-        message.error({ content: 'Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại', key: 'delete', duration: 2 });
+        message.error({ content: 'api_satus.delete_error_action', key: 'delete', duration: 2 });
       }
     } catch (error) {
-      console.error('Lỗi khi xóa nhóm:', error);
-      message.error({ content: 'Có lỗi xảy ra, vui lòng thử lại', key: 'delete', duration: 2 });
+      message.error({ content: 'api_status.delete_error_action_2', key: 'delete', duration: 2 });
     }
   };
 
   const handleDeleteUsers = async () => {
     try {
-      message.loading({ content: 'Đang xóa tài khoản...', key: 'delete', duration: 0 });
+      message.loading({ content: `${t('api_status.loading')}`, key: 'delete', duration: 0 });
 
       const response = await DeleteResUsers(selectedRowKeys);
 
@@ -104,18 +103,18 @@ export default function ShowAction({
         setSelectedRowKeys([]);
         setActionUsers('');
         fetchDataUser();
-        message.success({ content: 'Xóa thành công tài khoản', key: 'delete', duration: 2 });
+        message.success({ content: `${t('api_satus.delete_succes_action_1')}`, key: 'delete', duration: 2 });
       } else {
-        message.error({ content: 'Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại', key: 'delete', duration: 2 });
+        message.error({ content: 'api_satus.delete_error_action', key: 'delete', duration: 2 });
       }
     } catch (error) {
-      message.error({ content: 'Có lỗi xảy ra, vui lòng thử lại', key: 'delete', duration: 2 });
+      message.error({ content: 'api_status.delete_error_action_2', key: 'delete', duration: 2 });
     }
   };
 
   const handleDeleteMenus = async () => {
     try {
-      message.loading({ content: `${t('Đang xóa các nhóm...')}`, key: 'delete', duration: 0 });
+      message.loading({ content: `${t('api_status.loading')}`, key: 'delete', duration: 0 });
 
       const response = await DeleteMenus(selectedRowKeys);
 
@@ -123,19 +122,18 @@ export default function ShowAction({
         setSelectedRowKeys([]);
         setActionUsers('');
         fetchData();
-        message.success({ content: `${t('Xóa thành công các nhóm')}`, key: 'delete', duration: 2 });
+        message.success({ content: `${t('api_satus.delete_succes_action_1')}`, key: 'delete', duration: 2 });
       } else {
-        message.error({ content: `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`, key: 'delete', duration: 2 });
+        message.error({ content: `${t('api_satus.delete_error_action')}`, key: 'delete', duration: 2 });
       }
     } catch (error) {
-      console.error(`${t('Lỗi khi xóa nhóm:')}`, error);
-      message.error({ content: `${t('Có lỗi xảy ra, vui lòng thử lại')}`, key: 'delete', duration: 2 });
+      message.error({ content: `${t('api_status.delete_error_action_2')}`, key: 'delete', duration: 2 });
     }
   };
 
   const handleDeleteHrEmployees = async () => {
     try {
-      message.loading({ content: `${t('Đang xóa các nhóm...')}`, key: 'delete', duration: 0 });
+      message.loading({ content: `${t('api_status.loading')}`, key: 'delete', duration: 0 });
 
       const response = await DeleteHrEmployeeIds(selectedRowKeys);
 
@@ -143,19 +141,18 @@ export default function ShowAction({
         setSelectedRowKeys([]);
         setActionUsers('');
         fetchDataUser();
-        message.success({ content: `${t('Xóa thành công các nhóm')}`, key: 'delete', duration: 2 });
+        message.success({ content: `${t('api_satus.delete_succes_action_1')}`, key: 'delete', duration: 2 });
       } else {
-        message.error({ content: `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`, key: 'delete', duration: 2 });
+        message.error({ content: `${t('api_satus.delete_error_action')}`, key: 'delete', duration: 2 });
       }
     } catch (error) {
-      console.error(`${t('Lỗi khi xóa nhóm:')}`, error);
-      message.error({ content: `${t('Có lỗi xảy ra, vui lòng thử lại')}`, key: 'delete', duration: 2 });
+      message.error({ content: `${t('api_status.delete_error_action_2')}`, key: 'delete', duration: 2 });
     }
   };
 
   const handleDeleteHrInfoIds = async () => {
     try {
-      message.loading({ content: `${t('Đang xóa các nhóm...')}`, key: 'delete', duration: 0 });
+      message.loading({ content: `${t('api_status.loading')}`, key: 'delete', duration: 0 });
 
       const response = await DeleteHrInfoIds(selectedRowKeys);
 
@@ -163,19 +160,19 @@ export default function ShowAction({
         setSelectedRowKeys([]);
         setActionUsers('');
         fetchDataUser();
-        message.success({ content: `${t('Xóa thành công các nhóm')}`, key: 'delete', duration: 2 });
+        message.success({ content: `${t('api_satus.delete_succes_action_1')}`, key: 'delete', duration: 2 });
       } else {
-        message.error({ content: `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`, key: 'delete', duration: 2 });
+        message.error({ content: `${t('api_satus.delete_error_action')}`, key: 'delete', duration: 2 });
       }
     } catch (error) {
-      message.error({ content: `${t('Có lỗi xảy ra, vui lòng thử lại')}`, key: 'delete', duration: 2 });
+      message.error({ content: `${t('api_status.delete_error_action_2')}`, key: 'delete', duration: 2 });
     }
   };
 
 
   const handleDeleteHrInterviewCandidates = async () => {
     try {
-      message.loading({ content: `${t('Đang xóa các nhóm...')}`, key: 'delete', duration: 0 });
+      message.loading({ content: `${t('api_status.loading')}`, key: 'delete', duration: 0 });
 
       const response = await DeleteHrInterviewCandidates(selectedRowKeys);
 
@@ -183,18 +180,18 @@ export default function ShowAction({
         fetchDataUser();
         setSelectedRowKeys([]);
         setActionUsers('');
-        message.success({ content: `${t('Xóa thành công các nhóm')}`, key: 'delete', duration: 2 });
+        message.success({ content: `${t('api_satus.delete_succes_action_1')}`, key: 'delete', duration: 2 });
       } else {
-        message.error({ content: `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`, key: 'delete', duration: 2 });
+        message.error({ content: `${t('api_satus.delete_error_action')}`, key: 'delete', duration: 2 });
       }
     } catch (error) {
-      message.error({ content: `${t('Có lỗi xảy ra, vui lòng thử lại')}`, key: 'delete', duration: 2 });
+      message.error({ content: `${t('api_status.delete_error_action_2')}`, key: 'delete', duration: 2 });
     }
   };
 
   const handleDeleteHrInter = async () => {
     try {
-      message.loading({ content: `${t('Đang xóa các nhóm...')}`, key: 'delete', duration: 0 });
+      message.loading({ content: `${t('api_status.loading')}`, key: 'delete', duration: 0 });
 
       const response = await DeleteHrInterIds(selectedRowKeys);
 
@@ -204,20 +201,20 @@ export default function ShowAction({
         setActionUsers('');
 
         message.success({
-          content: `${t('Xóa thành công các nhóm')}`,
+          content: `${t('api_satus.delete_succes_action_1')}`,
           key: 'delete',
           duration: 2
         });
       } else {
         message.error({
-          content: `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
+          content: `${t('api_satus.delete_error_action')}`,
           key: 'delete',
           duration: 2
         });
       }
     } catch (error) {
       message.error({
-        content: `${t('Có lỗi xảy ra, vui lòng thử lại')}`,
+        content: `${t('api_status.delete_error_action_2')}`,
         key: 'delete',
         duration: 2
       });
@@ -226,7 +223,7 @@ export default function ShowAction({
 
   const handleDeleteHrSalary = async () => {
     try {
-      message.loading({ content: `${t('Đang xóa các nhóm...')}`, key: 'delete' });
+      message.loading({ content: `${t('api_status.loading')}`, key: 'delete' });
 
       const response = await DeleteHrSalaryIds(selectedRowKeys);
 
@@ -236,20 +233,20 @@ export default function ShowAction({
         setActionUsers('');
 
         message.success({
-          content: `${t('Xóa thành công các nhóm')}`,
+          content: `${t('api_satus.delete_succes_action_1')}`,
           key: 'delete',
           duration: 2
         });
       } else {
         message.error({
-          content: `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
+          content: `${t('api_satus.delete_error_action')}`,
           key: 'delete',
           duration: 2
         });
       }
     } catch (error) {
       message.error({
-        content: `${t('Có lỗi xảy ra, vui lòng thử lại')}`,
+        content: `${t('api_status.delete_error_action_2')}`,
         key: 'delete',
         duration: 2
       });
@@ -257,7 +254,7 @@ export default function ShowAction({
   };
   const handleDeleteKeyImport = async () => {
     try {
-      message.loading({ content: `${t('Đang xóa các nhóm...')}`, key: 'delete' });
+      message.loading({ content: `${t('api_status.loading')}`, key: 'delete' });
 
       const response = await DeleteKeyImports(selectedRowKeys);
 
@@ -267,20 +264,20 @@ export default function ShowAction({
         setActionUsers('');
 
         message.success({
-          content: `${t('Xóa thành công các nhóm')}`,
+          content: `${t('api_satus.delete_succes_action_1')}`,
           key: 'delete',
           duration: 2
         });
       } else {
         message.error({
-          content: `${t('Xóa thất bại: Yêu cầu không thành công, vui lòng thử lại')}`,
+          content: `${t('api_satus.delete_error_action')}`,
           key: 'delete',
           duration: 2
         });
       }
     } catch (error) {
       message.error({
-        content: `${t('Có lỗi xảy ra, vui lòng thử lại')}`,
+        content: `${t('api_status.delete_error_action_2')}`,
         key: 'delete',
         duration: 2
       });
@@ -296,10 +293,10 @@ export default function ShowAction({
     }
 
     const modalConfig = {
-      title: 'Xác nhận xóa',
-      content: 'Bạn có chắc chắn muốn xóa các nhóm đã chọn?',
-      okText: 'Xóa',
-      cancelText: 'Hủy',
+      title: t('modal_config.title'),
+      content:  t('modal_config.content'),
+      okText: t('modal_config.ok_text'),
+      cancelText:  t('modal_config.cancel_text'),
       okButtonProps: {
         style: {
           backgroundColor: '#ff4d4f',
@@ -364,21 +361,21 @@ export default function ShowAction({
 
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="action_show_1" onClick={handleExportOpenIds}>{t('Xuất danh sách đã chọn')}</Menu.Item>
+      <Menu.Item key="action_show_1" onClick={handleExportOpenIds}>{t('field_action.export_selected_list')}</Menu.Item>
 
-      <Menu.Item key="action_show_2" onClick={handleExportOpen}>{t('Xuất danh theo bộ lọc')}</Menu.Item>
-      <Menu.Item key="action_show_3">{t('Lưu trữ')}</Menu.Item>
-      <Menu.Item key="action_show_4">{t('Bỏ lưu trữ')}</Menu.Item>
+      <Menu.Item key="action_show_2" onClick={handleExportOpen}>{t('field_action.export_by_filter')}</Menu.Item>
+      <Menu.Item key="action_show_3">{t('field_action.storage')}</Menu.Item>
+      <Menu.Item key="action_show_4">{t('field_action.unarchive')}</Menu.Item>
 
 
       {actionUsers === 'actionUsers' && (
-        <Menu.Item key="action_show_6">{t('Đổi mật khẩu')}</Menu.Item>
+        <Menu.Item key="action_show_6">{t('field_action.change_password')}</Menu.Item>
       )}
 
       {canDelete && (
         <Menu.Item key="action_show_5">
           {' '}
-          <span className="w-full text-red-700">{t('Xóa')}</span>
+          <span className="w-full text-red-700">{t('field_action.delete')}</span>
         </Menu.Item>
       )}
     </Menu>
@@ -397,7 +394,7 @@ export default function ShowAction({
       >
         <button className="border-[1.3px] border-[#d9d9d9] rounded-lg p-[0.6rem] w-auto flex items-center space-x-2 bg-white hover:bg-gray-100">
           <SettingIcon />
-          <span className="text-gray-500">{t('Actions')}</span>
+          <span className="text-gray-500">{t('field_action.actions')}</span>
         </button>
       </Dropdown>
       {selectedMenuKey === 'action_show_6' && (

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Form, Table, Input, DatePicker, Layout, Card, Row, Col, Drawer, Button } from 'antd';
 import moment from 'moment';
-
+import { useTranslation } from 'react-i18next';
 const { Content } = Layout;
 
 const FamilyInfoTable = ({ form, dataSource, children }) => {
@@ -10,7 +10,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [drawerContent, setDrawerContent] = useState(null);
-
+  const { t } = useTranslation();
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 820);
@@ -121,7 +121,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
 
   const columns = [
     {
-      title: 'Quan hệ',
+      title: t('family_columns.relationship'),
       dataIndex: 'relationship',
       render: (text, record, index) => (
         <>
@@ -130,7 +130,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
       ),
     },
     {
-      title: 'Họ tên',
+      title: t('family_columns.full_name'),
       dataIndex: 'full_name',
       render: (text, record, index) => (
         <Input
@@ -143,7 +143,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
       ),
     },
     {
-      title: 'Số điện thoại',
+      title: t('family_columns.phone_number'),
       dataIndex: 'phone_number',
       render: (text, record, index) => (
         <Input
@@ -162,7 +162,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
 
   const columnsChildren = [
     {
-      title: 'Họ tên',
+      title: t('children_columns.full_name'),
       dataIndex: 'children_name',
       render: (text, record, index) => (
         <Input
@@ -175,7 +175,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
       ),
     },
     {
-      title: 'Năm sinh',
+      title: t('children_columns.children_birth_date'),
       dataIndex: 'children_birth_date',
       render: (text, record, index) => (
         <DatePicker
@@ -193,7 +193,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
       ),
     },
     {
-      title: 'Giới tính',
+      title: t('children_columns.children_gender'),
       dataIndex: 'children_gender',
       render: (text, record, index) => (
         <Input
@@ -213,13 +213,13 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
         <Col span={24} key={user.id} style={{ marginBottom: 16 }}>
           <Card onClick={() => handleCardClick('family', user)}>
             <p>
-              <strong>Mối quan hệ:</strong> {user.relationship}
+              <strong>{ t('family_columns.relationship')}:</strong> {user.relationship}
             </p>
             <p>
-              <strong>Họ tên:</strong> {user.full_name}
+              <strong>{ t('family_columns.full_name')}:</strong> {user.full_name}
             </p>
             <p>
-              <strong>Số điện thoại:</strong> {user.phone_number}
+              <strong>{ t('family_columns.phone_number')}:</strong> {user.phone_number}
             </p>
           </Card>
         </Col>
@@ -233,13 +233,13 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
         <Col span={24} key={user.id} style={{ marginBottom: 16 }}>
           <Card onClick={() => handleCardClick('children', user)}>
             <p>
-              <strong>Họ tên:</strong> {user.children_name}
+              <strong>{ t('children_columns.children_name')}:</strong> {user.children_name}
             </p>
             <p>
-              <strong>Ngày sinh:</strong> {user.children_birth_date}
+              <strong>{ t('children_columns.children_birth_date')}:</strong> {user.children_birth_date}
             </p>
             <p>
-              <strong>Giới tính:</strong> {user.children_gender}
+              <strong>{ t('children_columns.children_gender')}:</strong> {user.children_gender}
             </p>
           </Card>
         </Col>
@@ -268,13 +268,13 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
       )}
       {isMobile ? (
         <>
-          <h2 className="text-sm italic mb-4">Con cái</h2>
+          <h2 className="text-sm italic mb-4">{ t('hr_recruitment_1_1.title_note_14')}</h2>
           <Form.Item name="children">{renderKanban2()}</Form.Item>
         </>
       ) : (
         <>
           <Form.Item name="children">
-            <h2 className="text-sm italic mb-4">Con cái</h2>
+            <h2 className="text-sm italic mb-4">{ t('hr_recruitment_1_1.title_note_14')}</h2>
             <Table
               dataSource={childrenDataSource}
               columns={columnsChildren}
@@ -300,10 +300,10 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
         footer={
           <div style={{ textAlign: 'right' }}>
             <Button onClick={handleDrawerClose} style={{ marginRight: 8 }}>
-              Hủy
+            { t('hr_recruitment_1_1.exit')}
             </Button>
             <Button className=" border-gray-200 bg-indigo-600 text-white shadow-sm text-sm" onClick={handleDrawerSave}>
-              Lưu
+            { t('hr_recruitment_1_1.save')}
             </Button>
           </div>
         }
@@ -313,7 +313,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
             {drawerContent.type === 'family' ? (
               <>
                 <div className="mb-4">
-                  <label>Relationship</label>
+                  <label>   { t('family_columns.relationship')}</label>
                   <Input
                     size="large"
                     value={drawerContent.record.relationship}
@@ -322,7 +322,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
                   />
                 </div>
                 <div className="mb-4">
-                  <label>Full Name</label>
+                  <label> { t('family_columns.full_name')}</label>
                   <Input
                     size="large"
                     value={drawerContent.record.full_name}
@@ -330,7 +330,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
                   />
                 </div>
                 <div className="mb-4">
-                  <label>Phone Number</label>
+                  <label>{ t('family_columns.phone_number')}</label>
                   <Input
                     value={drawerContent.record.phone_number}
                     onChange={(e) => handleFieldChange('phone_number', e.target.value)}
@@ -343,7 +343,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
             ) : (
               <>
                 <div className="mb-4">
-                  <label>Children's Name</label>
+                  <label>{ t('children_columns.children_name')}</label>
                   <Input
                     size="large"
                     value={drawerContent.record.children_name}
@@ -351,7 +351,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
                   />
                 </div>
                 <div className="mb-4">
-                  <label>Children's Birth Date</label>
+                  <label>{ t('children_columns.children_birth_date')}</label>
                   <DatePicker
                     size="large"
                     value={drawerContent.record.children_birth_date ? moment(drawerContent.record.children_birth_date) : null}
@@ -363,7 +363,7 @@ const FamilyInfoTable = ({ form, dataSource, children }) => {
                   />
                 </div>
                 <div className="mb-4">
-                  <label>Children's Gender</label>
+                  <label>{ t('children_columns.children_gender')}</label>
                   <Input
                     size="large"
                     value={drawerContent.record.children_gender}

@@ -96,10 +96,10 @@ export default function FieldActionInter({
       
       <button    onClick={() => setIsDrawerVisible(true)}  className="border-[1.3px] border-[#d9d9d9] rounded-lg p-[0.6rem] w-auto flex items-center space-x-2 bg-white hover:bg-gray-100">
           <FieldIcon />
-          <span className="text-gray-500">{t('Filter')}</span>
+          <span className="text-gray-500">{t('field_action.filter')}</span>
         </button>
       <Drawer
-        title="Filter Options"
+        title={t('field_action.filter_options')}
         placement="right"
         onClose={() => setIsDrawerVisible(false)}
         visible={isDrawerVisible}
@@ -107,7 +107,7 @@ export default function FieldActionInter({
         closable={false}
         extra={[
           <Button key="cancel" onClick={() => setIsDrawerVisible(false)}>
-            {t('Thoát')}
+         {t('field_action.cancel')}
           </Button>,
           <Button
             key="submit"
@@ -115,17 +115,17 @@ export default function FieldActionInter({
             className="ml-2 border-gray-200 bg-indigo-600 text-white shadow-sm text-sm"
             onClick={handleApplyFilter}
           >
-            {t('Tìm kiếm')}
+         {t('field_action.save_search')}
           </Button>,
         ].filter(Boolean)}
       >
         <div className="mb-3">
-          <label className="block mb-1">Name:</label>
+          <label className="block mb-1">{t('field_action.name')}:</label>
           <Select
             mode="tags"
             value={nameTags}
             onChange={handleNameChange}
-            placeholder="Enter names"
+            placeholder={t('field_action.note_name')}
             size="large"
             className="w-full"
           >
@@ -137,7 +137,7 @@ export default function FieldActionInter({
           </Select>
         </div>
         <div className="mb-3">
-          <label className="block mb-1">Phone Number:</label>
+          <label className="block mb-1">{t('field_action.phone')}:</label>
           <Select
             mode="tags"
             value={phoneNumberTags}
@@ -155,12 +155,12 @@ export default function FieldActionInter({
         </div>
 
         <div className="mb-3">
-          <label className="block mb-1">Căn cước công dân:</label>
+          <label className="block mb-1">{t('field_action.id_number')}:</label>
           <Select
             mode="tags"
             value={citizenshipIdTags}
             onChange={handleCitizenshipIdChange}
-            placeholder="Enter Citizenship IDs"
+            placeholder={t('field_action.note_id_number')}
             size="large"
             className="w-full"
           >
@@ -172,7 +172,7 @@ export default function FieldActionInter({
           </Select>
         </div>
         <div className="mb-3">
-          <label className="blick mb-1"> Thời gian phỏng vấn</label>
+          <label className="blick mb-1"> {t('field_action.interview_date')}</label>
 
           <DatePicker
             value={interviewDate}
@@ -183,35 +183,35 @@ export default function FieldActionInter({
           />
         </div>
         <div className="mb-3">
-          <label className="blick mb-1"> Loại ứng viên</label>
+          <label className="blick mb-1"> {t('field_action.applicant_type')}</label>
           <Select
             mode="tags"
             value={applicantType}
             onChange={handtApplicantType}
-            placeholder="Loại ứng viên"
+            placeholder={t('field_action.applicant_type')}
             size="large"
             className="w-full"
           >
-            <Option value="worker">{t('Công nhân')}</Option>
-            <Option value="staff">{t('Nhân viên')}</Option>
+            <Option value="worker">{t('field_action.worker')}</Option>
+            <Option value="staff">{t('field_action.staff')}</Option>
           </Select>
         </div>
         <div className="mb-3">
-          <label className="blick mb-1"> Trạng thái</label>
+          <label className="blick mb-1"> {t('field_action.applicant_status')}</label>
           <Select
             mode="tags"
             value={applicantStatus}
             onChange={handtApplicantStatus}
-            placeholder="Trạng thái"
+            placeholder={t('field_action.applicant_status')}
             size="large"
             className="w-full"
           >
-            <Option value="waiting_interview">Lên lịch phỏng vấn</Option>
-            <Option value="interviewed">Đã phỏng vấn</Option>
+            <Option value="waiting_interview">{t('field_action.waiting_interview')}</Option>
+            <Option value="interviewed">{t('field_action.interviewed')}</Option>
           </Select>
         </div>
         <div className="mb-3">
-          <label className="blick mb-1"> Thời gian tạo</label>
+          <label className="blick mb-1"> {t('field_action.date_range_action_inter')}</label>
 
           <RangePicker
             value={dateRange}

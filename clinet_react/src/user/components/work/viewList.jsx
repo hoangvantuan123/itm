@@ -24,10 +24,10 @@ const ArrowRightIcon = () => {
       <path
         d="M8.91003 19.9201L15.43 13.4001C16.2 12.6301 16.2 11.3701 15.43 10.6001L8.91003 4.08008"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )
@@ -43,10 +43,10 @@ const ArrowLeftIcon = () => {
       <path
         d="M15 19.9201L8.47997 13.4001C7.70997 12.6301 7.70997 11.3701 8.47997 10.6001L15 4.08008"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )
@@ -145,7 +145,13 @@ export default function ListView({ setViewModeList, viewModeList }) {
   const monthDates = getMonthDates(selectedDate);
 
   const getColorForDate = (date) => {
+    const today = moment().startOf('day'); 
     const dateStr = date.format('YYYY-MM-DD');
+
+    if (date.isSame(today, 'day') || date.isAfter(today)) {
+      return '';
+    }
+
     const dateData = data.find((item) => item.date === dateStr);
 
     if (dateData) {
@@ -153,17 +159,17 @@ export default function ListView({ setViewModeList, viewModeList }) {
       const hasDeparture = dateData.records.some((rec) => rec.wk_item_seq === 43);
 
       if (hasArrival && hasDeparture) {
-        return 'bg-green-200 text-green-800';
+        return 'bg-green-200 text-green-800'; 
       } else if (hasArrival || hasDeparture) {
-        return 'bg-yellow-200 text-yellow-800';
-      } else {
-        return 'bg-red-200 text-red-800';
+        return 'bg-yellow-200 text-yellow-800'; 
       }
     }
-    return '';
+
+    return 'bg-red-200 text-red-800';
   };
 
-  // New function to process records and return an array of values
+
+
   const processRecords = (records) => {
     const values = {
       start: 0,
@@ -241,13 +247,13 @@ export default function ListView({ setViewModeList, viewModeList }) {
   const getLabel = (key) => {
     const labels = {
       start: t('hr_payroll.start'),
-      stop:  t('hr_payroll.stop'),
-      day_off:t('hr_payroll.sday_offtop'),
+      stop: t('hr_payroll.stop'),
+      day_off: t('hr_payroll.day_off'),
       overtime_normal_150: t('hr_payroll.overtime_normal_150'),
       overtime_normal_200: t('hr_payroll.overtime_normal_200'),
       overtime_normal_210: t('hr_payroll.overtime_normal_210'),
       at_night: t('hr_payroll.at_night'),
-      overtime_sunday_200:t('hr_payroll.overtime_sunday_200'),
+      overtime_sunday_200: t('hr_payroll.overtime_sunday_200'),
       overtime_sunday_270: t('hr_payroll.overtime_sunday_270'),
       overtime_holiday_300: t('hr_payroll.overtime_holiday_300'),
       overtime_holiday_390: t('hr_payroll.overtime_holiday_390'),

@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Input, Button, Drawer, Select, DatePicker, Radio } from 'antd'
-import { DownOutlined } from '@ant-design/icons'
-import { GetFilterHrInfoPageLimit } from '../../../features/hrRecruitment/getFilterHrInfoPageLimit'
 const { Option } = Select
 const { RangePicker } = DatePicker
 const FieldIcon = () => (
@@ -68,10 +66,10 @@ export default function FieldActionUsers({
     
       <button    onClick={() => setIsDrawerVisible(true)}  className="border-[1.3px] border-[#d9d9d9] rounded-lg p-[0.6rem] w-auto flex items-center space-x-2 bg-white hover:bg-gray-100">
           <FieldIcon />
-          <span className="text-gray-500">{t('Filter')}</span>
+          <span className="text-gray-500">{t('field_action.filter')}</span>
         </button>
       <Drawer
-        title="Filter Options"
+        title={t('field_action.filter_options')}
         placement="right"
         onClose={() => setIsDrawerVisible(false)}
         visible={isDrawerVisible}
@@ -79,7 +77,7 @@ export default function FieldActionUsers({
         closable={false}
         extra={[
           <Button key="cancel" onClick={() => setIsDrawerVisible(false)}>
-            {t('Thoát')}
+             {t('field_action.cancel')}
           </Button>,
           <Button
             key="submit"
@@ -87,17 +85,17 @@ export default function FieldActionUsers({
             className="ml-2 border-gray-200 bg-indigo-600 text-white shadow-sm text-sm"
             onClick={handleApplyFilter}
           >
-            {t('Tìm kiếm')}
+         {t('field_action.save_search')}
           </Button>,
         ].filter(Boolean)}
       >
         <div className="mb-3">
-          <label className="block mb-1">Mã nhân viên:</label>
+          <label className="block mb-1">{t('field_action.cid')}:</label>
           <Select
             mode="tags"
             value={cid}
             onChange={handleCidChange}
-            placeholder="Enter names"
+            placeholder={t('field_action.note_cid')}
             size="large"
             className="w-full"
           >
@@ -109,12 +107,12 @@ export default function FieldActionUsers({
           </Select>
         </div>
         <div className="mb-3">
-          <label className="block mb-1">Name:</label>
+        <label className="block mb-1">{t('field_action.name')}:</label>
           <Select
             mode="tags"
             value={nameTags}
             onChange={handleNameChange}
-            placeholder="Enter names"
+            placeholder={t('field_action.note_name')}
             size="large"
             className="w-full"
           >

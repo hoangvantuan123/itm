@@ -54,21 +54,21 @@ const PersonalInformation = ({ form, formData }) => {
           <Form.Item
             label={t('hr_recruitment_1_1.full_name')}
             name="full_name"
-            rules={[{ required: true, message: 'Vui lòng nhập họ tên!' }]}
+            rules={[{ required: true, message: t('hr_recruitment_1_1.rules_full_name') }]}
           >
-            <Input size="large" placeholder="Nhập họ tên" />
+            <Input size="large" placeholder={t('hr_recruitment_1_1.note_full_name')} />
           </Form.Item>
         </Col>
         <Col xs={24} sm={4} md={4}>
           <Form.Item
             label={t('hr_recruitment_1_1.gender')}
             name="gender"
-            rules={[{ required: true, message: 'Vui lòng chọn giới tính!' }]}
+            rules={[{ required: true, message: t('hr_recruitment_1_1.rules_gender') }]}
           >
-            <Select size="large" placeholder="Chọn giới tính">
-              <Option value="Nam">Nam</Option>
-              <Option value="Nữ">Nữ</Option>
-              <Option value="Khác">Khác</Option>
+            <Select size="large" placeholder={t('hr_recruitment_1_1.note_gender')}>
+              <Option value="Nam">{t('hr_recruitment_1_1.male')}</Option>
+              <Option value="Nữ">{t('hr_recruitment_1_1.female')}</Option>
+              <Option value="Khác">{t('hr_recruitment_1_1.other_gender')}</Option>
             </Select>
           </Form.Item>
         </Col>
@@ -77,7 +77,7 @@ const PersonalInformation = ({ form, formData }) => {
             <DatePicker
               size="large"
               style={{ width: '100%' }}
-              placeholder="Chọn ngày phỏng vấn"
+              placeholder={t('hr_recruitment_1_1.note_date')}
             />
           </Form.Item>
         </Col>
@@ -86,7 +86,7 @@ const PersonalInformation = ({ form, formData }) => {
             <DatePicker
               size="large"
               style={{ width: '100%' }}
-              placeholder="Chọn ngày vào"
+              placeholder={t('hr_recruitment_1_1.note_date')}
             />
           </Form.Item>
         </Col>
@@ -94,12 +94,12 @@ const PersonalInformation = ({ form, formData }) => {
           <Form.Item
             label={t('hr_recruitment_1_1.birth_date')}
             name="birth_date"
-            rules={[{ required: true, message: 'Vui lòng nhập ngày sinh!' }]}
+            rules={[{ required: true, message: t('hr_recruitment_1_1.rules_id_number') }]}
           >
             <DatePicker
               size="large"
               style={{ width: '100%' }}
-              placeholder="Chọn ngày sinh"
+              placeholder={t('hr_recruitment_1_1.note_date')}
             />
           </Form.Item>
         </Col>
@@ -108,12 +108,12 @@ const PersonalInformation = ({ form, formData }) => {
           <Form.Item
             label={t('hr_recruitment_1_1.id_number')}
             name="id_number"
-            rules={[{ required: true, message: 'Vui lòng nhập số CMND!' }]}
+            rules={[{ required: true, message: t('hr_recruitment_1_1.rules_id_number') }]}
           >
             <Input
               size="large"
               style={{ width: '100%' }}
-              placeholder="Nhập số CMND"
+              placeholder={t('hr_recruitment_1_1.note_id_number')}
             />
           </Form.Item>
         </Col>
@@ -122,28 +122,28 @@ const PersonalInformation = ({ form, formData }) => {
             <DatePicker
               size="large"
               style={{ width: '100%' }}
-              placeholder="Chọn ngày cấp"
+              placeholder={t('hr_recruitment_1_1.note_date')}
             />
           </Form.Item>
         </Col>
         <Col xs={10} sm={12} md={8}>
           <Form.Item label={t('hr_recruitment_1_1.ethnicity')} name="ethnicity">
-            <Input size="large" placeholder="Nhập dân tộc" />
+            <Input size="large" placeholder={t('hr_recruitment_1_1.note_ethnicity')} />
           </Form.Item>
         </Col>
         <Col xs={24} sm={24} md={24}>
           <Form.Item label={t('hr_recruitment_1_1.id_issue_place')} name="id_issue_place">
-            <Input size="large" placeholder="Nhập nơi cấp" />
+            <Input size="large" placeholder={t('hr_recruitment_1_1.note_id_issue_place')} />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12} md={12}>
           <Form.Item label={t('hr_recruitment_1_1.insurance_number')} name="insurance_number">
-            <Input size="large" placeholder="Nhập số bảo hiểm" />
+            <Input size="large" placeholder={t('hr_recruitment_1_1.note_insurance_number')} />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12} md={12}>
           <Form.Item label={t('hr_recruitment_1_1.tax_number')} name="tax_number">
-            <Input size="large" placeholder="Nhập mã số thuế" />
+            <Input size="large" placeholder={t('hr_recruitment_1_1.note_tax_number')} />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12} md={12}>
@@ -151,19 +151,19 @@ const PersonalInformation = ({ form, formData }) => {
             label={t('hr_recruitment_1_1.phone_number')}
             name="phone_number"
             rules={[
-              { required: true, message: 'Vui lòng nhập số điện thoại!' },
+              { required: true, message: t('hr_recruitment_1_1.rules_phone_number') },
             ]}
           >
             <Input
               style={{ width: '100%' }}
               size="large"
-              placeholder="Nhập số điện thoại"
+              placeholder={t('hr_recruitment_1_1.note_phone_number')}
             />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12} md={12}>
           <Form.Item label="E-mail:" name="email">
-            <Input size="large" placeholder="Nhập email" />
+            <Input size="large" placeholder={t('hr_recruitment_1_1.note_mail')} />
           </Form.Item>
         </Col>
       </Row>
@@ -177,7 +177,7 @@ const PersonalInformation = ({ form, formData }) => {
             rules={[
               {
                 required: true,
-                message:t('hr_recruitment_1_1.rules_alternate_phone_number') ,
+                message: t('hr_recruitment_1_1.rules_alternate_phone_number'),
               },
             ]}
           >
@@ -197,7 +197,7 @@ const PersonalInformation = ({ form, formData }) => {
           <Form.Item
             label={t('hr_recruitment_1_1.alternate_relationship')}
             name="alternate_relationship"
-            rules={[{ required: true, message: t('hr_recruitment_1_1.rules_alternate_relationship')}]}
+            rules={[{ required: true, message: t('hr_recruitment_1_1.rules_alternate_relationship') }]}
           >
             <Input size="large" placeholder={t('hr_recruitment_1_1.note_alternate_relationship')} />
           </Form.Item>
@@ -206,7 +206,7 @@ const PersonalInformation = ({ form, formData }) => {
 
       <h2 className="text-xl font-semibold mb-4"> {t('hr_recruitment_1_1.birth_address')} </h2>
       <h3 className=" italic mb-2">
-      {t('hr_recruitment_1_1.title_note_1')} 
+        {t('hr_recruitment_1_1.title_note_1')}
       </h3>
       <Row gutter={16}>
         <Col xs={24} sm={12} md={8}>
@@ -222,7 +222,7 @@ const PersonalInformation = ({ form, formData }) => {
           <Form.Item
             label={t('hr_recruitment_1_1.birth_district')}
             name="birth_district"
-            rules={[{ required: true, message: t('hr_recruitment_1_1.rules_birth_district')}]}
+            rules={[{ required: true, message: t('hr_recruitment_1_1.rules_birth_district') }]}
           >
             <Input size="large" placeholder={t('hr_recruitment_1_1.note_birth_district')} />
           </Form.Item>
@@ -231,7 +231,7 @@ const PersonalInformation = ({ form, formData }) => {
           <Form.Item
             label={t('hr_recruitment_1_1.birth_ward')}
             name="birth_ward"
-            rules={[{ required: true, message:  t('hr_recruitment_1_1.rules_birth_ward') }]}
+            rules={[{ required: true, message: t('hr_recruitment_1_1.rules_birth_ward') }]}
           >
             <Input size="large" placeholder={t('hr_recruitment_1_1.note_birth_address')} />
           </Form.Item>
@@ -240,7 +240,7 @@ const PersonalInformation = ({ form, formData }) => {
           <Form.Item
             label={t('hr_recruitment_1_1.birth_address')}
             name="birth_address"
-            rules={[{ required: true, message:  t('hr_recruitment_1_1.rules_birth_address') }]}
+            rules={[{ required: true, message: t('hr_recruitment_1_1.rules_birth_address') }]}
           >
             <Input size="large" placeholder={t('hr_recruitment_1_1.note_birth_address')} />
           </Form.Item>
@@ -253,27 +253,27 @@ const PersonalInformation = ({ form, formData }) => {
           <Form.Item
             label={t('hr_recruitment_1_1.current_province')}
             name="current_province"
-            rules={[{ required: true, message:  t('hr_recruitment_1_1.rules_current_province') }]}
+            rules={[{ required: true, message: t('hr_recruitment_1_1.rules_current_province') }]}
           >
-            <Input size="large" placeholder={t('hr_recruitment_1_1.note_current_province') } />
+            <Input size="large" placeholder={t('hr_recruitment_1_1.note_current_province')} />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label={t('hr_recruitment_1_1.current_district')}
             name="current_district"
-            rules={[{ required: true, message:  t('hr_recruitment_1_1.rules_current_district') }]}
+            rules={[{ required: true, message: t('hr_recruitment_1_1.rules_current_district') }]}
           >
-            <Input size="large" placeholder={t('hr_recruitment_1_1.note_current_district') } />
+            <Input size="large" placeholder={t('hr_recruitment_1_1.note_current_district')} />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12} md={8}>
           <Form.Item
             label={t('hr_recruitment_1_1.current_ward')}
             name="current_ward"
-            rules={[{ required: true, message: t('hr_recruitment_1_1.rules_current_ward')}]}
+            rules={[{ required: true, message: t('hr_recruitment_1_1.rules_current_ward') }]}
           >
-            <Input size="large" placeholder={t('hr_recruitment_1_1.note_current_ward') } />
+            <Input size="large" placeholder={t('hr_recruitment_1_1.note_current_ward')} />
           </Form.Item>
         </Col>
         <Col xs={24} sm={24} md={24}>
@@ -282,13 +282,13 @@ const PersonalInformation = ({ form, formData }) => {
             name="current_address"
             rules={[{ required: true, message: t('hr_recruitment_1_1.rules_current_address') }]}
           >
-            <Input size="large" placeholder="Nhập địa chỉ" />
+           <Input size="large" placeholder={t('hr_recruitment_1_1.note_current_ward')} />
           </Form.Item>
         </Col>
       </Row>
       <h3 className=" italic mb-2">{t('hr_recruitment_1_1.title_note_12')}</h3>
       <Row gutter={16}>
-      
+
         <Col xs={24} sm={12} md={12}>
           <Form.Item
             label={t('hr_recruitment_1_1.desired_base_salary')}

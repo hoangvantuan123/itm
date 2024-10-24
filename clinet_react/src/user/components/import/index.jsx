@@ -64,7 +64,7 @@ export default function ImportForm({
  
   const handleUpload = async () => {
     if (!selectedTable || Object.keys(connectValues).length === 0) {
-      message.error(t('Vui lòng chọn bảng và ít nhất một cột để kiểm tra'))
+      message.error(t('page_import.error_upload'))
       return
     }
 
@@ -102,20 +102,20 @@ export default function ImportForm({
       results.forEach((result) => {
         if (result.data.status === 200) {
           fetchData()
-          message.success(t('Dữ liệu cập nhật thành công!'))
+          message.success(t('page_import.success'))
           onClose()
         } else if (result.data.status === 400) {
-          message.error(t(`Lỗi: ${result.message}`))
+          message.error(t(`error: ${result.message}`))
         }
       })
     } catch (error) {
       if (error.response && error.response.data) {
         const { status, message: errorMessage } = error.response.data
         message.error(
-          t(`Đã xảy ra lỗi trong quá trình kiểm tra dữ liệu: ${errorMessage}`),
+          t(`page_import.error_import: ${errorMessage}`),
         )
       } else {
-        message.error(t('Đã xảy ra lỗi trong quá trình kiểm tra dữ liệu'))
+        message.error(t('page_import.error_import'))
       }
     } finally {
       setIsLoading(false)
@@ -130,7 +130,7 @@ export default function ImportForm({
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
     if (!isCsvOrXlsx) {
-        message.error(t('Chỉ hỗ trợ tệp CSV hoặc XLSX'));
+        message.error(t('page_import.error'));
         return;
     }
 
@@ -180,7 +180,7 @@ export default function ImportForm({
                     }
 
                     if (!result.data || result.data.length === 0) {
-                        message.error(t('Không có dữ liệu trong tệp CSV'));
+                        message.error(t('page_import.none_data'));
                         return;
                     }
 
@@ -201,7 +201,7 @@ export default function ImportForm({
                     });
 
                     setConnectValues(newConnectValues);
-                    message.success(t('Tải lên thành công tệp CSV'));
+                    message.success(t('page_import.import_csv'));
                 },
                 header: true,
                 skipEmptyLines: true,
@@ -252,7 +252,7 @@ export default function ImportForm({
             });
 
             setConnectValues(newConnectValues);
-            message.success(t('Tải lên thành công tệp XLSX'));
+            message.success(t('page_import.import_xlsx'));
         };
 
         reader.readAsArrayBuffer(file.originFileObj || file);
@@ -269,7 +269,7 @@ export default function ImportForm({
 
   const columns = [
     {
-      title: t('Cột'),
+      title: t('page_import.name'),
       dataIndex: 'name',
       key: 'name',
       render: (text, record) => (
@@ -280,7 +280,7 @@ export default function ImportForm({
       ),
     },
     {
-      title: t('Trường liên kết'),
+      title: t('page_import.connect'),
       dataIndex: 'connect',
       key: 'connect',
       render: (text, record) => (
@@ -291,7 +291,7 @@ export default function ImportForm({
           allowClear
           size="large"
           showSearch
-          placeholder={t('Nhập, chọn một trường')}
+          placeholder={t('page_import.note_connect')}
         >
           {tableInfo?.map((table) => (
             <OptGroup
@@ -321,7 +321,7 @@ export default function ImportForm({
       ),
     },
     {
-      title: t('Ghi chú'),
+      title: t('page_import.note_col'),
       dataIndex: 'note',
       key: 'note',
     },
@@ -362,7 +362,7 @@ export default function ImportForm({
       closable={false}
       extra={[
         <Button key="cancel" onClick={onClose}>
-          Thoát
+          {t('page_import.cancel')} 
         </Button>,
         <Upload
           accept=".csv, .xlsx"
@@ -373,7 +373,7 @@ export default function ImportForm({
           className="ml-2"
           showUploadList={false}
         >
-          <Button icon={<UploadOutlined />}>Chọn tệp</Button>
+          <Button icon={<UploadOutlined />}>{t('page_import.add_file')}</Button>
         </Upload>,
       ]}
     >
@@ -386,12 +386,12 @@ export default function ImportForm({
 
                 <h1 className="mt-6 text-base font-bold tracking-tight text-gray-900">
                   {t(
-                    'Nhấp hoặc kéo tệp vào khu vực này để tải tệp Excel hoặc CSV lên.',
+                    'page_import.title_note_1',
                   )}
                 </h1>
                 <p className="ant-upload-hint">
                   {t(
-                    'Hỗ trợ tải lên một lần hoặc hàng loạt. Nghiêm cấm tải các tệp bị cấm khác.',
+                    'page_import.title_note_2',
                   )}
                 </p>
 
@@ -403,7 +403,7 @@ export default function ImportForm({
                   maxCount={1}
                   className="mt-5"
                 >
-                  <Button icon={<UploadOutlined />}>{t('Chọn tệp')}</Button>
+                  <Button icon={<UploadOutlined />}>{t('page_import.add_file')}</Button>
                 </Upload>
               </div>
             </div>
@@ -424,7 +424,7 @@ export default function ImportForm({
                   onClick={handleUpload}
                   className="w-full mb-5 border-gray-300 bg-blue-500 text-white text-sm hover:bg-blue-600"
                 >
-                  {t('Nhập')}
+                  {t('page_import.import')}
                 </Button>
              
               <div>
@@ -438,12 +438,12 @@ export default function ImportForm({
                 <p>
                   {' '}
                   {t(
-                    'Dòng đầu tiên hàng dữ liệu sẽ được dùng để làm phân trang',
+                    'page_import.title_note_3',
                   )}
                 </p>
 
                 <div className="mt-5">
-                  <label className="block mb-2">Nhập số lượng</label>
+                  <label className="block mb-2">{t('page_import.enter_quantity')}</label>
                   <InputNumber
                     min={0}
                     size="large"
@@ -453,10 +453,10 @@ export default function ImportForm({
                     onChange={onChange}
                   />
 
-                  <label className="block mt-4 mb-2">Chọn bảng tính</label>
+                  <label className="block mt-4 mb-2">{t('page_import.select_spreadsheet')}</label>
                   <Select
                     showSearch
-                    placeholder={t('Bảng tính')}
+                    placeholder={t('page_import.sheets')}
                     optionFilterProp="children"
                     className="w-full"
                     size="large"

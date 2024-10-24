@@ -13,6 +13,7 @@ import LanguageTable from '../components/inter/LanguageTable'
 import SkillTable from '../components/inter/skillTable'
 import Logo from '../../assets/ItmLogo.png'
 import '../../static/css/drawer_cusstom.css'
+import { useTranslation } from 'react-i18next'
 const MultiStepFormPage = () => {
   const navigate = useNavigate()
   const [currentStep, setCurrentStep] = useState(0)
@@ -27,7 +28,7 @@ const MultiStepFormPage = () => {
   const [decodedData, setDecodedData] = useState(null)
   const [error, setError] = useState(null)
   const location = useLocation()
-
+  const { t } = useTranslation()
   useEffect(() => {
     const path = location.pathname
     const encodedData = path.split('/').pop()
@@ -63,15 +64,15 @@ const MultiStepFormPage = () => {
             setInterviewData({})
           }
         } else {
-          setError('Không có dữ liệu cho ID này.')
+          setError(t('api_status.none_id'))
           setFormData({})
         }
       } else {
-        setError('Dữ liệu không khả dụng.')
+        setError(t('api_status.error'))
         setFormData({})
       }
     } catch (error) {
-      setError(error.message || 'Đã xảy ra lỗi')
+      setError(error.message || t('api_status.error'))
       setFormData({})
     } finally {
       setLoading(false)
@@ -92,7 +93,7 @@ const MultiStepFormPage = () => {
       await form.validateFields()
       return true
     } catch (errorInfo) {
-      message.error('Vui lòng điền vào tất cả các trường bắt buộc!')
+      message.error(t('api_status.field'))
       return false
     }
   }
@@ -233,10 +234,10 @@ const MultiStepFormPage = () => {
       if (response.success) {
         navigate('/public/apply/thong-bao')
       } else {
-        message.error('Có lỗi xảy ra khi gửi thông tin!')
+        message.error(t('api_status.error'))
       }
     } catch (error) {
-      message.error('Có lỗi xảy ra khi gửi thông tin. Vui lòng thử lại!')
+      message.error(t('api_status.error'))
     } finally {
       setIsSubmitting(false)
       setIsDrawerVisible(false)
@@ -249,23 +250,23 @@ const MultiStepFormPage = () => {
       content: (
         <>
           <PersonalInformation form={form} formData={formData} />
-          <Divider orientation="left italic">Thông tin gia đình</Divider>
+          <Divider orientation="left italic">{t('form_temp.title_note_1')}</Divider>
           <FamilyInfoTable
             form={form}
             formData={formData}
             dataSource={formData?.families}
             children={formData?.children}
           />
-          <Divider orientation="left italic">Tình trạng học vấn</Divider>
+           <Divider orientation="left italic">{t('form_temp.title_note_2')}</Divider>
           <EducationLanguageTable
             form={form}
             dataSource={formData?.educations}
           />
-          <h2 className="mt-4 mb-2 italic">Ngôn ngữ</h2>
+       <h2 className="mt-4 mb-2 italic">{t('form_temp.title_note_3')}</h2>
           <LanguageTable form={form} dataSource={formData?.languages} />
-          <h2 className="mt-4 mb-2 italic">Kỹ năng</h2>
+          <h2 className="mt-4 mb-2 italic">{t('form_temp.title_note_4')}</h2>
           <SkillTable form={form} dataSource={formData?.skills} />
-          <Divider orientation="left italic">Kinh nghiệm làm việc</Divider>
+          <Divider orientation="left italic">{t('form_temp.title_note_5')}</Divider>
           <WorkExperienceTable form={form} dataSource={formData.experiences} />
         </>
       ),
@@ -286,9 +287,9 @@ const MultiStepFormPage = () => {
           <div>
 
             <h1 className="text-xl font-bold text-center mt-9 ">
-              TỜ KHAI ỨNG VIÊN
+            {t('form_temp.title_note_6')}
             </h1>
-            <p className="text-center mb-4">Mẫu tờ khai thông tin cá nhân online</p>
+            <p className="text-center mb-4">{t('form_temp.title_note_7')}</p>
           </div>
 
         </div>
@@ -302,7 +303,7 @@ const MultiStepFormPage = () => {
               size="large"
               loading={isSubmitting}
             >
-              Gửi thông tin
+              {t('form_temp.title_note_8')}
             </Button>
           </Form.Item>
         </Form>
@@ -416,12 +417,10 @@ const MultiStepFormPage = () => {
 
                 <div className="text-center mb-6">
                   <p className="text-base text-gray-500 mt-4">
-                    Cảm ơn bạn đã cung cấp thông tin. Chúng tôi cam kết bảo mật
-                    dữ liệu theo quy định.
+                  {t('form_temp.title_note_9')}
                   </p>
                   <p className="text-xs text-gray-400 mt-2 italic">
-                    Lưu ý: Nếu phát hiện thông tin không chính xác, đơn của bạn
-                    có thể bị từ chối mà không cần thông báo trước.
+                  {t('form_temp.title_note_10')}
                   </p>
                 </div>
               </div>
@@ -433,14 +432,14 @@ const MultiStepFormPage = () => {
                   size="large"
                   className=" w-full bg border py-6 border-indigo-600 bg-indigo-600 text-white"
                 >
-                  Chấp nhận và gửi
+                {t('form_temp.title_note_11')}
                 </Button>
                 <Button
                   onClick={() => setIsDrawerVisible(false)}
                   size="large"
                   className="py-6 bg-white"
                 >
-                  Hủy
+                  {t('form_temp.huy')}
                 </Button>
               </div>
             </div>

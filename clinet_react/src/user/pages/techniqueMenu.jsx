@@ -107,7 +107,7 @@ export default function TechniqueMenu({ permissions }) {
 
   const columns = [
     {
-      title: 'Action',
+      title: t('column_table.action'),
       dataIndex: 'id',
       key: 'id',
       sorter: (a, b) => {
@@ -118,7 +118,7 @@ export default function TechniqueMenu({ permissions }) {
       ...(visibleColumns.id ? {} : { id: () => null }),
     },
     {
-      title: 'Trình tự',
+      title: t('column_table.sequence'),
       dataIndex: 'sequence',
       key: 'sequence',
       sorter: (a, b) => {
@@ -129,7 +129,7 @@ export default function TechniqueMenu({ permissions }) {
       ...(visibleColumns.sequence ? {} : { sequence: () => null }),
     },
     {
-      title: 'Menu',
+      title: t('column_table.name'),
       dataIndex: 'name',
       key: 'name',
       sorter: (a, b) => {
@@ -140,7 +140,7 @@ export default function TechniqueMenu({ permissions }) {
       ...(visibleColumns.name ? {} : { name: () => null }),
     },
     {
-      title: 'Key',
+      title: t('column_table.key_name'),
       dataIndex: 'key_name',
       key: 'key_name',
       sorter: (a, b) => {
@@ -151,7 +151,7 @@ export default function TechniqueMenu({ permissions }) {
       ...(visibleColumns.key_name ? {} : { key_name: () => null }),
     },
     {
-      title: 'Menu Cha',
+      title: t('column_table.parent_name'),
       dataIndex: 'parent_name',
       key: 'parent_name',
       sorter: (a, b) => {
@@ -162,7 +162,7 @@ export default function TechniqueMenu({ permissions }) {
       ...(visibleColumns.parent_name ? {} : { parent_name: () => null }),
     },
     {
-      title: 'Parent Path',
+      title: t('column_table.parent_path'),
       dataIndex: 'parent_path',
       key: 'parent_path',
       sorter: (a, b) => {
@@ -212,7 +212,7 @@ export default function TechniqueMenu({ permissions }) {
             className="mt-2 max-w-md cursor-pointer text-pretty text-base text-indigo-500"
             size="large"
           >
-            Thêm hàng mới
+            {t('column_table.add_row')}
           </span>
         )
       }
@@ -221,7 +221,7 @@ export default function TechniqueMenu({ permissions }) {
         pageSize: limit,
         total: total,
         showSizeChanger: true,
-        showTotal: (total) => `Tổng ${total} mục`,
+        showTotal: (total) => `${t('column_table.total')} ${total} ${t('column_table.item')}`,
         onChange: (page, pageSize) =>
           handleTableChange({ current: page, pageSize }),
       }}
@@ -234,8 +234,8 @@ export default function TechniqueMenu({ permissions }) {
         {tableData.map((item) => (
           <Col span={24} key={item.id} style={{ marginBottom: 16 }}>
             <Card title={item.name} onClick={() => handleViewDetails(item)}>
-              <strong>Trình tự:</strong> {item.sequence} <br />
-              <strong>Key:</strong> {item.key_name} <br />
+              <strong>{t('column_table.sequence')}:</strong> {item.sequence} <br />
+              <strong>{t('column_table.key_name')}:</strong> {item.key_name} <br />
             </Card>
           </Col>
         ))}
@@ -260,7 +260,7 @@ export default function TechniqueMenu({ permissions }) {
       {isMobile && <div className="flex items-center justify-end"></div>}
       <div className="p-2 flex items-center justify-between">
         <h1 className="text-xl font-bold text-gray-900 sm:text-xl ">
-          {t('Mục Menu')}
+          {t('page.menu')}
         </h1>
 
 
@@ -282,7 +282,7 @@ export default function TechniqueMenu({ permissions }) {
                 className=" rounded-lg h-full border-gray-200 bg-indigo-600 hover:bg-none text-white shadow-sm text-sm"
                 size="large"
               >
-                Thêm
+                {t('page.add')}
               </Button>
             )}
               {selectedRowKeys != null && selectedRowKeys.length > 0 && (

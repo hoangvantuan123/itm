@@ -67,20 +67,20 @@ const DetailPayrollUser = React.memo(({ permissions }) => {
         ];
 
         const displayNames = {
-            start:  t('hr_payroll.start'),
-            stop:  t('hr_payroll.stop'),
+            start: t('hr_payroll.start'),
+            stop: t('hr_payroll.stop'),
             day_off: t('hr_payroll.day_off'),
-            overtime_normal_150:  t('hr_payroll.overtime_normal_150'),
-            overtime_normal_200:  t('hr_payroll.overtime_normal_200'),
-            overtime_normal_210:  t('hr_payroll.overtime_normal_210'),
-            at_night_30:  t('hr_payroll.at_night'),
-            overtime_sunday_200:  t('hr_payroll.overtime_sunday_200'),
-            overtime_sunday_270:  t('hr_payroll.overtime_sunday_270'),
-            overtime_holiday_300:  t('hr_payroll.overtime_holiday_300'),
-            overtime_holiday_390:  t('hr_payroll.overtime_holiday_390'),
-            working_day:  t('hr_payroll.working_day'),
-            late_in:  t('hr_payroll.late_in'),
-            early_out:  t('hr_payroll.early_out'),
+            overtime_normal_150: t('hr_payroll.overtime_normal_150'),
+            overtime_normal_200: t('hr_payroll.overtime_normal_200'),
+            overtime_normal_210: t('hr_payroll.overtime_normal_210'),
+            at_night_30: t('hr_payroll.at_night'),
+            overtime_sunday_200: t('hr_payroll.overtime_sunday_200'),
+            overtime_sunday_270: t('hr_payroll.overtime_sunday_270'),
+            overtime_holiday_300: t('hr_payroll.overtime_holiday_300'),
+            overtime_holiday_390: t('hr_payroll.overtime_holiday_390'),
+            working_day: t('hr_payroll.working_day'),
+            late_in: t('hr_payroll.late_in'),
+            early_out: t('hr_payroll.early_out'),
         };
 
         const formDataKeys = Object.keys(formData);
@@ -101,7 +101,7 @@ const DetailPayrollUser = React.memo(({ permissions }) => {
 
     const columns = useMemo(() => [
         {
-            title: 'Hạng mục',
+            title: t('hr_payroll.category'),
             dataIndex: 'key',
             key: 'key',
             fixed: 'left',
@@ -109,11 +109,11 @@ const DetailPayrollUser = React.memo(({ permissions }) => {
             className: 'table-column-header',
         },
         ...Array.from({ length: 31 }, (_, i) => {
-            const day = String(i + 1).padStart(2, '0'); 
+            const day = String(i + 1).padStart(2, '0');
             return {
-                title: day,  
+                title: day,
                 dataIndex: day,
-                key: day, 
+                key: day,
                 width: 50,
             };
         }),

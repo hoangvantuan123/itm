@@ -24,36 +24,32 @@ const { Option } = Select
 
 export default function AddUser({ isOpen, onClose, fetchData }) {
   const { t } = useTranslation()
-  const userFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'))
-  const userNameLogin = userFromLocalStorage?.login || 'none'
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
 
   const handleFinish = async (values) => {
-    const { fullname, username, password , cid} = values
+    const { fullname, username, password, cid } = values
     try {
       const data = await registerUser({
         login: username,
         password: password,
         nameUser: fullname,
         language: 'vi',
-        cid : cid
+        cid: cid
       })
-      message.success(t('Đăng ký tài khoản thành công'))
+      message.success(t('api_status.success_acc'))
       form.resetFields()
       fetchData()
       onClose()
     } catch (error) {
-      message.error(t('Lỗi khi đăng ký tài khoản!'))
+      message.error(t('api_status.error_acc'))
     }
   }
 
   return (
     <Drawer
       title={
-        <Title level={4} style={{ textAlign: 'center' }}>
-          {t('Thêm người dùng mới')}
+        <Title level={4} >
+          {t('add_page.add_user')}
         </Title>
       }
       open={isOpen}
@@ -61,7 +57,7 @@ export default function AddUser({ isOpen, onClose, fetchData }) {
       width={900}
       extra={[
         <Button key="cancel" onClick={onClose}>
-          {t('Hủy')}
+          {t('add_page.cancel')}
         </Button>,
         <Button
           key="submit"
@@ -69,7 +65,7 @@ export default function AddUser({ isOpen, onClose, fetchData }) {
           className=" ml-2 border-gray-200  bg-indigo-600 text-white  shadow-sm text-sm"
           onClick={() => form.submit()}
         >
-          {t('Lưu')}
+          {t('add_page.save')}
         </Button>,
       ]}
     >
@@ -79,50 +75,46 @@ export default function AddUser({ isOpen, onClose, fetchData }) {
         onFinish={handleFinish}
         style={{ textAlign: 'left' }}
       >
-        <Title level={5}>{t('Thông tin cơ bản')}</Title>
+        <Title level={5}>{t('add_page.title_note_1')}</Title>
 
-        {/* Thông tin cơ bản */}
-        <Card style={{ marginBottom: '20px' }}>
-          <Form.Item
-            label={t('Họ và tên')}
-            name="fullname"
-            rules={[{ required: true, message: t('Vui lòng nhập họ và tên') }]}
-            style={{ textAlign: 'left' }}
-          >
-            <Input size="large" placeholder={t('Nhập họ và tên')} />
-          </Form.Item>
+        <Form.Item
+          label={t('add_page.full_name')}
+          name="fullname"
+          rules={[{ required: true, message: t('add_page.rules_full_name') }]}
+          style={{ textAlign: 'left' }}
+        >
+          <Input size="large" placeholder={t('add_page.note_full_name')} />
+        </Form.Item>
 
-          <Form.Item
-            label={t('Tên đăng nhập')}
-            name="username"
-            rules={[
-              { required: true, message: t('Vui lòng nhập tên đăng nhập') },
-            ]}
-            style={{ textAlign: 'left' }}
-          >
-            <Input size="large" placeholder={t('Nhập tên đăng nhập')} />
-          </Form.Item>
+        <Form.Item
+          label={t('add_page.user_name')}
+          name="username"
+          rules={[
+            { required: true, message: t('add_page.rules_user_name') },
+          ]}
+          style={{ textAlign: 'left' }}
+        >
+          <Input size="large" placeholder={t('add_page.note_user_name')} />
+        </Form.Item>
 
-          <Form.Item
-            label={t('Mật khẩu')}
-            name="password"
-            rules={[{ required: true, message: t('Vui lòng nhập mật khẩu') }]}
-            style={{ textAlign: 'left' }}
-          >
-            <Input.Password size="large" placeholder={t('Nhập mật khẩu')} />
-          </Form.Item>
-          <Form.Item
-            label={t('Mã nhân viên')}
-            name="cid"
-            rules={[
-              { required: true, message: t('Vui lòng nhập mã nhân viên của người dùng') },
-            ]}
-            style={{ textAlign: 'left' }}
-          >
-            <Input size="large" placeholder={t('Nhập mã nhân viên')} />
-          </Form.Item>
-       
-        </Card>
+        <Form.Item
+          label={t('add_page.password')}
+          name="password"
+          rules={[{ required: true, message: t('add_page.rules_password') }]}
+          style={{ textAlign: 'left' }}
+        >
+          <Input.Password size="large" placeholder={t('add_page.note_password')} />
+        </Form.Item>
+        <Form.Item
+          label={t('add_page.employee_code')}
+          name="cid"
+          rules={[
+            { required: true, message: t('add_page.rules_cid') },
+          ]}
+          style={{ textAlign: 'left' }}
+        >
+          <Input size="large" placeholder={t('add_page.note_cid')} />
+        </Form.Item>
       </Form>
     </Drawer>
   )
